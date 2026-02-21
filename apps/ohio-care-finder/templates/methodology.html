@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-page">
+    <div class="container">
+        <h1>Methodology</h1>
+        
+        <section>
+            <h2>Data Collection</h2>
+            <p>Hospital data was compiled from multiple sources including:</p>
+            <ul>
+                <li>Individual hospital websites and published service directories</li>
+                <li>Ohio Department of Health facility registries</li>
+                <li>Direct verification with hospital systems</li>
+                <li>News reports and public announcements for service closures</li>
+            </ul>
+            <p>All data is regularly verified and updated. The "Last Verified" date shown for each hospital indicates when we last confirmed the information.</p>
+        </section>
+        
+        <section>
+            <h2>Service Definitions</h2>
+            <h3>Labor & Delivery (L&D)</h3>
+            <p>Indicates whether a hospital provides labor and delivery services for childbirth. Hospitals marked "Yes" have active obstetric units.</p>
+            
+            <h3>NICU Levels</h3>
+            <ul>
+                <li><strong>None:</strong> No neonatal intensive care unit</li>
+                <li><strong>Level II:</strong> Special care nursery for moderately ill newborns</li>
+                <li><strong>Level III:</strong> Intensive care for very ill or premature infants, with subspecialty services</li>
+                <li><strong>Level IV:</strong> Highest level of care, including surgical capabilities and complex procedures</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2>Distance & Travel Time Calculations</h2>
+            <p>When you search by ZIP code, the map calculates:</p>
+            <ul>
+                <li><strong>Distance:</strong> Straight-line (haversine) distance in kilometers</li>
+                <li><strong>Travel Time:</strong> If an OpenRouteService API key is configured, actual driving time via road network. Otherwise, estimated based on distance at 45 mph average speed.</li>
+            </ul>
+            <p>Travel times are estimates and may vary based on traffic, weather, and road conditions. Always plan for extra time in emergency situations.</p>
+        </section>
+        
+        <section>
+            <h2>Closures Tracking</h2>
+            <p>The closures timeline shows maternity-related service closures since January 2022, including:</p>
+            <ul>
+                <li>Permanent L&D or NICU closures</li>
+                <li>Temporary closures (noted in the description)</li>
+                <li>Service reductions or consolidations</li>
+            </ul>
+            <p>Each closure entry includes the date, affected service, and a link to the source when available.</p>
+        </section>
+        
+        <section>
+            <h2>How to Cite This Data</h2>
+            <p>For journalists, researchers, and public use:</p>
+            <div class="citation-box">
+                <p><strong>Suggested Citation:</strong></p>
+                <p>Ohio Maternity Access Map (2025). [Hospital name or search results]. Retrieved [date] from [URL]</p>
+            </div>
+            <p>You may download the full dataset as CSV files for analysis. Please attribute the source and verify critical information independently.</p>
+        </section>
+        
+        <section>
+            <h2>Limitations & Disclaimers</h2>
+            <ul>
+                <li>This information is provided for general reference only and should not be used as a substitute for professional medical advice.</li>
+                <li>Hospital services and capabilities change frequently. Always confirm current services directly with the facility.</li>
+                <li>In an emergency, call 911 or go to the nearest emergency room.</li>
+                <li>Travel time estimates are approximate and do not account for real-time traffic or emergency response times.</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2>Updates & Corrections</h2>
+            <p>We strive to keep this data accurate and current. If you notice any errors or have updated information, please help us improve this resource.</p>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+services:
+  postgres:
+    ports: []
+
+  ai-seo-pagescore:
+    ports: []
+
+  asbestos-atlas:
+    ports: []
+
+  btucalc:
+    ports: []
+
+  dog-bite-map:
+    ports: []
+
+  free-seo-tools-page:
+    ports: []
+
+  header-hierarchy:
+    ports: []
+
+  intent-discover:
+    ports: []
+
+  keyword-mixer:
+    ports: []
+
+  legal-lens:
+    ports: []
+
+  legal-napaudit:
+    ports: []
+
+  legal-revamp:
+    ports: []
+
+  legal-schema-gen:
+    ports: []
+
+  link-auditor:
+    ports: []
+
+  mellino-health-data:
+    ports: []
+
+  meta-describer:
+    ports: []
+
+  ohio-care-finder:
+    ports: []
+
+  ohio-maternity-monitor:
+    ports: []
+
+  replit-downloader:
+    ports: []
+
+  sales-research-flow:
+    ports: []
+
+  semrush-scraper:
+    ports: []
+
+  seo-headline-pro:
+    ports: []
+
+  serpsnippet-audit:
+    ports: []
+
+  text-clarity:
+    ports: []
+
+  tube-insight:
+    ports: []

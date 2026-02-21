@@ -1,0 +1,139 @@
+You are building a full-stack web app called **Ohio Maternity Care Finder**.
+
+Goal:
+Help pregnant people in Ohio find safe, appropriate maternity hospitals based on:
+- Where they live (ZIP / city / county)
+- Simple pregnancy risk info (e.g., low-risk vs high-risk / prior C-section / chronic conditions)
+- Objective maternity-related quality data from CMS
+
+Tech stack:
+- Python 3 backend using **FastAPI** (or Flask if you prefer, but FastAPI is ideal)
+- **SQLite** as the local database
+- Simple frontend:
+  - Option A: React + Vite + Tailwind
+  - Option B: Server-rendered HTML templates with HTMX / vanilla JS
+- Run in a single Replit project
+
+Data ingestion:
+- There is a Python script named `scripts/download_cms_maternity_data.py` which:
+  - Downloads 3 CMS datasets via API:
+    - Hospital General Information (`xubh-q36u`)
+    - Maternal Health - Hospital (`nrdb-3fcy`)
+    - Birthing Friendly Hospitals with Geocoded Addresses (`hbf-map`)
+  - Saves them as:
+    - `data/hospital_general_information.csv`
+    - `data/maternal_health_hospital.csv`
+    - `data/birthing_friendly_hospitals.csv`
+  - Additionally, after download, it creates a file:
+    - `data/hospital_general_information_geocoded.csv`
+      which contains all rows plus `geo_lat` and `geo_lng` columns for Ohio hospitals.
+
+- Treat this script as a **data pipeline tool**. I should be able to run:
+    `python scripts/download_cms_maternity_data.py`
+  to refresh the local CSVs and geocoded output. Design the project so this script can be run **periodically** (e.g., via Replit deployments / cron later) without breaking the web app.
+
+Data model:
+- Build a small ETL step on app startup (or a CLI command) that:
+  1. Reads `data/hospital_general_information_geocoded.csv`
+  2. Reads `data/maternal_health_hospital.csv`
+  3. Reads `data/birthing_friendly_hospitals.csv`
+  4. Filters to **Ohio** hospitals only
+  5. Joins datasets on the CMS provider/hospital ID (e.g., CCN / provider_id)
+  6. Creates a SQLite table, e.g. `maternity_hospitals` with columns like:
+     - `id` (internal)
+     - `ccn` / `provider_id`
+     - `hospital_name`
+     - `address`
+     - `city`
+     - `state`
+     - `zip_code`
+     - `county`
+     - `geo_lat`
+     - `geo_lng`
+     - maternity-specific fields from the Maternal Health dataset:
+       - severe maternal morbidity measures
+       - C-section rate
+       - low-risk C-section rate (if available)
+       - related outcome metrics
+     - flags such as:
+       - `is_birthing_friendly`
+       - facility type / ownership if helpful
+  7. The ETL should be idempotent: if the DB already exists and is up to date, it shouldn’t duplicate rows.
+
+Backend API:
+- Expose JSON endpoints such as:
+
+  1. `GET /api/hospitals/search`
+     - Query params:
+       - `zip`: string (required)
+       - `max_distance_km`: number (default 80 km / 50 miles)
+       - `risk_level`: one of `low`, `medium`, `high`
+       - optional booleans, e.g. `prefer_birthing_friendly=true`
+     - Behavior:
+       - Use ZIP (or ZIP centroid) to compute distance to each hospital (Haversine distance using `geo_lat` and `geo_lng`)
+       - Filter to hospitals in Ohio within `max_distance_km`
+       - Ranking:
+         - Always factor in distance (closer is better)
+         - For `low` risk:
+           - Weight lower C-section / low-risk C-section rate more
+         - For `high` risk:
+           - Weight outcome metrics and presence of higher-level services more (you can use proxy fields available in CMS data)
+       - Return a list of hospital JSON objects with:
+         - name, address, distance_km
+         - key quality metrics (C-section rate, SMM, outcome summary)
+         - `is_birthing_friendly`
+         - lat / lng
+
+  2. `GET /api/hospitals/{id}`
+     - Returns detailed info for one hospital.
+
+  3. (Optional for later) `GET /api/metrics/deserts`
+     - Return simple summary of “maternity care deserts” by county or ZIP, based on counts of nearby hospitals.
+
+Frontend:
+- Create a single-page UI at `/` with:
+  - A simple form:
+    - Input for location:
+      - Option A: ZIP code text box
+      - Option B (bonus): allow city or county as well
+    - A few simple risk questions:
+      - “Is this pregnancy considered high-risk?” yes/no
+      - “Have you had a prior C-section?” yes/no
+      - “Any of these conditions?” (checklist: high blood pressure, diabetes, twins, etc.) – even if these only map to a simple risk_level for now.
+    - Max travel distance slider or dropdown
+
+  - On submit:
+    - Call the `/api/hospitals/search` endpoint
+    - Show results as:
+      - A list of cards with:
+        - Hospital name
+        - Distance
+        - High-level quality “grade” or labels (e.g. “Lower C-section rate”, “Birthing Friendly”)
+      - (Optional but ideal) A simple map view using a JS mapping library (Leaflet or similar) plotting hospital markers with lat/lng.
+
+  - UX details:
+    - If no hospitals found within the distance: show a clear message like “There are no birthing hospitals within X miles of this ZIP – this is a maternity care desert” and maybe show the nearest few anyway.
+    - Keep language plain and supportive; avoid medical jargon.
+
+Scheduling / periodic update:
+- Structure the project so that:
+  - The downloader script `scripts/download_cms_maternity_data.py` is independent of the web server.
+  - There is a clear single command to refresh data:
+      `python scripts/download_cms_maternity_data.py`
+  - Optionally provide a `Makefile` or `tasks.py` helper with a `refresh_data` command.
+- Assume I will set up a Replit deployment with a cron job later to run that command periodically.
+
+Testing & docs:
+- Include at least:
+  - A short `README.md` explaining:
+    - what the app does
+    - how to set up environment variables (for geocoding API key)
+    - how to run the downloader script
+    - how to start the web server
+  - A couple of unit tests for:
+    - distance calculation
+    - simple ranking logic (e.g., high-risk vs low-risk ordering)
+
+Important:
+- Do not hardcode any secrets. Use environment variables for API keys (e.g., `GOOGLE_MAPS_API_KEY` for geocoding).
+- Keep everything in a single Replit project.

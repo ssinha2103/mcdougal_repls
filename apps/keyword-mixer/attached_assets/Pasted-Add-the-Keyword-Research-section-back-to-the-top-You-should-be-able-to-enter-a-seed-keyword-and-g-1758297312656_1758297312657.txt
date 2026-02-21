@@ -1,0 +1,10 @@
+Add the Keyword Research section back to the top. You should be able to enter a “seed keyword” and get keyword research from DataForSEO that shows search volume, etc.  Keywords should have checkboxes next to them, so you can check the boxes to add them to your list.  You should be able to search for additional keywords, check the ones you want, and keep repeating until you have the final list you want.  Then that’s either column A in the combiner, or you can click a button to add the list to column A.
+For the examples in A, B, and C, let’s use something more like a services company, like this:
+A: air conditioning, heating, cooling, furnace repair, furnace replacement
+B: company, companies, service, services
+C: massachusetts, new hampshire, maine
+Remove the “Quick Filters”. I see no reason to filter out keywords with certain word counts or character length, or in the include/exclude (if I don’t want to include a keyword, I just won’t put it on Column A, B or C).
+You have a 2nd “Quick Filters” section with check boxes. You can keep this, but maybe make it “Options”.  Remove “reverse order” and “remove stopwords” (again, I won’t include them if I don’t want them), but keep “include original keywords” and “Lowercase output”.
+Remove the “Load List” function in Box A, B, C.  I don’t like the pre-generated lists of keywords by industry. That’s what the Keyword Research Tool was supposed to do, but better.
+For Combination Settings, remove the Combination Formulas section  (A, B or G makes no sense and “Custom Selection” doesn’t do anything.  Match Type and Word Separator are okay.  The “Additional Options” here is the same as the Quick Filters on the right — we don’t need both.
+In the Generated Keywords, remove the line numbers, the word count, and the character count. I don’t care about those.  “Copy All” is broken.  Remove the “sort” feature — I want it in the order of the keywords in A, B, C  (like A1 B1, A1 B2, A2 B1, A2 B2, etc.).  Or at least have that be the default, and then have an option to sort alphabetically?

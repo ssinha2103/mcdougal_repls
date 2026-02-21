@@ -1,0 +1,60 @@
+Excellent question. You're thinking exactly like a forward-thinking SEO professional. The game is shifting from just satisfying an algorithm to proving your trustworthiness to a data-hungry AI.
+
+For your tool to analyze modern ranking tactics, especially for AI Overviews (AIO), you need to measure signals that prove a site is a reliable, expert, and real-world entity.
+
+Here are other specific, measurable metrics your tool can analyze, broken down by category:
+
+1. Author and Publisher Credibility Signals
+AI models are being trained to fight misinformation, so they need to know who is behind the content.
+
+Author Boxes:
+
+What it is: A visible section on an article identifying the author with a name, bio, and photo.
+Why it matters for AIO: It directly signals that a real person wrote the content, a key part of the "Experience" and "Expertise" in E-E-A-T.
+How your tool can check: Scrape the page for common CSS classes or IDs like class="author-box", id="author-bio", or check for a <div> containing the word "About the Author".
+Linked Author Profiles:
+
+What it is: Links from the author box/bio to their social media profiles (especially LinkedIn, X/Twitter) or a personal website.
+Why it matters for AIO: This validates the author as a real, verifiable entity with a presence and reputation beyond the current website. It connects the content to a known expert.
+How your tool can check: Within the author box div, check for <a> tags pointing to linkedin.com/in/, twitter.com/, or other relevant social platforms.
+Author & Publisher Schema:
+
+What it is: Structured data (Person, Organization) in the page's code that explicitly tells search engines who the author and publisher are.
+Why it matters for AIO: This is the most direct, machine-readable way to feed an AI this information. It removes all ambiguity. An AI Overview is far more likely to cite a source that has clear, structured author data.
+How your tool can check: Parse the page’s <script type="application/ld+json"> tags and check for the presence and completeness of @type: 'Person' and @type: 'Organization' schema.
+2. Off-Page Reputation & Trust Signals
+AI Overviews synthesize information from sources the web collectively trusts.
+
+Google Business Profile (GBP) Reviews:
+
+What it is: The star rating and review volume on a company's GBP listing.
+Why it matters for AIO: It's a powerful, Google-owned signal of real-world customer experience and trustworthiness, especially for local and service-based businesses.
+How your tool can check: Use the Google Maps Platform API or scrape the public listing to pull the average star rating and total number of reviews.
+Third-Party Review Platform Presence:
+
+What it is: Profiles and ratings on sites like G2, Capterra (for software), Trustpilot, Yelp, or industry-specific review sites.
+Why it matters for AIO: It demonstrates broad, multi-source validation. An AI can cross-reference these signals to confirm a brand's legitimacy and reputation.
+How your tool can check: Perform brand searches like "[Brand Name] reviews" and see if top results include these platforms. You can also check if the target site links out to its own profiles on these sites.
+Knowledge Panel & Wikipedia Presence:
+
+What it is: Whether a brand search triggers a Google Knowledge Panel or if the brand has a Wikipedia page.
+Why it matters for AIO: This is the ultimate signal that Google recognizes the brand as a formal "entity." It’s a massive authority booster and indicates a level of notability that an AI can heavily rely on.
+How your tool can check: Perform a brand search via API and analyze the SERP results for the presence of Knowledge Panel or Wikipedia URLs.
+3. Content Structure & "Experience" Signals
+AI Overviews are built by parsing content. The easier you make it for the AI to understand and the more you signal real experience, the better.
+
+Structured Content for Synthesizing:
+
+What it is: The use of clear, machine-readable formatting like bullet points, numbered lists, and data tables.
+Why it matters for AIO: AI Overviews are often presented as lists or summaries. Content already structured this way is prime for being included, as the AI has to do less work to parse and present it.
+How your tool can check: Analyze the page's HTML for the count of <ul> (bullets), <ol> (numbered lists), and <table> tags. A high count in informational content is a positive signal.
+First-Person "Experience" Language:
+
+What it is: Using words that indicate hands-on experience, such as "I tested," "in my experience," "we found," "our verdict," etc.
+Why it matters for AIO: Google has explicitly stated it wants to prioritize content with real, first-hand experience (the first 'E' in E-E-A-T). This is especially true for product reviews and tutorials.
+How your tool can check: Perform text analysis on the page content to identify the frequency of first-person pronouns ("I", "my", "we", "our") and experience-based phrases.
+Use of Original Media:
+
+What it is: Photos and videos created by the author/publisher, not taken from stock photo sites.
+Why it matters for AIO: Original media provides unique, visual proof of experience. An AI can analyze image sourcing and see that you are showing, not just telling.
+How your tool can check: This is more advanced, but you can check image file names for patterns like IMG_xxxx.jpg or DSC_xxxx.jpg (indicating a camera source) vs. generic stock photo names. A simpler check is to look for embedded, self-hosted, or YouTube videos (<iframe> tags).

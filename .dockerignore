@@ -1,0 +1,16 @@
+# Archive inputs
+*.zip
+
+# Local source-control and build artifacts
+**/.git
+**/.cache
+**/.config
+**/.local
+**/.pytest_cache
+**/.venv
+**/venv
+**/__pycache__
+**/node_modules
+
+# Optional local extracted copy (apps/ is canonical)
+aiseopagescore/

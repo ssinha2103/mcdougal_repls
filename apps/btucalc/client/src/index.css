@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(210, 40%, 96%);
+  --muted-foreground: hsl(215, 13.8%, 34.1%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(214, 32%, 91%);
+  --input: hsl(214, 32%, 91%);
+  --primary: hsl(206, 84%, 25%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(210, 40%, 96%);
+  --secondary-foreground: hsl(215, 13.8%, 34.1%);
+  --accent: hsl(206, 83%, 56%);
+  --accent-foreground: hsl(210, 40%, 98%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(206, 84%, 25%);
+  --radius: 0.75rem;
+  
+  /* N.E.T.R. brand colors */
+  --netr-blue: hsl(206, 84%, 25%);
+  --netr-accent: hsl(206, 83%, 56%);
+  --netr-light: hsl(206, 92%, 87%);
+  
+  /* Glassmorphism colors */
+  --glass-bg: hsla(0, 0%, 100%, 0.25);
+  --glass-border: hsla(206, 83%, 56%, 0.3);
+  --glass-surface: hsla(0, 0%, 100%, 0.7);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(206, 83%, 56%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(206, 92%, 87%);
+  --accent-foreground: hsl(206, 84%, 25%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(206, 83%, 56%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-gradient-to-br from-blue-50 via-white to-blue-100 text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/85 backdrop-blur-xl border border-white/30 shadow-2xl w-full max-w-full mx-auto;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.3);
+    overflow-x: hidden;
+  }
+  
+  .glass-surface {
+    @apply bg-white/90 backdrop-blur-md border border-white/40 shadow-lg;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  }
+  
+  .glass-input {
+    @apply bg-white/95 backdrop-blur-md border border-gray-200/60 text-gray-900 placeholder-gray-500;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.92) 100%);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+  }
+  
+  .glass-input:focus {
+    @apply border-[hsl(206,83%,56%)] ring-2 ring-[hsl(206,83%,56%)]/20;
+  }
+  
+  .netr-button {
+    @apply bg-gradient-to-r from-[hsl(206,84%,25%)] to-[hsl(206,83%,56%)] text-white font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-200 transform hover:scale-[1.02];
+  }
+  
+  .netr-button-outline {
+    @apply bg-white/90 backdrop-blur-sm text-[hsl(206,84%,25%)] border-2 border-[hsl(206,83%,56%)] hover:bg-[hsl(206,92%,87%)]/40 transition-colors duration-200;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  }
+  
+  .system-card {
+    @apply bg-white/90 backdrop-blur-md border-2 border-gray-200/50 hover:border-[hsl(206,83%,56%)] transition-all duration-200 cursor-pointer;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  }
+  
+  .system-card.selected {
+    @apply border-[hsl(206,83%,56%)] bg-blue-50/60;
+    background: linear-gradient(135deg, rgba(219, 234, 254, 0.7) 0%, rgba(255, 255, 255, 0.9) 100%);
+    box-shadow: 0 0 0 1px hsl(206, 83%, 56%), 0 10px 25px -5px rgba(59, 130, 246, 0.2);
+  }
+}
+
+/* Custom glassmorphism backgrounds */
+.bg-glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+.bg-glass-surface {
+  background: var(--glass-surface);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--glass-border);
+}
+
+/* High contrast form inputs */
+.form-input {
+  @apply glass-surface focus:border-[hsl(206,83%,56%)] focus:ring-2 focus:ring-[hsl(206,83%,56%)]/20 transition-all duration-200;
+}
+
+/* Results cards with high visibility */
+.result-card {
+  @apply bg-white/50 backdrop-blur-sm border border-blue-200/30 text-gray-900;
+}
+
+/* Ensure proper contrast for all text */
+.text-netr-blue {
+  color: hsl(206, 84%, 25%);
+}
+
+.text-netr-accent {
+  color: hsl(206, 83%, 56%);
+}
+
+.bg-netr-blue {
+  background-color: hsl(206, 84%, 25%);
+}
+
+.bg-netr-accent {
+  background-color: hsl(206, 83%, 56%);
+}
+
+.border-netr-accent {
+  border-color: hsl(206, 83%, 56%);
+}

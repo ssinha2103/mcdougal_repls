@@ -1,0 +1,127 @@
+Site,City,State,Latitude,Longitude
+"Allied Chemical",ASHLAND,KY,38.498200,-82.668600
+"Allied Chemical Coke Plant",ASHLAND,KY,38.498200,-82.668600
+"American Rolling Mill Company (Armco Steel aka AK Steel, Coke Plant)",ASHLAND,KY,38.498200,-82.668600
+"Armco Oil Refinery",ASHLAND,KY,38.498200,-82.668600
+"Ashland Oil",ASHLAND,KY,38.374170,-82.598610
+"Ashland Oil & Refinery",ASHLAND,KY,38.374170,-82.598610
+"Ashland Steel Company",ASHLAND,KY,38.498200,-82.668600
+"Trimble County Generating Station",BEDFORD,KY,38.584700,-85.411700
+"Cutler Hammer/Eaton",BOWLING GREEN,KY,36.967000,-86.433000
+"Olin-Mathison",BRANDENBURG,KY,38.000000,-86.160000
+"Dix River Powerhouse",BURGIN,KY,37.785300,-84.703900
+"E.W. Brown Generating (KU)",BURGIN,KY,37.787800,-84.713100
+"Cooper Powerhouse",BURNSIDE,KY,36.997700,-84.592200
+"Cumberland Charcoal Company",BURNSIDE,KY,36.990000,-84.600000
+"East Kentucky Power Cooperative",BURNSIDE,KY,36.997700,-84.592200
+"East Kentucky Power-Cooper Station",BURNSIDE,KY,36.997700,-84.592200
+"East Kentucky Rural Electric Cooperative Corporation",BURNSIDE,KY,36.997700,-84.592200
+"John Sherman Cooper Station",BURNSIDE,KY,36.997700,-84.592200
+"Air Products & Chemicals",CALVERT CITY,KY,37.030000,-88.350000
+"Airco Alloys",CALVERT CITY,KY,37.030000,-88.350000
+"Atochem North American (aka Elf Atochem, Pennwalt)",CALVERT CITY,KY,37.030000,-88.350000
+"B.F. Goodrich",CALVERT CITY,KY,37.040000,-88.335000
+"Cumberland Chemical Corporation",CALVERT CITY,KY,37.030000,-88.350000
+"Gaf Corporation",CALVERT CITY,KY,37.030000,-88.350000
+"IPS Chemical",CALVERT CITY,KY,37.030000,-88.350000
+"Pennsalt Chemicals Corporation",CALVERT CITY,KY,37.030000,-88.350000
+"Pennsylvania Salt Manufacturing",CALVERT CITY,KY,37.030000,-88.350000
+"SKW Metals & Alloys",CALVERT CITY,KY,37.030000,-88.350000
+"Arkema, Inc.",CARROLLTON,KY,38.680000,-85.180000
+"Dow Corning Corporation",CARROLLTON,KY,38.708333,-85.101000
+"Kentucky Utilities Ghent Powerhouse",CARROLLTON,KY,38.754170,-85.021390
+"M&T Chemical",CARROLLTON,KY,38.680000,-85.180000
+"Union Carbide & Carbon Chemical Corporation",CATLETTSBURG,KY,38.404900,-82.602300
+"U.S. Steel Corporation",CORBIN,KY,36.946000,-84.103000
+"U.S. Steel Prep Plant",CORBIN,KY,36.946000,-84.103000
+"Big Rivers Electric — D.B. Wilson Station",CENTERTOWN,KY,37.450000,-87.080000
+"Plastic Moldings Corporation (Cincinnati, Ohio)",COVINGTON,KY,39.083700,-84.508600
+"Louisville & Nashville Railroad Company",DECOURSEY,KY,38.950000,-84.495000
+"TVA Paradise Steam Plant",DRAKESBORO,KY,37.250000,-86.970000
+"Ghent Powerhouse",GHENT,KY,38.754170,-85.021390
+"Green River Power Station",GREEN RIVER,KY,37.363133,-87.122142
+"Koppers Industries",GUTHRIE,KY,36.647170,-87.155500
+"Kentucky Utilities-E.W. Brown Generating Station",HARRODSBURG,KY,37.787800,-84.713100
+"Big Rivers Electric – Kenneth C. Coleman Power Plant",HAWESVILLE,KY,37.963100,-86.791700
+"National Aluminum",HAWESVILLE,KY,37.945000,-86.787800
+"National Southwire Aluminum Company",HAWESVILLE,KY,37.945000,-86.787800
+"Willamette Industries/Willamette Paper Mill",HAWESVILLE,KY,37.900000,-86.750000
+"Martin Marietta Aluminum",LAWRENCEBURG,KY,38.036500,-84.896300
+"Florida Tile",LAWRENCEBURG,KY,38.036500,-84.896300
+"Martin Marietta Aluminum",LEWISPORT,KY,37.930000,-86.880000
+"IBM",LEXINGTON,KY,38.080000,-84.524000
+"Lexington Roller Mills Company",LEXINGTON,KY,38.047000,-84.501000
+"Lexington Utilities Company",LEXINGTON,KY,38.045000,-84.500000
+"Lexmark International",LEXINGTON,KY,38.081000,-84.524000
+"Proctor & Gamble Manufacturing Company",LEXINGTON,KY,38.070000,-84.600000
+"R. J. Reynolds Tobacco Company",LEXINGTON,KY,38.055000,-84.510000
+"Southwestern Tobacco",LEXINGTON,KY,38.050000,-84.500000
+"Square D (Schneider Electric)",LEXINGTON,KY,38.090000,-84.530000
+"American Air Filter",LOUISVILLE,KY,38.240000,-85.785000
+"American Standard",LOUISVILLE,KY,38.200000,-85.800000
+"American Rubber & Chemical Company",LOUISVILLE,KY,38.270000,-85.805000
+"American Synthetic",LOUISVILLE,KY,38.270000,-85.805000
+"American Tobacco",LOUISVILLE,KY,38.250000,-85.770000
+"Anaconda Aluminum",LOUISVILLE,KY,38.260000,-85.800000
+"B.F. Goodrich",LOUISVILLE,KY,38.200000,-85.890000
+"Brown & Williamson",LOUISVILLE,KY,38.241000,-85.780000
+"Brown-Forman Distillery Company",LOUISVILLE,KY,38.248000,-85.765000
+"Cardinal Insulation",LOUISVILLE,KY,38.250000,-85.800000
+"Colgate, Palmolive Plant (Jeffersonville, IN)",LOUISVILLE,KY,38.279000,-85.740000
+"Courier Journal Building",LOUISVILLE,KY,38.252000,-85.757000
+"CSX Railroad/L&N Railroad-South Louisville Shops and Osborne Yards",LOUISVILLE,KY,38.189000,-85.767000
+"E.I. DuPont De Nemours & Company",LOUISVILLE,KY,38.180000,-85.880000
+"Ford Motor Company – Kentucky Truck Plant and Louisville Assembly Plant",LOUISVILLE,KY,38.185000,-85.700000
+"Gates Rubber",LOUISVILLE,KY,38.180000,-85.870000
+"General Electric – Appliance Park",LOUISVILLE,KY,38.141400,-85.663900
+"Girdler Catalyst & Chemical Company",LOUISVILLE,KY,38.185000,-85.880000
+"Girdler Corporation",LOUISVILLE,KY,38.185000,-85.880000
+"Henry Vogt Machine Company",LOUISVILLE,KY,38.248000,-85.720000
+"International Harvester",LOUISVILLE,KY,38.189000,-85.670000
+"Jewish Hospital",LOUISVILLE,KY,38.247000,-85.757000
+"Kentucky Electric Company",LOUISVILLE,KY,38.200000,-85.750000
+"Kentucky Fair & Exposition Center",LOUISVILLE,KY,38.200000,-85.740000
+"Kosmos Portland Cement Company",LOUISVILLE,KY,38.051000,-85.893000
+"LG&E - Paddys Run Station",LOUISVILLE,KY,38.223600,-85.841700
+"LG&E - Mill Creek Station",LOUISVILLE,KY,38.052400,-85.909800
+"LG&E - Cane Run Station",LOUISVILLE,KY,38.176700,-85.891100
+"LG&E - Waterside Station",LOUISVILLE,KY,38.257000,-85.738000
+"LG&E - Magnolia Station",LOUISVILLE,KY,38.218000,-85.763000
+"LG&E - Hydro",LOUISVILLE,KY,38.283200,-85.779200
+"LG&E - Trimble County Station",LOUISVILLE,KY,38.584700,-85.411700
+"P. Lorillard Tobacco Company",LOUISVILLE,KY,38.252000,-85.767000
+"Philip Morris",LOUISVILLE,KY,38.260000,-85.770000
+"Reynolds Metals",LOUISVILLE,KY,38.180000,-85.880000
+"Rohm & Haas Stauffer Chemical",LOUISVILLE,KY,38.170000,-85.880000
+"Goodyear Tire and Rubber Company",MADISONVILLE,KY,37.328000,-87.498000
+"York International",MADISONVILLE,KY,37.328000,-87.498000
+"Continental General Tire",MAYFIELD,KY,36.742000,-88.653000
+"General Tire & Rubber Company",MAYFIELD,KY,36.742000,-88.653000
+"East Kentucky Power Cooperative",MAYSVILLE,KY,38.698610,-83.816670
+"East Kentucky Powerhouse",MAYSVILLE,KY,38.698610,-83.816670
+"East Kentucky Power-Spurlock Station",MAYSVILLE,KY,38.698610,-83.816670
+"East Kentucky Rural Electric Cooperative Corporation",MAYSVILLE,KY,38.698610,-83.816670
+"Parker Tobacco",MAYSVILLE,KY,38.641000,-83.765000
+"Acme Newport Steel Company",NEWPORT,KY,39.083000,-84.495000
+"Cincinnati, Newport & Covington Light & Traction Company",NEWPORT,KY,39.083000,-84.495000
+"Newport Rolling Mill Company",NEWPORT,KY,39.083000,-84.495000
+"Newport Steel Corporation",NEWPORT,KY,39.083000,-84.495000
+"Green River Steel",OWENSBORO,KY,37.775000,-87.106000
+"Owensboro Municipal Utilities",OWENSBORO,KY,37.775000,-87.111000
+"AEC Plant (aka Union Carbide, Martin Marietta, Lockheed Martin, Gaseous Diffusion)",PADUCAH,KY,37.113890,-88.810280
+"B. F. Goodrich Company",PADUCAH,KY,37.082000,-88.600000
+"E.I. DuPont De Nemours & Company",PADUCAH,KY,37.085000,-88.600000
+"GAF Corporation",PADUCAH,KY,37.085000,-88.600000
+"Henry A. Petter Supply Company",PADUCAH,KY,37.085000,-88.600000
+"Illinois Central Railroad Company",PADUCAH,KY,37.085000,-88.600000
+"Paducah & Louisville Railroad Company",PADUCAH,KY,37.085000,-88.600000
+"Pennwalt",PADUCAH,KY,37.085000,-88.600000
+"TVA Shawnee Steam Plant",PADUCAH,KY,37.151700,-88.775000
+"Triangle Insulation Company",PADUCAH,KY,37.085000,-88.600000
+"Big Rivers Electric — Sebree Station (Robert Reid and Robert Green)",ROBARDS,KY,37.646100,-87.500000
+"Chesapeake & Ohio Railroad Company",RUSSELL,KY,38.518060,-82.697780
+"Rockwell International Corporation",RUSSELLVILLE,KY,36.845000,-86.887000
+"KU-Tyrone Powerhouse",RUSSELLVILLE,KY,38.048100,-84.848200
+"Westvaco/MeadWestvaco Paper Mill",RUSSELLVILLE,KY,36.845000,-86.887000
+"KU-Tyrone Powerhouse",VERSAILLES,KY,38.048100,-84.848200
+"Westvaco/MeadWestvaco Paper Mill",WICKLIFFE,KY,36.964800,-89.089200

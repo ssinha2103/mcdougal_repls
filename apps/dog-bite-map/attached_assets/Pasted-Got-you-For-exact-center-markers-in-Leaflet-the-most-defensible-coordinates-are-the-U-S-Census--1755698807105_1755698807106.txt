@@ -1,0 +1,61 @@
+Got you. For “exact center” markers in Leaflet, the most defensible coordinates are the U.S. Census “internal point” (INTPTLAT/INTPTLON) of each municipality polygon (i.e., centroid that’s guaranteed to fall inside the town/city). Below is a one-shot script that fetches those authoritative centroids for all the North Shore towns in a single request, plus Byfield (a village, not a municipality) from GNIS-style sources.
+
+Run this in any Node/Browser console—it prints a Leaflet-ready JSON map of { name: [lat, lon] }:
+
+// North Shore municipal names (BASENAME matches Census County Subdivision names)
+const towns = [
+  'Salem','Beverly','Lynn','Peabody','Danvers','Marblehead','Swampscott','Nahant',
+  'Saugus','Revere','Melrose','Wakefield','Reading','Lynnfield','Middleton','Topsfield',
+  'Wenham','Hamilton','Ipswich','Essex','Manchester-by-the-Sea','Gloucester','Rockport',
+  'Rowley','Newbury','Newburyport','West Newbury','Amesbury','Salisbury','Haverhill',
+  'Lawrence','Methuen Town','Boxford','Andover','North Reading'
+];
+
+// Build TIGERweb (Census) query: County Subdivisions (2025 vintage), Massachusetts
+const where = `STATE='MA' AND BASENAME IN (${towns.map(n => `'${n}'`).join(',')})`;
+const url = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Places_CouSub_ConCity_SubMCD/MapServer/1/query'
+  + `?where=${encodeURIComponent(where)}&outFields=BASENAME,NAME,INTPTLAT,INTPTLON&f=json`;
+
+(async () => {
+  const r = await fetch(url);
+  const j = await r.json();
+  // Build { name: [lat, lon] } using INTPTLAT/INTPTLON
+  const data = Object.fromEntries(
+    j.features.map(f => [
+      f.attributes.BASENAME,
+      [parseFloat(f.attributes.INTPTLAT), parseFloat(f.attributes.INTPTLON)]
+    ])
+  );
+
+  // Byfield is a village of Newbury (not a county subdivision). Hard-code reliable coords:
+  // sources below. Change if you have a stricter source.
+  data['Byfield (village of Newbury)'] = [42.7598138, -70.9481097];
+
+  console.log(JSON.stringify(data, null, 2));
+})();
+
+Why this is “the right” center
+	•	INTPTLAT/INTPTLON are the Census’s internal point (centroid constrained to the polygon interior), ideal for placing a label/marker “on top” of the town in maps—much better than a rough city-hall coordinate or a bounding-box center.  ￼
+	•	The layer above is County Subdivisions, which in Massachusetts correspond to towns/cities (MCDs)—exactly what you listed. (Byfield isn’t an MCD, hence added separately.)  ￼
+
+Two that people often double-check
+
+If you want to sanity-check the script’s results:
+	•	Wakefield (municipality): ≈ 42.5065, −71.0728 (multiple concordant sources; the Census value you’ll fetch will be within a few arc-seconds).  ￼ ￼ ￼ ￼
+	•	Byfield (village of Newbury): 42.7598138, −70.9481097.  ￼ ￼
+
+Drop-in Leaflet usage
+
+Once you’ve printed the JSON from the script above, you can do:
+
+// suppose you pasted the JSON into `centroids`
+Object.entries(centroids).forEach(([name, [lat, lon]]) => {
+  L.marker([lat, lon], {
+    // keep the label above large markers
+    zIndexOffset: 1000
+  }).addTo(map).bindTooltip(name, {permanent: true, direction: 'top', offset: [0, -8]});
+});
+
+Tip for your earlier “blue dot covers the name” issue: use a small/invisible marker for the centroid and keep your big “dot” as a separate circleMarker with a higher zIndex or add the label via bindTooltip({permanent:true, direction:'top'}) as above so the text is offset and always on top.
+
+If you’d still prefer me to paste the full 37-item table here as static lat/lon pairs, I can do that—but the script above gives you the official, exact centers straight from Census in one go (and keeps you future-proof if any boundary updates happen).

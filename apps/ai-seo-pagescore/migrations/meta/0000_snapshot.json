@@ -1,0 +1,237 @@
+{
+  "id": "8d8f0d48-7169-4e59-85e8-1bf628cbb5cb",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.analysis_jobs": {
+      "name": "analysis_jobs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "urls": {
+          "name": "urls",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "results": {
+          "name": "results",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.seo_metrics": {
+      "name": "seo_metrics",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "domain": {
+          "name": "domain",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "indexed_pages": {
+          "name": "indexed_pages",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "referring_domains": {
+          "name": "referring_domains",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "backlinks": {
+          "name": "backlinks",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "organic_keywords": {
+          "name": "organic_keywords",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "organic_traffic": {
+          "name": "organic_traffic",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "traffic_cost": {
+          "name": "traffic_cost",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "top_100_keywords": {
+          "name": "top_100_keywords",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "keyword_positions": {
+          "name": "keyword_positions",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "competitor_gap": {
+          "name": "competitor_gap",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "page_speed": {
+          "name": "page_speed",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "has_author_box": {
+          "name": "has_author_box",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "has_linked_author": {
+          "name": "has_linked_author",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "has_structured_data": {
+          "name": "has_structured_data",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "structured_content_score": {
+          "name": "structured_content_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "experience_signals": {
+          "name": "experience_signals",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "original_media_count": {
+          "name": "original_media_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "trust_signals_score": {
+          "name": "trust_signals_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "analysis_job_id": {
+          "name": "analysis_job_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "seo_metrics_analysis_job_id_analysis_jobs_id_fk": {
+          "name": "seo_metrics_analysis_job_id_analysis_jobs_id_fk",
+          "tableFrom": "seo_metrics",
+          "tableTo": "analysis_jobs",
+          "columnsFrom": [
+            "analysis_job_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

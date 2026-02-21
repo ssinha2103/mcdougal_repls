@@ -1,0 +1,666 @@
+Relevant Pages
+‌
+
+This endpoint will provide you with rankings and traffic data for the web pages of the specified domain. You will be able to review each page’s ranking distribution and estimated monthly traffic volume from both organic and paid searches.
+
+Data updates: data is updated weekly, the latest update time is available in the Status endpoint.
+
+Instead of ‘login’ and ‘password’ use your credentials from https://app.dataforseo.com/api-access
+
+# Instead of 'login' and 'password' use your credentials from https://app.dataforseo.com/api-access
+login="login"
+password="password"
+cred="$(printf ${login}:${password} | base64)"
+curl --location --request POST "https://api.dataforseo.com/v3/dataforseo_labs/google/relevant_pages/live" \
+--header "Authorization: Basic ${cred}" \
+--header "Content-Type: application/json" \
+--data-raw '[
+    {
+        "target": "amazon.com",
+        "language_name": "English",
+        "location_code": 2840,
+        "filters": [
+            ["metrics.organic.pos_1","<>",0],
+            "or",
+            ["metrics.organic.pos_2_3","<>",0]
+        ],
+        "limit": 3
+    }
+]'
+
+The above command returns JSON structured like this:
+
+{
+  "version": "0.1.20240514",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "4.1423 sec.",
+  "cost": 0.0103,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "06131928-1535-0385-0000-fbc7c20e2256",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "4.0875 sec.",
+      "cost": 0.0103,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "dataforseo_labs",
+        "google",
+        "relevant_pages",
+        "live"
+      ],
+      "data": {
+        "api": "dataforseo_labs",
+        "function": "relevant_pages",
+        "se_type": "google",
+        "target": "amazon.com",
+        "language_name": "English",
+        "location_code": 2840,
+        "filters": [
+          [
+            "metrics.organic.pos_1",
+            "<>",
+            0
+          ],
+          "or",
+          [
+            "metrics.organic.pos_2_3",
+            "<>",
+            0
+          ]
+        ],
+        "limit": 3
+      },
+      "result": [
+        {
+          "se_type": "google",
+          "target": "amazon.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "total_count": 3370659,
+          "items_count": 3,
+          "items": [
+            {
+              "se_type": "google",
+              "page_address": "https://gaming.amazon.com/",
+              "metrics": {
+                "organic": {
+                  "pos_1": 654,
+                  "pos_2_3": 294,
+                  "pos_4_10": 324,
+                  "pos_11_20": 506,
+                  "pos_21_30": 1011,
+                  "pos_31_40": 1702,
+                  "pos_41_50": 2106,
+                  "pos_51_60": 2544,
+                  "pos_61_70": 2851,
+                  "pos_71_80": 2943,
+                  "pos_81_90": 2747,
+                  "pos_91_100": 2231,
+                  "etv": 1142153.8274201825,
+                  "count": 19913,
+                  "estimated_paid_traffic_cost": 1346084.8986821964,
+                  "is_new": 8194,
+                  "is_up": 6243,
+                  "is_down": 4256,
+                  "is_lost": 0,
+                  "clickstream_etv": 195157.83178800004,
+                  "clickstream_gender_distribution": {
+                    "female": 381,
+                    "male": 1104
+                  },
+                  "clickstream_age_distribution": {
+                    "18-24": 407,
+                    "25-34": 645,
+                    "35-44": 385,
+                    "45-54": 23,
+                    "55-64": 9
+                  }
+                },
+                "paid": {
+                  "pos_1": 0,
+                  "pos_2_3": 0,
+                  "pos_4_10": 0,
+                  "pos_11_20": 0,
+                  "pos_21_30": 0,
+                  "pos_31_40": 0,
+                  "pos_41_50": 0,
+                  "pos_51_60": 0,
+                  "pos_61_70": 0,
+                  "pos_71_80": 0,
+                  "pos_81_90": 0,
+                  "pos_91_100": 0,
+                  "etv": 0,
+                  "count": 0,
+                  "estimated_paid_traffic_cost": 0,
+                  "is_new": 0,
+                  "is_up": 0,
+                  "is_down": 0,
+                  "is_lost": 0,
+                  "clickstream_etv": 0,
+                  "clickstream_gender_distribution": {
+                    "female": 0,
+                    "male": 0
+                  },
+                  "clickstream_age_distribution": {
+                    "18-24": 0,
+                    "25-34": 0,
+                    "35-44": 0,
+                    "45-54": 0,
+                    "55-64": 0
+                  }
+                },
+                "featured_snippet": null,
+                "local_pack": null
+              }
+            },
+            {
+              "se_type": "google",
+              "page_address": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GVZLTK8D4EBS4QJA",
+              "metrics": {
+                "organic": {
+                  "pos_1": 386,
+                  "pos_2_3": 97,
+                  "pos_4_10": 63,
+                  "pos_11_20": 70,
+                  "pos_21_30": 216,
+                  "pos_31_40": 560,
+                  "pos_41_50": 983,
+                  "pos_51_60": 1590,
+                  "pos_61_70": 2340,
+                  "pos_71_80": 3047,
+                  "pos_81_90": 3672,
+                  "pos_91_100": 3505,
+                  "etv": 131243.09114976786,
+                  "count": 16529,
+                  "estimated_paid_traffic_cost": 115968.6559885036,
+                  "is_new": 6047,
+                  "is_up": 3772,
+                  "is_down": 5965,
+                  "is_lost": 0,
+                  "clickstream_etv": 3364.24953,
+                  "clickstream_gender_distribution": {
+                    "female": 634,
+                    "male": 852
+                  },
+                  "clickstream_age_distribution": {
+                    "18-24": 173,
+                    "25-34": 411,
+                    "35-44": 587,
+                    "45-54": 219,
+                    "55-64": 82
+                  }
+                },
+                "paid": {
+                  "pos_1": 0,
+                  "pos_2_3": 0,
+                  "pos_4_10": 0,
+                  "pos_11_20": 0,
+                  "pos_21_30": 0,
+                  "pos_31_40": 0,
+                  "pos_41_50": 0,
+                  "pos_51_60": 0,
+                  "pos_61_70": 0,
+                  "pos_71_80": 0,
+                  "pos_81_90": 0,
+                  "pos_91_100": 0,
+                  "etv": 0,
+                  "count": 0,
+                  "estimated_paid_traffic_cost": 0,
+                  "is_new": 0,
+                  "is_up": 0,
+                  "is_down": 0,
+                  "is_lost": 0,
+                  "clickstream_etv": 0,
+                  "clickstream_gender_distribution": {
+                    "female": 0,
+                    "male": 0
+                  },
+                  "clickstream_age_distribution": {
+                    "18-24": 0,
+                    "25-34": 0,
+                    "35-44": 0,
+                    "45-54": 0,
+                    "55-64": 0
+                  }
+                },
+                "featured_snippet": null,
+                "local_pack": null
+              }
+            },
+            {
+              "se_type": "google",
+              "page_address": "https://flex.amazon.com/",
+              "metrics": {
+                "organic": {
+                  "pos_1": 584,
+                  "pos_2_3": 61,
+                  "pos_4_10": 118,
+                  "pos_11_20": 325,
+                  "pos_21_30": 583,
+                  "pos_31_40": 1031,
+                  "pos_41_50": 1258,
+                  "pos_51_60": 1522,
+                  "pos_61_70": 1892,
+                  "pos_71_80": 2354,
+                  "pos_81_90": 2722,
+                  "pos_91_100": 2570,
+                  "etv": 547858.8214508295,
+                  "count": 15020,
+                  "estimated_paid_traffic_cost": 902669.4849820092,
+                  "is_new": 5791,
+                  "is_up": 4395,
+                  "is_down": 3935,
+                  "is_lost": 0,
+                  "clickstream_etv": 11029.064256,
+                  "clickstream_gender_distribution": {
+                    "female": 618,
+                    "male": 868
+                  },
+                  "clickstream_age_distribution": {
+                    "18-24": 244,
+                    "25-34": 444,
+                    "35-44": 615,
+                    "45-54": 108,
+                    "55-64": 55
+                  }
+                },
+                "paid": {
+                  "pos_1": 0,
+                  "pos_2_3": 0,
+                  "pos_4_10": 0,
+                  "pos_11_20": 0,
+                  "pos_21_30": 0,
+                  "pos_31_40": 0,
+                  "pos_41_50": 0,
+                  "pos_51_60": 0,
+                  "pos_61_70": 0,
+                  "pos_71_80": 0,
+                  "pos_81_90": 0,
+                  "pos_91_100": 0,
+                  "etv": 0,
+                  "count": 0,
+                  "estimated_paid_traffic_cost": 0,
+                  "is_new": 0,
+                  "is_up": 0,
+                  "is_down": 0,
+                  "is_lost": 0,
+                  "clickstream_etv": 0,
+                  "clickstream_gender_distribution": {
+                    "female": 0,
+                    "male": 0
+                  },
+                  "clickstream_age_distribution": {
+                    "18-24": 0,
+                    "25-34": 0,
+                    "35-44": 0,
+                    "45-54": 0,
+                    "55-64": 0
+                  }
+                },
+                "featured_snippet": null,
+                "local_pack": null
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+POST https://api.dataforseo.com/v3/dataforseo_labs/google/relevant_pages/live
+ Your account will be charged for each request.
+The cost can be calculated on the Pricing page.
+All POST data should be sent in the JSON format (UTF-8 encoding). The task setting is done using the POST method. When setting a task, you should send all task parameters in the task array of the generic POST array. You can send up to 2000 API calls per minute. The maximum number of requests that can be sent simultaneously is limited to 30.
+
+You can specify the number of results you want to retrieve, filter and sort them.
+
+Below you will find a detailed description of the fields you can use for setting a task.
+
+Description of the fields for setting a task:
+
+Field name	Type	Description
+target	string	domain
+required field
+the domain name of the target website
+the domain should be specified without https:// and www.
+location_name	string	full name of the location
+optional field
+if you use this field, you don’t need to specify location_code
+you can receive the list of available locations with their location_name by making a separate request to the
+https://api.dataforseo.com/v3/dataforseo_labs/locations_and_languages
+ignore this field to get the results for all available locations
+example:
+United Kingdom
+location_code	integer	location code
+optional field
+if you use this field, you don’t need to specify location_name
+you can receive the list of available locations with their location_code by making a separate request to the
+https://api.dataforseo.com/v3/dataforseo_labs/locations_and_languages
+ignore this field to get the results for all available locations
+example:
+2840
+language_name	string	full name of the language
+optional field
+if you use this field, you don’t need to specify language_code
+you can receive the list of available languages with their language_name by making a separate request to the
+https://api.dataforseo.com/v3/dataforseo_labs/locations_and_languages
+ignore this field to get the results for all available languages
+example:
+English
+language_code	string	language code
+optional field
+if you use this field, you don’t need to specify language_name
+you can receive the list of available languages with their language_code by making a separate request to the
+https://api.dataforseo.com/v3/dataforseo_labs/locations_and_languages
+ignore this field to get the results for all available languages
+example:
+en
+item_types	array	display results by item type
+optional field
+indicates the type of search results included in the response
+Note: if the item_types array contains item types that are different from organic, the results will be ordered by the first item type in the array; you will not be able to sort and filter results by the types of search results not included in the response;
+
+possible values:
+["organic", "paid", "featured_snippet", "local_pack"]
+default value:
+["organic", "paid"]
+
+include_clickstream_data	boolean	include or exclude data from clickstream-based metrics in the result
+optional field
+if the parameter is set to true, you will receive clickstream_etv, clickstream_gender_distribution, and clickstream_age_distribution fields with clickstream data in the response
+default value: false
+with this parameter enabled, you will be charged double the price for the request
+learn more about how clickstream-based metrics are calculated in this help center article
+
+limit	integer	the maximum number of returned pages
+optional field
+default value: 100
+maximum value: 1000
+offset	integer	offset in the results array of returned pages
+optional field
+default value: 0
+if you specify the 10 value, the first ten pages in the results array will be omitted and the data will be provided for the successive pages
+historical_serp_mode	string	data collection mode
+optional field
+you can use this field to filter the results;
+possible types of filtering:
+live — return metrics for SERPs in which the specified target currently has ranking results;
+lost — return metrics for SERPs in which the specified target had previously had ranking results, but didn’t have them during the last check;
+all — return metrics for both types of SERPs.
+default value: live
+ignore_synonyms	boolean	ignore highly similar keywords
+optional field
+if set to true, only core keywords will be returned, all highly similar keywords will be excluded;
+default value: false
+filters	array	array of results filtering parameters
+optional field
+you can add several filters at once (8 filters maximum)
+you should set a logical operator and, or between the conditions
+the following operators are supported:
+regex, not_regex, <, <=, >, >=, =, <>, in, not_in
+example:
+["metrics.paid.count",">",0]
+
+[["metrics.organic.count",">",50],"and",["metrics.organic.pos_1","<>",0]]
+
+[[""metrics.organic.count",">",50"],
+"and",
+[["metrics.organic.pos_1","<>",0],"or",["metrics.organic.pos_2_3","<>",0]]]
+for more information about filters, please refer to Dataforseo Labs – Filters or this help center guide
+
+order_by	array	results sorting rules
+optional field
+you can use the same values as in the filters array to sort the results
+possible sorting types:
+asc – results will be sorted in the ascending order
+desc – results will be sorted in the descending order
+you should use a comma to specify a sorting type
+example:
+["metrics.paid.etv,asc"]
+Note: you can set no more than three sorting rules in a single request
+you should use a comma to separate several sorting rules
+example:
+["metrics.organic.etv,desc","metrics.paid.count,asc"]
+default rule:
+["metrics.organic.count,desc"]
+Note: if the item_types array contains item types that are different from organic, the results will be ordered by the first item type in the array
+
+tag	string	user-defined task identifier
+optional field
+the character limit is 255
+you can use this parameter to identify the task and match it with the result
+you will find the specified tag value in the data object of the response
+‌
+
+As a response of the API server, you will receive JSON-encoded data containing a tasks array with the information specific to the set tasks.
+
+Description of the fields in the results array:
+
+Field name	Type	Description
+version	string	the current version of the API
+status_code	integer	general status code
+you can find the full list of the response codes here
+Note: we strongly recommend designing a necessary system for handling related exceptional or error conditions
+status_message	string	general informational message
+you can find the full list of general informational messages here
+time	string	execution time, seconds
+cost	float	total tasks cost, USD
+tasks_count	integer	the number of tasks in the tasks array
+tasks_error	integer	the number of tasks in the tasks array returned with an error
+tasks	array	array of tasks
+        id	string	task identifier
+unique task identifier in our system in the UUID format
+        status_code	integer	status code of the task
+generated by DataForSEO; can be within the following range: 10000-60000
+you can find the full list of the response codes here
+        status_message	string	informational message of the task
+you can find the full list of general informational messages here
+        time	string	execution time, seconds
+        cost	float	cost of the task, USD
+        result_count	integer	number of elements in the result array
+        path	array	URL path
+        data	object	contains the same parameters that you specified in the POST request
+        result	array	array of results
+            se_type	string	search engine type
+            target	string	target domain in a POST array
+            location_code	integer	location code in a POST array
+if there is no data, then the value is null
+            language_code	string	language code in a POST array
+if there is no data, then the value is null
+            total_count	integer	total amount of results in our database relevant to your request
+            items_count	integer	the number of results returned in the items array
+            items	array	relevant pages and related data
+              se_type	string	search engine type
+              page_address	string	absolute URL of the relevant page
+              metrics	object	rankings and traffic metrics for the relevant page
+                organic	object	ranking and traffic data from organic search
+                    pos_1	integer	number of organic SERPs where the page ranks #1
+                    pos_2_3	integer	number of organic SERPs where the page ranks #2-3
+                    pos_4_10	integer	number of organic SERPs where the page ranks #4-10
+                    pos_11_20	integer	number of organic SERPs where the page ranks #11-20
+                    pos_21_30	integer	number of organic SERPs where the page ranks #21-30
+                    pos_31_40	integer	number of organic SERPs where the page ranks #31-40
+                    pos_41_50	integer	number of organic SERPs where the page ranks #41-50
+                    pos_51_60	integer	number of organic SERPs where the page ranks #51-60
+                    pos_61_70	integer	number of organic SERPs where the page ranks #61-70
+                    pos_71_80	integer	number of organic SERPs where the page ranks #71-80
+                    pos_81_90	integer	number of organic SERPs where the page ranks #81-90
+                    pos_91_100	integer	number of organic SERPs where the page ranks #91-100
+                    etv	float	estimated traffic volume
+estimated organic monthly traffic to the page
+calculated as the product of CTR (click-through-rate) and search volume values of all keywords in the category that the page ranks for
+learn more about how the metric is calculated in this help center article
+                    count	integer	total count of organic SERPs that contain the page
+                    estimated_paid_traffic_cost	float	estimated cost of converting organic search traffic into paid
+represents the estimated monthly cost (USD) of running ads for all keywords in the category that a page ranks for
+the metric is calculated as the product of organic etv and paid cpc values and indicates the cost of driving the estimated volume of monthly organic traffic through PPC advertising in Google Search
+learn more about how the metric is calculated in this help center article
+                    is_new	integer	number of new ranked elements
+indicates how many new ranked elements were found for the page
+                    is_up	integer	rank went up
+indicates how many ranked elements of the page went up
+                    is_down	integer	rank went down
+indicates how many ranked elements of the page went down
+                    is_lost	integer	lost ranked elements
+indicates how many ranked elements of the page were previously presented in SERPs, but weren’t found during the last check
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                paid	object	ranking and traffic data from paid search
+                    pos_1	integer	number of paid SERPs where the page ranks #1
+                    pos_2_3	integer	number of paid SERPs where the page ranks #2-3
+                    pos_4_10	integer	number of paid SERPs where the page ranks #4-10
+                    pos_11_20	integer	number of paid SERPs where the page ranks #11-20
+                    pos_21_30	integer	number of paid SERPs where the page ranks #21-30
+                    pos_31_40	integer	number of paid SERPs where the page ranks #31-40
+                    pos_41_50	integer	number of paid SERPs where the page ranks #41-50
+                    pos_51_60	integer	number of paid SERPs where the page ranks #51-60
+                    pos_61_70	integer	number of paid SERPs where the page ranks #61-70
+                    pos_71_80	integer	number of paid SERPs where the page ranks #71-80
+                    pos_81_90	integer	number of paid SERPs where the page ranks #81-90
+                    pos_91_100	integer	number of paid SERPs where the page ranks #91-100
+                    etv	float	estimated traffic volume
+estimated paid monthly traffic to the page
+calculated as the product of CTR (click-through-rate) and search volume values of all keywords in the category that the page ranks for
+learn more about how the metric is calculated in this help center article
+                    count	integer	total count of paid SERPs that contain the page
+                    estimated_paid_traffic_cost	float	estimated cost of monthly search traffic
+represents the estimated cost of paid monthly traffic (USD) based on etv and cpc values of all keywords in the category that the page ranks for
+learn more about how the metric is calculated in this help center article
+                    is_new	integer	number of new ranked elements
+indicates how many new ranked elements were found for the page
+                    is_up	integer	rank went up
+indicates how many ranked elements of the page went up
+                    is_down	integer	rank went down
+indicates how many ranked elements of the page went down
+                    is_lost	integer	lost ranked elements
+indicates how many ranked elements of the page were previously presented in SERPs, but weren’t found during the last check
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                featured_snippet	object	ranking and traffic data from the featured snippet results in Google SERP
+                    pos_1	integer	number of featured snippet items where the page ranks #1
+                    pos_2_3	integer	number of featured snippet items where the page ranks #2-3
+                    pos_4_10	integer	number of featured snippet items where the page ranks #4-10
+                    pos_11_20	integer	number of featured snippet items where the page ranks #11-20
+                    pos_21_30	integer	number of featured snippet items where the page ranks #21-30
+                    pos_31_40	integer	number of featured snippet items where the page ranks #31-40
+                    pos_41_50	integer	number of featured snippet items where the page ranks #41-50
+                    pos_51_60	integer	number of featured snippet items where the page ranks #51-60
+                    pos_61_70	integer	number of featured snippet items where the page ranks #61-70
+                    pos_71_80	integer	number of featured snippet items where the page ranks #71-80
+                    pos_81_90	integer	number of featured snippet items where the page ranks #81-90
+                    pos_91_100	integer	number of featured snippet items where the page ranks #91-100
+                    etv	float	estimated traffic volume
+estimated paid monthly traffic to the page
+calculated as the product of CTR (click-through-rate) and search volume values of all keywords in the category that the page ranks for
+learn more about how the metric is calculated in this help center article
+                    count	integer	total count of featured snippet items that contain the page
+                    estimated_paid_traffic_cost	float	estimated cost of monthly search traffic
+represents the estimated cost of paid monthly traffic (USD) based on etv and cpc values of all keywords in the category that the page ranks for
+learn more about how the metric is calculated in this help center article
+                    is_new	integer	number of new ranked elements
+indicates how many new ranked elements were found for the page
+                    is_up	integer	rank went up
+indicates how many ranked elements of the page went up
+                    is_down	integer	rank went down
+indicates how many ranked elements of the page went down
+                    is_lost	integer	lost ranked elements
+indicates how many ranked elements of the page were previously presented in SERPs, but weren’t found during the last check
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                local_pack	object	ranking and traffic data from the local pack results in SERP
+                    pos_1	integer	number of local pack items where the page ranks #1
+                    pos_2_3	integer	number of local pack items where the page ranks #2-3
+                    pos_4_10	integer	number of local pack items where the page ranks #4-10
+                    pos_11_20	integer	number of local pack items where the page ranks #11-20
+                    pos_21_30	integer	number of local pack items where the page ranks #21-30
+                    pos_31_40	integer	number of local pack items where the page ranks #31-40
+                    pos_41_50	integer	number of local pack items where the page ranks #41-50
+                    pos_51_60	integer	number of local pack items where the page ranks #51-60
+                    pos_61_70	integer	number of local pack items where the page ranks #61-70
+                    pos_71_80	integer	number of local pack items where the page ranks #71-80
+                    pos_81_90	integer	number of local pack items where the page ranks #81-90
+                    pos_91_100	integer	number of local pack items where the page ranks #91-100
+                    etv	float	estimated traffic volume
+estimated paid monthly traffic to the page
+calculated as the product of CTR (click-through-rate) and search volume values of all keywords in the category that the page ranks for
+learn more about how the metric is calculated in this help center article
+                    count	integer	total count of local pack items that contain the page
+                    estimated_paid_traffic_cost	float	estimated cost of monthly search traffic
+represents the estimated cost of paid monthly traffic (USD) based on etv and cpc values of all keywords in the category that the page ranks for
+learn more about how the metric is calculated in this help center article
+                    is_new	integer	number of new ranked elements
+indicates how many new ranked elements were found for the page
+                    is_up	integer	rank went up
+indicates how many ranked elements of the page went up
+                    is_down	integer	rank went down
+indicates how many ranked elements of the page went down
+                    is_lost	integer	lost ranked elements
+indicates how many ranked elements of the page were previously presented in SERPs, but weren’t found during the last check
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range

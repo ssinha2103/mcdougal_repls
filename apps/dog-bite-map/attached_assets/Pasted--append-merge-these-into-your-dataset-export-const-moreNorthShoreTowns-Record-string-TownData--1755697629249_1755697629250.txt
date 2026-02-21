@@ -1,0 +1,137 @@
+// append/merge these into your dataset
+export const moreNorthShoreTowns: Record<string, TownData> = {
+  'Manchester-by-the-Sea': {
+    id: 'manchester-by-the-sea',
+    name: 'Manchester-by-the-Sea',
+    center: [-70.7692, 42.5728],
+    animalControl: {
+      name: 'Hayes Demeule',
+      phone: '(978) 526-1212'  // via PD
+    },
+    police: { phone: '(978) 526-1212' },
+    clerk:  { phone: '' }      // clerk line pending confirm (see notes)
+  },
+  'Gloucester': {
+    id: 'gloucester',
+    name: 'Gloucester',
+    center: [-70.6610, 42.6159],
+    animalControl: { name: '', phone: '(978) 325-5400' }, // PD will route ACO
+    police: { phone: '(978) 325-5400' },
+    clerk:  { phone: '(978) 325-5120' }
+  },
+  'Rockport': {
+    id: 'rockport',
+    name: 'Rockport',
+    center: [-70.6206, 42.6556],
+    animalControl: { name: '', phone: '(978) 546-1212' }, // PD non-emergency
+    police: { phone: '(978) 546-1212' },
+    clerk:  { phone: '(978) 546-6894' }
+  },
+  'Rowley': {
+    id: 'rowley',
+    name: 'Rowley',
+    center: [-70.8781, 42.7168],
+    animalControl: { name: 'Megan Boissonneau (Ipswich Regional AC)', phone: '(978) 356-6652' },
+    police: { phone: '(978) 948-7644' },
+    clerk:  { phone: '(978) 948-2700' }
+  },
+  'Newbury': {
+    id: 'newbury',
+    name: 'Newbury',
+    center: [-70.8517, 42.8073],
+    animalControl: { name: 'Ipswich Regional Animal Control', phone: '(978) 356-6652' },
+    police: { phone: '(978) 462-4440' },
+    clerk:  { phone: '(978) 465-0862' }
+  },
+  'Newburyport': {
+    id: 'newburyport',
+    name: 'Newburyport',
+    center: [-70.8773, 42.8126],
+    animalControl: { name: 'Kayla Provencher', phone: '(978) 465-4410' },
+    police: { phone: '(978) 462-4411' },
+    clerk:  { phone: '(978) 465-4407' }
+  },
+  'West Newbury': {
+    id: 'west-newbury',
+    name: 'West Newbury',
+    center: [-70.9892, 42.8001],
+    animalControl: { name: '', phone: '(978) 363-1212' }, // routed via PD
+    police: { phone: '(978) 363-1212' },
+    clerk:  { phone: '(978) 363-1100' }
+  },
+  'Byfield': {
+    id: 'byfield',
+    name: 'Byfield (village of Newbury)',
+    center: [-70.8517, 42.8073], // uses Newbury’s center
+    animalControl: { name: 'Ipswich Regional Animal Control', phone: '(978) 356-6652' },
+    police: { phone: '(978) 462-4440' },
+    clerk:  { phone: '(978) 465-0862' }
+  },
+  'Amesbury': {
+    id: 'amesbury',
+    name: 'Amesbury',
+    center: [-70.9301, 42.8584],
+    animalControl: { name: '', phone: '(978) 388-1212' }, // via PD
+    police: { phone: '(978) 388-1212' },
+    clerk:  { phone: '(978) 388-8128' }
+  },
+  'Salisbury': {
+    id: 'salisbury',
+    name: 'Salisbury',
+    center: [-70.8600, 42.8418],
+    animalControl: { name: '', phone: '(978) 465-3121' }, // via PD
+    police: { phone: '(978) 465-3121' },
+    clerk:  { phone: '(978) 462-7591' }
+  },
+  'Haverhill': {
+    id: 'haverhill',
+    name: 'Haverhill',
+    center: [-71.0773, 42.7762],
+    animalControl: { name: '', phone: '(978) 374-2415' },
+    police: { phone: '(978) 373-1212' },
+    clerk:  { phone: '(978) 374-2312' }
+  },
+  'Lawrence': {
+    id: 'lawrence',
+    name: 'Lawrence',
+    center: [-71.1631, 42.7070],
+    animalControl: { name: '', phone: '(978) 794-5856' },
+    police: { phone: '(978) 794-5900' },
+    clerk:  { phone: '(978) 620-3230' }
+  },
+  'Methuen': {
+    id: 'methuen',
+    name: 'Methuen',
+    center: [-71.1909, 42.7262],
+    animalControl: { name: 'Renee Falardeau', phone: '(978) 983-8670' },
+    police: { phone: '(978) 983-8698' },
+    clerk:  { phone: '(978) 983-8515' }
+  },
+  'Boxford': {
+    id: 'boxford',
+    name: 'Boxford',
+    center: [-70.9840, 42.6612],
+    animalControl: { name: 'Ipswich Regional Animal Control', phone: '(978) 356-6652' },
+    police: { phone: '(978) 887-8135' },
+    clerk:  { phone: '(978) 887-0710' }
+  },
+  'Andover': {
+    id: 'andover',
+    name: 'Andover',
+    center: [-71.1370, 42.6584],
+    animalControl: { name: '', phone: '(978) 623-3527' },
+    police: { phone: '(978) 623-3500' },
+    clerk:  { phone: '(978) 623-8230' }
+  },
+  'North Reading': {
+    id: 'north-reading',
+    name: 'North Reading',
+    center: [-71.0781, 42.5759],
+    animalControl: { name: '', phone: '(978) 664-3807' },
+    police: { phone: '(978) 664-3131' },
+    clerk:  { phone: '(978) 357-5230' }
+  }
+};
+
+// usage example:
+// export const northShoreTowns = { ...northShoreTowns, ...moreNorthShoreTowns };

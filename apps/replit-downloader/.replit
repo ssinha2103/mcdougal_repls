@@ -1,0 +1,45 @@
+modules = ["nodejs-20", "web", "postgresql-16"]
+run = "npm run dev"
+hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
+
+[nix]
+channel = "stable-24_05"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[env]
+PORT = "5000"
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["node", "./dist/index.cjs"]
+build = ["npm", "run", "build"]
+publicDir = "dist/public"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+waitForPort = 5000
+
+[userenv]
+
+[userenv.shared]
+REPLIT_CONNECT_SID = "eyJhbGciOiJSUzI1NiIsImtpZCI6InZWX3pZdyJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS9yZXBsaXQtd2ViIiwicm9sZXMiOlsiZXhwbG9yZXIiXSwiYXVkIjoicmVwbGl0LXdlYiIsImF1dGhfdGltZSI6MTc3MTUyMTg0MCwidXNlcl9pZCI6IkRSVjRnd1ZHY2tXaWhzY2ZxTXdaUFRnakg5STIiLCJzdWIiOiJEUlY0Z3dWR2NrV2loc2NmcU13WlBUZ2pIOUkyIiwiaWF0IjoxNzcxNTI1MTIyLCJleHAiOjE3NzIxMjk5MjIsImVtYWlsIjoicy5zaW5oYTIxMDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZ29vZ2xlLmNvbSI6WyIxMTMwMzQzNzYxODc2MTU5NTc0MjgiXSwiZ2l0aHViLmNvbSI6WyI1NDE4NDI3NyJdLCJlbWFpbCI6WyJzLnNpbmhhMjEwM0BnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.efDYI47_T3LY9EcvzPSRYYC6TgDFWDzHxlnmHR8bIbm-WSNBp-LUSQ8T83ZOz_3CjTivvfviJJXZkDCi6hq18IJegrLMDwZe-_06miJU19rw4pHLffqs6jQFLWsis-9CImqXyMn2RnDYnTlSfwOsIpFOfPAD04fHtr33QbOQ6M1RKj2DLyPQ41xtp6zsnp1JbNlsaxdYU_nL2-nldI73IJrur0_Ae4upzQpfy8M8YUvHU7e7S9ECyfHdnUniFoxtgtlZuoXWxTho8RZcmXeB-HBcpKl_E0Uyrgglv9eAGi3FMTvS5snUtlANHJxH4IAFYw5gKnzq3R5ZFxgAQvyNng"

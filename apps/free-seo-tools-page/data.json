@@ -1,0 +1,140 @@
+{
+  "users": [
+    {
+      "id": "f4b287ec-d73b-445f-b3d6-f24705abad8f",
+      "username": "admin",
+      "password": "$2b$10$zxZ9zY.Yip3j7u/gv2kNQuFuX0xhyKKX6aHa4NXjx6KQy.4IttsIm",
+      "isAdmin": 1
+    }
+  ],
+  "tools": [
+    {
+      "name": "Keyword Combiner",
+      "url": "/keyword-mixer/",
+      "description": "Combine multiple keywords into powerful variations for comprehensive keyword research and content planning.",
+      "categories": [
+        "Utilities",
+        "Content"
+      ],
+      "id": "edbeccf4-67c9-4db6-bc11-eda39cded179",
+      "createdAt": "2025-10-09T08:44:22.465Z"
+    },
+    {
+      "name": "Word Counter",
+      "url": "/text-clarity/",
+      "description": "Analyze text length, word count, and character count for optimal content optimization and SEO performance.",
+      "categories": [
+        "Utilities",
+        "Content"
+      ],
+      "id": "0f6f5832-76ac-4f1c-adc3-3b9679c884e2",
+      "createdAt": "2025-10-09T08:44:22.465Z"
+    },
+    {
+      "name": "AI SEO Page Score",
+      "url": "/ai-seo-pagescore/",
+      "description": "Analyze any URL for E-E-A-T signals and get AI-powered recommendations to improve search rankings.",
+      "categories": [
+        "Analysis",
+        "On-Page"
+      ],
+      "id": "333bbcea-ee23-447e-824b-ee836759e4d1",
+      "createdAt": "2025-10-09T08:44:22.465Z"
+    },
+    {
+      "name": "SERP Snippet Audit",
+      "url": "/serpsnippet-audit/",
+      "description": "Preview and optimize your meta titles and descriptions to maximize click-through rates from search results.",
+      "categories": [
+        "On-Page",
+        "Analysis"
+      ],
+      "id": "5ac02ef2-06a8-4677-8de0-c6da27d10f7c",
+      "createdAt": "2025-10-09T08:44:22.465Z"
+    },
+    {
+      "name": "Header Hierarchy",
+      "url": "/header-hierarchy/",
+      "description": "Audit your page's heading structure to ensure proper SEO hierarchy and improved content accessibility.",
+      "categories": [
+        "On-Page",
+        "Technical"
+      ],
+      "id": "3fe2981f-3f7c-4d9f-9a43-a468fb57c3de",
+      "createdAt": "2025-10-09T08:44:22.465Z"
+    },
+    {
+      "name": "Link Auditor",
+      "url": "/link-auditor/",
+      "description": "Discover broken links, analyze internal linking structure, and identify opportunities for better site architecture.",
+      "categories": [
+        "Technical",
+        "On-Page"
+      ],
+      "id": "ff5a8b17-7fd9-46d5-b6c4-90dfc34a2282",
+      "createdAt": "2025-10-09T08:44:22.465Z"
+    },
+    {
+      "name": "Intent Discover",
+      "url": "/intent-discover/",
+      "description": "Uncover user search intent behind keywords to create content that perfectly matches audience needs.",
+      "categories": [
+        "Analysis",
+        "Content"
+      ],
+      "id": "eae118e8-0e93-44cd-b90d-40efe9fb4337",
+      "createdAt": "2025-10-09T08:44:22.465Z"
+    },
+    {
+      "name": "YouTube Insight Tool",
+      "url": "/tube-insight/",
+      "description": "Analyze YouTube video performance, discover trending topics, and optimize your video SEO strategy.",
+      "categories": [
+        "YouTube",
+        "Content"
+      ],
+      "id": "b831ee8c-c5f1-4eef-a25e-508985887376",
+      "createdAt": "2025-10-09T08:44:22.465Z"
+    },
+    {
+      "name": "SEO Headline Pro",
+      "url": "/seo-headline-pro/",
+      "description": "Craft compelling, SEO-optimized headlines that drive clicks and improve search engine visibility.",
+      "categories": [
+        "Content",
+        "On-Page"
+      ],
+      "id": "948bdc87-4efb-4b1f-804c-d7a6bdebd61a",
+      "createdAt": "2025-10-09T08:44:22.465Z"
+    },
+    {
+      "name": "Meta Describer",
+      "url": "/meta-describer/",
+      "description": "Generate compelling meta descriptions that boost click-through rates and improve your page's search engine visibility.",
+      "categories": [
+        "On-Page",
+        "Content"
+      ],
+      "id": "a7f3e8d2-9b4c-4e1a-8f5d-3c2b1a0e9d7f",
+      "createdAt": "2025-10-09T09:02:00.000Z"
+    },
+    {
+      "name": "Text Clarity",
+      "url": "/text-clarity/",
+      "description": "AI-powered content analysis tool providing instant insights on keyword density, readability scores, word frequencies, and keyword suggestions for SEO optimization.",
+      "categories": [
+        "Analysis",
+        "Content"
+      ],
+      "id": "c9b4f2e1-5a8d-4c7b-9e3a-6f1d8b2c4e5a",
+      "createdAt": "2025-10-09T09:15:00.000Z"
+    }
+  ],
+  "analytics": [
+    {
+      "id": "fd753095-f927-4f2e-8b14-8b757a8e980f",
+      "toolId": "333bbcea-ee23-447e-824b-ee836759e4d1",
+      "clickedAt": "2025-10-09T08:52:17.417Z"
+    }
+  ]
+}

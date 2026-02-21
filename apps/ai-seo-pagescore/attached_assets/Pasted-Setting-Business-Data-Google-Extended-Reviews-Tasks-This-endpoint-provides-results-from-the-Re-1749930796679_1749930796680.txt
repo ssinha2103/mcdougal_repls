@@ -1,0 +1,204 @@
+Setting Business Data Google Extended Reviews Tasks
+‌‌
+This endpoint provides results from the “Reviews” element of Google SERPs, including not only Google user reviews but also reviews from other reputable sources (e.g., TripAdvisor, Yelp, Trustpilot). The results are specific to the selected location (see the List of Locations) and language (see the List of Languages) parameters.
+
+Note: your account will be charged for every 20 reviews returned in the items array, e.g. if you specify "depth": 21, you will be charged as per 40 reviews.
+
+Instead of ‘login’ and ‘password’ use your credentials from https://app.dataforseo.com/api-access
+
+# Instead of 'login' and 'password' use your credentials from https://app.dataforseo.com/api-access
+login="login"
+password="password"
+cred="$(printf ${login}:${password} | base64)"
+curl --location --request POST "https://api.dataforseo.com/v3/business_data/google/extended_reviews/task_post" \
+--header "Authorization: Basic ${cred}" \
+--header "Content-Type: application/json" \
+--data-raw '[
+  {
+    "location_name": "London,England,United Kingdom",
+    "language_name": "english",
+    "cid": "17626775537598922320"
+  }
+]'
+
+The above command returns JSON structured like this:
+
+{
+  "version": "0.1.20241028",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "0.0681 sec.",
+  "cost": 0.0045,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "10291539-1535-0604-0000-5279e13b1d00",
+      "status_code": 20100,
+      "status_message": "Task Created.",
+      "time": "0.0043 sec.",
+      "cost": 0.0045,
+      "result_count": 0,
+      "path": [
+        "v3",
+        "business_data",
+        "google",
+        "extended_reviews",
+        "task_post"
+      ],
+      "data": {
+        "api": "business_data",
+        "function": "extended_reviews",
+        "location_name": "London,England,United Kingdom",
+        "language_name": "english",
+        "cid": "17626775537598922320",
+        "se_type": "extended_reviews",
+        "se": "google",
+        "device": "desktop",
+        "os": "windows"
+      },
+      "result": null
+    }
+  ]
+}
+
+POST https://api.dataforseo.com/v3/business_data/google/extended_reviews/task_post
+ Your account will be charged for setting a task and the number of reviews you will get in the items array. The cost can be calculated on the Pricing page.
+All POST data should be sent in the JSON format (UTF-8 encoding). Task setting is done using the POST method. When setting a task, you should send all task parameters in the task array of the generic POST array. You can send up to 2000 API calls per minute, with each POST call containing no more than 100 tasks. If your POST call contains over 100 tasks, the tasks over this limit will return the 40006 error.
+
+You can retrieve the results of completed tasks using the unique task identifier id. Alternatively, we can send them to you as soon as they are ready if you specify the postback_url or pingback_url when setting a task. Note that if your server doesn’t respond within 10 seconds, the connection will be aborted by timeout, and the task will be transferred to the ‘Tasks Ready’ list. The error code and message depend on your server’s configuration. See Help Center to learn more about using pingbacks and postbacks with DataForSEO APIs.
+
+Below you will find a detailed description of the fields you can use for setting a task.
+
+Description of the fields for setting a task:
+
+Field name	Type	Description
+keyword	string	keyword
+required field if you don’t specify cid or place_id
+the keyword you specify should indicate the name of the local establishment;
+you can specify up to 700 characters in the keyword filed;
+all %## will be decoded (plus character ‘+’ will be decoded to a space character)
+if you need to use the “%” character for your keyword, please specify it as “%25”;
+if this field contains such parameters as ‘allinanchor:’, ‘allintext:’, ‘allintitle:’, ‘allinurl:’, ‘define:’, ‘filetype:’, ‘id:’, ‘inanchor:’, ‘info:’, ‘intext:’, ‘intitle:’, ‘inurl:’, ‘link:’, ‘related:’, ‘site:’, the charge per task will be multiplied by 5
+Note: queries containing the ‘cache:’ parameter are not supported and will return a validation error
+
+learn more about rules and limitations of keyword and keywords fields in DataForSEO APIs in this Help Center article
+
+Note: if you use this field, your account will be charged three times the standard rate for tasks involving the Google Reviews API
+
+cid	string	unique, google-defined id of the business entity
+required field if you don’t specify keyword or place_id
+example:
+194604053573767737
+learn more about the identifier in this help center article
+Note: if you use this field, your account will be charged two times the standard rate for tasks involving the Google Reviews API
+
+place_id	string	identifier of the business entity in Google Maps
+required field if you don’t specify keyword or cid
+example:
+GhIJQWDl0CIeQUARxks3icF8U8A
+learn more about the identifier in this help center article
+Note: if you use this field, your account will be charged two times the standard rate for tasks involving the Google Reviews API
+
+priority	integer	task priority
+optional field
+can take the following values:
+1 – normal execution priority (set by default)
+2 – high execution priority
+You will be additionally charged for the tasks with high execution priority.
+The cost can be calculated on the Pricing page.
+location_name	string	full name of search engine location
+required field if you don’t specify location_code or location_coordinate
+if you use this field, you don’t need to specify location_code or location_coordinate
+you can receive the list of available locations with location_name by making a separate request to the https://api.dataforseo.com/v3/business_data/google/locations
+example:
+London,England,United Kingdom
+location_code	integer	search engine location code
+required field if you don’t specify location_name or location_coordinate
+if you use this field, you don’t need to specify location_name or location_coordinate
+you can receive the list of available locations with location_code by making a separate request to the https://api.dataforseo.com/v3/business_data/google/locations
+example:
+2840
+location_coordinate	string	GPS coordinates of a location
+required field if you don’t specify location_name or location_code
+if you use this field, you don’t need to specify location_name or location_code
+location_coordinate parameter should be specified in the “latitude,longitude,radius” format
+the maximum number of decimal digits for “latitude” and “longitude”: 7
+the minimum value for “radius”: 199.9
+example:
+53.476225,-2.243572,200
+language_name	string	full name of search engine language
+required field if you don’t specify language_code
+if you use this field, you don’t need to specify language_code
+you can receive the list of available languages with language_name by making a separate request to the https://api.dataforseo.com/v3/business_data/google/languages
+example:
+English
+language_code	string	search engine language code
+required field if you don’t specify language_name
+if you use this field, you don’t need to specify language_name
+you can receive the list of available languages with their language_code by making a separate request to the https://api.dataforseo.com/v3/business_data/google/languages
+example:
+en
+depth	integer	parsing depth
+optional field
+number of reviews in SERP
+we strongly recommend setting the parsing depth in the multiples of twenty, because our systems processes twenty reviews in a row
+default value: 20
+maximum value: 1000
+tag	string	user-defined task identifier
+optional field
+the character limit is 255
+you can use this parameter to identify the task and match it with the result
+you will find the specified tag value in the data object of the response
+postback_url	string	return URL for sending task results
+optional field
+once the task is completed, we will send a POST request with its results compressed in the gzip format to the postback_url you specified
+you can use the ‘$id’ string as a $id variable and ‘$tag’ as urlencoded $tag variable. We will set the necessary values before sending the request.
+example:
+http://your-server.com/postbackscript?id=$id
+http://your-server.com/postbackscript?id=$id&tag=$tag
+Note: special characters in postback_url will be urlencoded;
+i.a., the # character will be encoded into %23
+learn more on our Help Center
+
+pingback_url	string	notification URL of a completed task
+optional field
+when a task is completed we will notify you by GET request sent to the URL you have specified
+you can use the ‘$id’ string as a $id variable and ‘$tag’ as urlencoded $tag variable. We will set the necessary values before sending the request.
+example:
+http://your-server.com/pingscript?id=$id
+http://your-server.com/pingscript?id=$id&tag=$tag
+Note: special characters in pingback_url will be urlencoded;
+i.a., the # character will be encoded into %23
+learn more on our Help Center
+
+‌‌‌‌‌
+As a response of the API server, you will receive JSON-encoded data containing a tasks array with the information specific to the set tasks.
+
+Description of the fields in the results array:
+
+Field name	Type	Description
+version	string	the current version of the API
+status_code	integer	general status code
+you can find the full list of the response codes here
+Note: we strongly recommend designing a necessary system for handling related exceptional or error conditions
+status_message	string	general informational message
+you can find the full list of general informational messages here
+time	string	execution time, seconds
+cost	float	total tasks cost, USD
+tasks_count	integer	the number of tasks in the tasksarray
+tasks_error	integer	the number of tasks in the tasks array returned with an error
+tasks	array	array of tasks
+        id	string	unique task identifier in our system
+in the Universally unique identifier (UUID) format
+        status_code	integer	status code of the task
+generated by DataForSEO; can be within the following range: 10000-60000
+        status_message	string	informational message of the task
+        time	string	execution time, seconds
+        cost	float	cost of the task, USD
+        result_count	integer	number of elements in the result array
+        path	array	URL path
+        data	object	contains the same parameters that you specified in the POST request
+        result	array	array of results
+in this case, the value will be null
+‌‌

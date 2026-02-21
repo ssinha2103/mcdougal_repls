@@ -1,0 +1,90 @@
+Here’s exactly how to proceed so it’s lean, automated, and credible:
+
+🔧 Step 1: Keep it Simple for Phase 1 (Top-100 SEO Snapshot)
+
+Goal: Replace your old 20-column benchmark sheet with just 4–6 reliable metrics per domain that can be pulled agentically or through SEMrush API.
+
+Metric
+
+Source
+
+Why keep it
+
+Organic Traffic
+
+SEMrush / DataForSEO
+
+Core visibility number everyone understands
+
+Keywords Top 100
+
+SEMrush
+
+Directly comparable, always accurate
+
+Traffic Value ($)
+
+SEMrush
+
+Lets you say “You’re leaving $X in traffic value on the table”
+
+Trend 3 mo %
+
+Calculated
+
+Shows movement — the hook for “you’re slipping”
+
+Pages Indexed (Google)
+
+Free via site: query or DataForSEO
+
+Quick site-size signal
+
+GTmetrix PageSpeed Grade (optional)
+
+GTmetrix Lite API or PSI
+
+One glance tech-health metric
+
+That’s all you need to recreate your “Top Law Firm (MA) Competitive Analysis” sheet with modern data.
+
+🧠 Step 2: Instruct Sudarshan (cut-and-paste brief)
+
+Task: Build an agentic scraper (Replit + SEMrush or DataForSEO) that loops through domains in column B of the master sheet and appends these 6 columns:
+OrganicTraffic | KeywordsTop100 | TrafficTrend3mo_pct | TrafficValue_USD | PagesIndexed | PageSpeed_Grade
+Save output as LawFirm_SEO_Overview.xlsx.
+
+Focus on accuracy, not breadth.
+
+If SEMrush API returns an error → log in failed_domains.csv and skip.
+Limit to 200 API calls/hour to avoid throttling.
+Return one combined sheet so we can visually rank and highlight:
+🔻 Trend < –15 % → Red
+➖ Flat ±5 % → Orange
+🔺 > +5 % → Green
+Once that runs, you’ll instantly see which firms have declined visibility (your “aggressive” targets).
+
+🚦 Step 3: Filtering Rule = Urgent Need = Outreach List
+
+After Sudarshan delivers the overlay, sort descending by:
+UrgencyFlag = RED or ORANGE and KeywordsTop100 < 1000 or TrafficTrend3mo < –15 %.
+
+That becomes your next 250–300 priority firms to show the “drop chart” to.
+
+⚙️ Step 4: Optional Screenshot Layer (intern task)
+
+If you still want the visual SEMrush chart for a few VIP pitches:
+
+Intern logs into SEMrush → search domain → export or screenshot the Organic Positions Trend chart.
+Rename files “domain_trend.png” and store them in /Screenshots/ folder matching the Excel row.
+Then your deck or email can show:
+
+“You went from 7 K keywords → 3 K in 12 months (-57 %).”
+
+📊 Step 5: Keep the MA vs National Split
+
+In your Excel file:
+
+Sheet 1 → MA_LawFirms (eligible for WTFP)
+Sheet 2 → National_LawFirms (Christian PI + others)
+Both use the same overlay columns so you can run one script across both.

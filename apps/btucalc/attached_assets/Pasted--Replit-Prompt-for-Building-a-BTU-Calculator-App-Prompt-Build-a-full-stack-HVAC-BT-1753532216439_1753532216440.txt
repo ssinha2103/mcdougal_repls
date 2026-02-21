@@ -1,0 +1,77 @@
+### ✅ Replit Prompt for Building a BTU Calculator App
+
+> **Prompt:**
+
+Build a full-stack HVAC BTU Calculator web application to help homeowners estimate heating and cooling requirements for their home using ZIP code and building parameters.
+
+### 🧠 Key Features:
+
+* Support 3 HVAC systems: **Ductless Mini-Split**, **Central AC**, **Gas Boiler**
+* Accept the following **user inputs** via a professional UI:
+
+  * ZIP Code (auto-maps to U.S. climate zone)
+  * System Type (select: Ductless, Central AC, Boiler)
+  * Square Footage of the home
+  * Number of Rooms
+  * Ceiling Height (default to 8 ft)
+  * Insulation Quality (Poor / Average / Good)
+  * Total Window Area in sq ft
+  * Sun Exposure (Low / Medium / High)
+  * Number of Occupants
+
+### 🧮 Calculation Logic:
+
+Implement the following logic in the backend:
+
+1. **Determine Climate Zone from ZIP Code**
+
+   * Use a JSON or API mapping ZIP to IECC Climate Zone (1–7)
+
+2. **Base Load BTUs**
+
+   * Heating: use 30–60 BTU per sq ft based on climate zone and insulation
+   * Cooling: use 15–30 BTU per sq ft based on climate zone
+
+3. **Adjustments:**
+
+   * Ceiling Height: `(ceiling_height / 8)`
+   * Insulation: Poor ×1.2, Average ×1.0, Good ×0.9
+   * Window Heat Loss (heating): 15–30 BTU/hr per sq ft
+   * Window Solar Gain (cooling): 10–50 BTU/hr per sq ft depending on sun exposure
+   * Occupant Effect:
+
+     * +600 BTU/hr per extra person (cooling)
+     * −300 BTU/hr per person (heating)
+
+4. **Outputs:**
+
+   * Total **Cooling Load (BTU/hr)**
+   * Total **Heating Load (BTU/hr)**
+   * Suggested **Cooling Tonnage** (`cooling_BTUs / 12000`)
+   * Equipment Recommendations:
+
+     * For Ductless: list zone-wise unit sizes
+     * For Boiler: suggest input/output BTU size with efficiency
+     * For Central AC: suggest standard tonnage (rounded up to nearest 0.5)
+
+### 💻 Tech Stack:
+
+* **Frontend**: React + TypeScript + Tailwind CSS
+* **Backend**: Node.js + Express
+* **Validation**: React Hook Form + Zod
+* **State**: TanStack Query
+* **Deployment**: Replit (single monorepo)
+
+### 📱 UI Requirements:
+
+* Clean, responsive layout (mobile & desktop)
+* Climate zone auto-filled from ZIP
+* Dynamic BTU result display with tonnage & system recommendation
+* Display disclaimer: *"Estimates only. Always consult HVAC professionals before installation."*
+
+### 📝 Bonus:
+
+* Add detailed BTU calculation breakdown in the result section
+* Optional: export result as PDF
+* Optional: Add “Save History” for past calculations using local storage or in-memory cache
+

@@ -1,0 +1,43 @@
+build a tool that inputs the data for each of these columns? 
+
+It used to be more consistent to get indexed pages from the advanced operator site: but a more accurate way is to use screaming frog, and crawl the site, and then you still have to ideally remove category pages or pagination pages. But those could be left in if it's done the same way for each site. You probably have some other way to get the total number of Index pages in Google. Most of the other things could be taken from semrush API.
+
+
+I would be putting this somewhere on the McDougall Interactive site on its own page.
+
+For now, the goal is to make it free and open to the public. I don't have a big agency or huge visibility so it's possible there wouldn't be any issue with it getting overused but maybe eventually I would have to worry about the number of people hitting it and turn it into a paid tool or something like that. At the moment, it's mostly to try and generate back links to my site, and to build a list of free tools that I offer to give my agency added credibility. 
+
+Long-term maybe I have some kind of competitive analysis suite or something like that and I do have several other tools in mind which would be a little different than other tools out there really designed to carve out a very small niche type of research that I like to do that would be sped up by not having to do this manually or have my team overseas do it for me which is the way that we do it. 
+
+Sometimes we do this for 100 sites at a time and we look across an industry like all the legal sites in one city. Most of the time we're just looking at the client domain with four competitors. Although it's fantastic when you can put 10 or 12 sites at a time so if it's not too much work to be able to put in 10 or 12 competitors, that would probably be ideal. 
+
+Or if we wanted to get fancy, we could make a version where it's open to the public give access to look at four competitors and your own domain, but you have to login and pay if you want to get access to do 10 sites at a time or even up to 100 or something like that.
+
+Open to suggestions!
+
+Danyavad,
+
+	Name	URL	Pages Indexed in Google	No. of Referring Domains	No. of Backlinks	No. of Organic Keywords	Organic Traffic	Traffic Cost	Page Speed
+	Matts Music	www.mattsmusic.com
+300	8,600	158,427	4.7k	5k	$4.2K	2.79 s
+	Eddies Guitars	https://eddiesguitars.com/
+308	10.2K	393K	32.7K	40.3K	$22.7K	1.42 s
+	Music Emporium	https://themusicemporium.com/
+300	5.4K	128K	20.3K	55.5K	$55.8K	1.80 s
+	Humbucker Music	www.humbuckermusic.com
+284	4,474	47,179	7.5K	9.7K	$16.1K	1.20 s
+	Wildwood Guitars	https://wildwoodguitars.com/
+302	6.7K	269K	21K	44.4K	$58.5K	297 ms
+	Brians Guitars	https://briansguitars.com/
+300	5.3K	67.8K	13.7K	11.6K	$5.3K	1.36 s
+									
+	Guitar Stop	www.guitarstop.com
+300	229	1,263	485	1.1K	$25	21ms
+	Guitar Center	www.guitarcenter.com
+379	37,368	5,409,721	529.6K	4.1M	$2.1M	243ms
+	Mr Music Guitars	www.mrmusicguitars.com
+5	1,334	6,172	283	3.4K	$843	206ms
+	Carlino Guitars	www.carlinoguitars.com
+300	181	1,611	732	431	$18	46ms
+									
+

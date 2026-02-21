@@ -1,0 +1,351 @@
+export const northShoreTowns: Record<string, TownData> = {
+  Salem: {
+    id: 'salem',
+    name: 'Salem',
+    center: [-70.8967, 42.5195],
+    animalControl: {
+      name: 'Scott Considine',
+      phone: '(978) 744-0171 x50121'
+    },
+    police: { phone: '(978) 744-1212' },
+    clerk: { phone: '(978) 745-9595' }
+  },
+  Beverly: {
+    id: 'beverly',
+    name: 'Beverly',
+    center: [-70.8800, 42.5584],
+    animalControl: {
+      name: 'Matt Lipinski',
+      phone: '(978) 605-2361'
+    },
+    police: { phone: '(978) 922-1212' },
+    clerk: { phone: '(978) 605-2324' }
+  },
+  Lynn: {
+    id: 'lynn',
+    name: 'Lynn',
+    center: [-70.9494, 42.4668],
+    animalControl: {
+      name: '', // name not published on official page
+      phone: '(781) 477-4385'
+    },
+    police: { phone: '(781) 595-2000' },
+    clerk: { phone: '(781) 598-4000' }
+  },
+  Peabody: {
+    id: 'peabody',
+    name: 'Peabody',
+    center: [-70.9286, 42.5278],
+    animalControl: {
+      name: 'Lilian (Lily) Pinto',
+      phone: '(978) 538-6340'
+    },
+    police: { phone: '(978) 538-6300' },
+    clerk: { phone: '(978) 538-5756' }
+  },
+  Danvers: {
+    id: 'danvers',
+    name: 'Danvers',
+    center: [-70.9300, 42.5751],
+    animalControl: {
+      name: '',
+      phone: '(978) 777-0001 x3023'
+    },
+    police: { phone: '(978) 774-1212' },
+    clerk: { phone: '(978) 777-0001' }
+  },
+  Marblehead: {
+    id: 'marblehead',
+    name: 'Marblehead',
+    center: [-70.8578, 42.5001],
+    animalControl: {
+      name: 'Betsy Cruger',
+      phone: '(781) 631-1212'
+    },
+    police: { phone: '(781) 631-1212' },
+    clerk: { phone: '(781) 631-0000' } // CHECK (town hall main)
+  },
+  Swampscott: {
+    id: 'swampscott',
+    name: 'Swampscott',
+    center: [-70.9178, 42.4751],
+    animalControl: {
+      name: '',
+      phone: '(781) 595-1111'
+    },
+    police: { phone: '(781) 595-1111' },
+    clerk: { phone: '(781) 596-4167' }
+  },
+  Nahant: {
+    id: 'nahant',
+    name: 'Nahant',
+    center: [-70.9556, 42.4201],
+    animalControl: {
+      name: '',
+      phone: '(781) 230-0060'
+    },
+    police: { phone: '(781) 581-1212' },
+    clerk: { phone: '(781) 581-0017' } // CHECK
+  },
+  Saugus: {
+    id: 'saugus',
+    name: 'Saugus',
+    center: [-71.0101, 42.4668],
+    animalControl: {
+      name: '',
+      phone: '(781) 231-4176'
+    },
+    police: { phone: '(781) 941-1199' },
+    clerk: { phone: '(781) 231-4101' }
+  },
+  Revere: {
+    id: 'revere',
+    name: 'Revere',
+    center: [-71.0128, 42.4084],
+    animalControl: {
+      name: '',
+      phone: '(781) 286-8345'
+    },
+    police: { phone: '(781) 284-1212' },
+    clerk: { phone: '(781) 286-8160' }
+  },
+  Melrose: {
+    id: 'melrose',
+    name: 'Melrose',
+    center: [-71.0617, 42.4584],
+    animalControl: {
+      name: '',
+      phone: '(781) 979-4102'
+    },
+    police: { phone: '(781) 665-1212' },
+    clerk: { phone: '(781) 979-4113' }
+  },
+  Wakefield: {
+    id: 'wakefield',
+    name: 'Wakefield',
+    center: [-71.0723, 42.5001],
+    animalControl: {
+      name: '',
+      phone: '(781) 231-0474'
+    },
+    police: { phone: '(781) 245-1212' },
+    clerk: { phone: '(781) 246-6383' }
+  },
+  Reading: {
+    id: 'reading',
+    name: 'Reading',
+    center: [-71.0951, 42.5251],
+    animalControl: {
+      name: '',
+      phone: '(781) 942-9001' // Animal Control page routes via Town Hall; urgent issues go to PD
+    },
+    police: { phone: '(781) 944-1212' }, // CHECK
+    clerk: { phone: '(781) 942-9050' }
+  },
+  Lynnfield: {
+    id: 'lynnfield',
+    name: 'Lynnfield',
+    center: [-71.0412, 42.5334],
+    animalControl: {
+      name: 'David Crockett',
+      phone: '(781) 983-1804'
+    },
+    police: { phone: '(781) 334-3131' }, // CHECK
+    clerk: { phone: '(781) 334-9400' }
+  },
+  Middleton: {
+    id: 'middleton',
+    name: 'Middleton',
+    center: [-71.0162, 42.5951],
+    animalControl: {
+      name: 'Beverly Milward',
+      phone: '(339) 206-0785'
+    },
+    police: { phone: '(978) 774-4424' },
+    clerk: { phone: '(978) 777-1869' } // CHECK (town hall main)
+  },
+  Topsfield: {
+    id: 'topsfield',
+    name: 'Topsfield',
+    center: [-70.9501, 42.6417],
+    animalControl: {
+      name: 'Beverly Milward',
+      phone: '(978) 887-6533'
+    },
+    police: { phone: '(978) 887-6533' },
+    clerk: { phone: '(978) 887-1505' }
+  },
+  Wenham: {
+    id: 'wenham',
+    name: 'Wenham',
+    center: [-70.8884, 42.6001],
+    animalControl: {
+      name: '', // CHECK (often handled via Police)
+      phone: '(978) 468-4000' // CHECK (Wenham PD business)
+    },
+    police: { phone: '(978) 468-1212' }, // CHECK
+    clerk: { phone: '(978) 468-5520' }
+  },
+  Hamilton: {
+    id: 'hamilton',
+    name: 'Hamilton',
+    center: [-70.8634, 42.6167],
+    animalControl: {
+      name: 'Leslie Leathers',
+      phone: '(978) 626-1819'
+    },
+    police: { phone: '(978) 468-1212' },
+    clerk: { phone: '(978) 468-5577' }
+  },
+  Ipswich: {
+    id: 'ipswich',
+    name: 'Ipswich',
+    center: [-70.8417, 42.6792],
+    animalControl: {
+      name: 'Megan Boissonneau',
+      phone: '(978) 356-6652'
+    },
+    police: { phone: '(978) 356-4343' }, // CHECK
+    clerk: { phone: '(978) 356-6600' }
+  },
+  Essex: {
+    id: 'essex',
+    name: 'Essex',
+    center: [-70.7834, 42.6292],
+    animalControl: {
+      name: '', // CHECK
+      phone: '(978) 768-6363' // CHECK (commonly listed for dog officer)
+    },
+    police: { phone: '(978) 768-1212' },
+    clerk: { phone: '(978) 768-7311' }
+  }
+,
+  'Manchester-by-the-Sea': {
+    id: 'manchester-by-the-sea',
+    name: 'Manchester-by-the-Sea',
+    center: [-70.76894, 42.57787],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  Gloucester: {
+    id: 'gloucester',
+    name: 'Gloucester',
+    center: [-70.66199, 42.61593],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  Rockport: {
+    id: 'rockport',
+    name: 'Rockport',
+    center: [-70.62036, 42.65565],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  Rowley: {
+    id: 'rowley',
+    name: 'Rowley',
+    center: [-70.87878, 42.7153],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  Newbury: {
+    id: 'newbury',
+    name: 'Newbury',
+    center: [-70.87145, 42.76495],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  Newburyport: {
+    id: 'newburyport',
+    name: 'Newburyport',
+    center: [-70.87728, 42.81259],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  'West Newbury': {
+    id: 'west-newbury',
+    name: 'West Newbury',
+    center: [-70.98978, 42.80148],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  Byfield: {
+    id: 'byfield',
+    name: 'Byfield',
+    center: [-70.94811, 42.75981],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  Amesbury: {
+    id: 'amesbury',
+    name: 'Amesbury',
+    center: [-70.93004, 42.85839],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  Salisbury: {
+    id: 'salisbury',
+    name: 'Salisbury',
+    center: [-70.8606, 42.84172],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  Haverhill: {
+    id: 'haverhill',
+    name: 'Haverhill',
+    center: [-71.083, 42.783],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  Lawrence: {
+    id: 'lawrence',
+    name: 'Lawrence',
+    center: [-71.16361, 42.70694],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  Methuen: {
+    id: 'methuen',
+    name: 'Methuen',
+    center: [-71.19089, 42.7262],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  Boxford: {
+    id: 'boxford',
+    name: 'Boxford',
+    center: [-70.99673, 42.66116],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  Andover: {
+    id: 'andover',
+    name: 'Andover',
+    center: [-71.1375, 42.65833],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  },
+  'North Reading': {
+    id: 'north-reading',
+    name: 'North Reading',
+    center: [-71.07917, 42.575],
+    animalControl: { name: '', phone: '' },
+    police: { phone: '' },
+    clerk: { phone: '' }
+  }
+};

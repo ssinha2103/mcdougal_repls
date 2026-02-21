@@ -1,0 +1,59 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Node / frontend artifacts
+node_modules/
+**/node_modules/
+dist/
+build/
+coverage/
+.nyc_output/
+.cache/
+.parcel-cache/
+.next/
+.turbo/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+**/.venv/
+**/venv/
+
+# Local env and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+env/*.env
+!env/global.env.example
+!env/*.env.example
+
+# Runtime/temp
+tmp/
+temp/
+*.pid
+*.pid.lock
+
+# Local DB/files
+*.sqlite3
+*.db

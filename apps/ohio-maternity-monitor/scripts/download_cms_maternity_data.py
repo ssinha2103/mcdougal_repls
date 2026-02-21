@@ -1,0 +1,322 @@
+"""
+Download maternity-relevant hospital data from CMS Provider Data Catalog
+and geocode Ohio hospitals to get latitude/longitude.
+
+Datasets pulled (nationwide):
+- Hospital General Information (xubh-q36u)
+- Maternal Health - Hospital (nrdb-3fcy)
+- Birthing Friendly Hospitals with Geocoded Addresses (hbf-map)
+
+Outputs:
+- data/hospital_general_information.csv
+- data/maternal_health_hospital.csv
+- data/birthing_friendly_hospitals.csv
+- data/hospital_general_information_geocoded.csv   <-- adds geo_lat / geo_lng for OH
+
+Requirements:
+    pip install requests
+Environment:
+    export GOOGLE_MAPS_API_KEY=your_real_api_key
+"""
+
+import os
+import csv
+import time
+from io import StringIO
+from typing import Optional, Tuple
+
+import requests
+
+# -----------------------------
+# Configuration
+# -----------------------------
+
+OUTPUT_DIR = "data"
+
+# CMS dataset IDs we care about
+DATASETS = {
+    "hospital_general_information": "xubh-q36u",
+    "maternal_health_hospital": "nrdb-3fcy",
+    "birthing_friendly_hospitals": "hbf-map",
+}
+
+METASTORE_BASE = (
+    "https://data.cms.gov/provider-data/api/1/metastore/schemas/dataset/items"
+)
+
+# Geocoding service (Google Maps Geocoding API style)
+GOOGLE_GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
+GOOGLE_MAPS_API_KEY = os.environ.get("GOOGLE_MAPS_API_KEY")
+
+
+# -----------------------------
+# Helper functions - CMS
+# -----------------------------
+
+
+def get_download_url_for_dataset(dataset_id: str) -> str:
+    """
+    Call CMS metastore API to get the CSV download URL for a dataset.
+
+    It looks at the `distribution` array and returns the first `downloadURL`
+    it finds (either at distribution[i]['downloadURL'] or
+    distribution[i]['data']['downloadURL']).
+    """
+    url = f"{METASTORE_BASE}/{dataset_id}?show-reference-ids=true"
+    print(f"Fetching metadata for dataset {dataset_id} ...")
+    resp = requests.get(url, timeout=60)
+    resp.raise_for_status()
+    meta = resp.json()
+
+    distributions = meta.get("distribution", [])
+    if not isinstance(distributions, list) or not distributions:
+        raise RuntimeError(f"No distributions found for dataset {dataset_id}")
+
+    for dist in distributions:
+        # Pattern 1: downloadURL at top level
+        if isinstance(dist, dict) and "downloadURL" in dist:
+            return dist["downloadURL"]
+
+        # Pattern 2: nested in dist['data']['downloadURL']
+        data_obj = dist.get("data") if isinstance(dist, dict) else None
+        if isinstance(data_obj, dict) and "downloadURL" in data_obj:
+            return data_obj["downloadURL"]
+
+    raise RuntimeError(
+        f"Could not find a downloadURL in distributions for dataset {dataset_id}"
+    )
+
+
+def download_csv_text(csv_url: str) -> str:
+    """
+    Download raw CSV text from a URL.
+    """
+    print(f"Downloading CSV from {csv_url} ...")
+    resp = requests.get(csv_url, timeout=120)
+    resp.raise_for_status()
+    resp.encoding = resp.apparent_encoding or "utf-8"
+    return resp.text
+
+
+def save_csv(text: str, output_path: str) -> int:
+    """
+    Save CSV text to a file and return number of data rows (excluding header).
+    """
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+    # Just write raw text out; this preserves the exact structure from CMS.
+    with open(output_path, "w", encoding="utf-8", newline="") as f:
+        f.write(text)
+
+    # Quick row count + preview using csv.DictReader
+    reader = csv.DictReader(StringIO(text))
+    rows = list(reader)
+    row_count = len(rows)
+    col_count = len(reader.fieldnames or [])
+
+    print(
+        f"Saved {output_path} "
+        f"(rows: {row_count:,}, columns: {col_count})"
+    )
+
+    # Optional: show a tiny preview of the first row's keys
+    if rows:
+        sample = rows[0]
+        preview_cols = list(sample.keys())[:10]
+        print("  Sample columns:", ", ".join(preview_cols))
+    else:
+        print("  WARNING: CSV appears to have no data rows.")
+
+    return row_count
+
+
+def fetch_and_save_dataset(slug: str, dataset_id: str) -> None:
+    """
+    High-level helper: resolve download URL, download CSV, and save it.
+    """
+    try:
+        download_url = get_download_url_for_dataset(dataset_id)
+        csv_text = download_csv_text(download_url)
+        output_path = os.path.join(OUTPUT_DIR, f"{slug}.csv")
+        save_csv(csv_text, output_path)
+    except Exception as e:
+        print(f"ERROR processing dataset {slug} ({dataset_id}): {e}")
+
+
+# -----------------------------
+# Helper functions - Geocoding
+# -----------------------------
+
+
+def geocode_address(full_address: str) -> Optional[Tuple[float, float]]:
+    """
+    Geocode a free-text address into (lat, lng).
+
+    This uses a Google Maps–style Geocoding API. You must set:
+        GOOGLE_MAPS_API_KEY
+    in your environment.
+
+    You can swap this implementation to use any other geocoding service.
+    """
+    if not GOOGLE_MAPS_API_KEY:
+        print("  [Geocode] No GOOGLE_MAPS_API_KEY set; skipping geocoding.")
+        return None
+
+    params = {
+        "address": full_address,
+        "key": GOOGLE_MAPS_API_KEY,
+    }
+
+    try:
+        resp = requests.get(GOOGLE_GEOCODE_URL, params=params, timeout=30)
+        resp.raise_for_status()
+    except Exception as e:
+        print(f"  [Geocode] HTTP error for '{full_address}': {e}")
+        return None
+
+    data = resp.json()
+    status = data.get("status")
+    if status != "OK":
+        print(f"  [Geocode] FAILED for '{full_address}' (status={status})")
+        return None
+
+    try:
+        loc = data["results"][0]["geometry"]["location"]
+        lat = float(loc["lat"])
+        lng = float(loc["lng"])
+        return lat, lng
+    except Exception as e:
+        print(f"  [Geocode] Parse error for '{full_address}': {e}")
+        return None
+
+
+def geocode_ohio_hospitals(
+    input_csv: str,
+    output_csv: str,
+    state_filter: str = "OH",
+    sleep_seconds: float = 0.15,
+) -> None:
+    """
+    Read hospital_general_information CSV, geocode rows in the target state,
+    and write a new CSV with extra columns: geo_lat, geo_lng.
+
+    - Only rows where the state column == state_filter are geocoded.
+    - Existing geo_lat/geo_lng values (if any) are preserved.
+    """
+    if not os.path.exists(input_csv):
+        print(f"[Geocode] Hospital CSV {input_csv} not found; skipping geocoding.")
+        return
+
+    print(f"=== Geocoding hospitals in {state_filter} from {input_csv} ===")
+    with open(input_csv, encoding="utf-8") as f_in:
+        reader = csv.DictReader(f_in)
+        rows = list(reader)
+        fieldnames = list(reader.fieldnames or [])
+
+    # Add new columns if they don't exist yet
+    if "geo_lat" not in fieldnames:
+        fieldnames.append("geo_lat")
+    if "geo_lng" not in fieldnames:
+        fieldnames.append("geo_lng")
+
+    def pick(row, *options: str) -> str:
+        """Utility to get the first non-empty value from several possible column names."""
+        for name in options:
+            if name in row and row[name]:
+                return row[name]
+        return ""
+
+    geocoded_count = 0
+    total_in_state = 0
+
+    for row in rows:
+        state_val = pick(
+            row,
+            "state",
+            "provider_state",
+            "facility_state",
+            "state_name",
+        ).upper()
+
+        if state_val != state_filter.upper():
+            # Not in our target state, keep row as-is
+            continue
+
+        total_in_state += 1
+
+        # Skip if already has coordinates
+        if row.get("geo_lat") and row.get("geo_lng"):
+            continue
+
+        address = pick(
+            row,
+            "address",
+            "address_1",
+            "address_line_1",
+            "provider_street_address",
+            "hospital_address",
+            "physical_address",
+        )
+        city = pick(row, "city", "provider_city", "facility_city")
+        zip_code = pick(row, "zip_code", "zip", "provider_zip_code", "facility_zip")
+
+        if not address or not city:
+            print("  [Geocode] Skipping row with missing address/city")
+            continue
+
+        full_address = f"{address}, {city}, {state_filter} {zip_code}".strip()
+        print(f"  [Geocode] Geocoding: {full_address}")
+
+        coords = geocode_address(full_address)
+        if coords:
+            lat, lng = coords
+            row["geo_lat"] = f"{lat:.6f}"
+            row["geo_lng"] = f"{lng:.6f}"
+            geocoded_count += 1
+
+        # Be a good API citizen
+        time.sleep(sleep_seconds)
+
+    print(
+        f"[Geocode] Geocoded {geocoded_count} of {total_in_state} "
+        f"{state_filter} hospitals."
+    )
+
+    os.makedirs(os.path.dirname(output_csv), exist_ok=True)
+    with open(output_csv, "w", encoding="utf-8", newline="") as f_out:
+        writer = csv.DictWriter(f_out, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    print(f"[Geocode] Saved geocoded hospitals CSV to {output_csv}")
+
+
+# -----------------------------
+# Main
+# -----------------------------
+
+
+def main():
+    print("=== CMS maternity-related data downloader ===")
+    print(f"Output directory: {OUTPUT_DIR}")
+    print()
+
+    # 1. Download all raw CMS CSVs
+    for slug, dataset_id in DATASETS.items():
+        print(f"--- {slug} ({dataset_id}) ---")
+        fetch_and_save_dataset(slug, dataset_id)
+        print()
+
+    # 2. Geocode Ohio hospitals in the hospital_general_information file
+    #    and write a new geocoded version.
+    hgi_input = os.path.join(OUTPUT_DIR, "hospital_general_information.csv")
+    hgi_output = os.path.join(
+        OUTPUT_DIR, "hospital_general_information_geocoded.csv"
+    )
+    geocode_ohio_hospitals(hgi_input, hgi_output)
+
+    print("Done. Inspect the CSVs in the 'data' folder to see all available fields.")
+
+
+if __name__ == "__main__":
+    main()

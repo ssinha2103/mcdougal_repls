@@ -1,0 +1,143 @@
+import os
+import csv
+from io import StringIO
+
+import requests
+
+# -----------------------------
+# Configuration
+# -----------------------------
+
+OUTPUT_DIR = "data"
+
+# CMS dataset IDs we care about
+DATASETS = {
+    "maternal_health_hospital": "nrdb-3fcy"
+}
+
+METASTORE_BASE = (
+    "https://data.cms.gov/provider-data/api/1/metastore/schemas/dataset/items"
+)
+
+
+# -----------------------------
+# Helper functions
+# -----------------------------
+
+
+def get_download_url_for_dataset(dataset_id: str) -> str:
+    """
+    Call CMS metastore API to get the CSV download URL for a dataset.
+
+    It looks at the `distribution` array and returns the first `downloadURL`
+    it finds (either at distribution[i]['downloadURL'] or
+    distribution[i]['data']['downloadURL']).
+    """
+    url = f"{METASTORE_BASE}/{dataset_id}?show-reference-ids=true"
+    print(f"Fetching metadata for dataset {dataset_id} ...")
+    resp = requests.get(url, timeout=60)
+    resp.raise_for_status()
+    meta = resp.json()
+
+    distributions = meta.get("distribution", [])
+    if not isinstance(distributions, list) or not distributions:
+        raise RuntimeError(f"No distributions found for dataset {dataset_id}")
+
+    for dist in distributions:
+        # Pattern 1: downloadURL at top level
+        if isinstance(dist, dict) and "downloadURL" in dist:
+            return dist["downloadURL"]
+
+        # Pattern 2: nested in dist['data']['downloadURL']
+        data_obj = dist.get("data") if isinstance(dist, dict) else None
+        if isinstance(data_obj, dict) and "downloadURL" in data_obj:
+            return data_obj["downloadURL"]
+
+    raise RuntimeError(
+        f"Could not find a downloadURL in distributions for dataset {dataset_id}"
+    )
+
+
+def download_csv_text(csv_url: str) -> str:
+    """
+    Download raw CSV text from a URL.
+    """
+    print(f"Downloading CSV from {csv_url} ...")
+    resp = requests.get(csv_url, timeout=120)
+    resp.raise_for_status()
+    resp.encoding = resp.apparent_encoding or "utf-8"
+    return resp.text
+
+
+def save_csv(text: str, output_path: str) -> int:
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+    reader = csv.DictReader(StringIO(text))
+    rows = list(reader)
+
+    # ---- FIX: detect actual column name for state ----
+    state_col = None
+    for col in reader.fieldnames:
+        if col.strip().lower() == "state":
+            state_col = col
+            break
+
+    if not state_col:
+        raise RuntimeError("Could not find a 'state' column in this dataset.")
+
+    # ---- Filter for Ohio (OH) ----
+    filtered_rows = [
+        r for r in rows
+        if r.get(state_col, "").strip().upper() == "OH"
+    ]
+
+    # Write filtered CSV
+    with open(output_path, "w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=reader.fieldnames)
+        writer.writeheader()
+        writer.writerows(filtered_rows)
+
+    print(f"Saved {output_path} (rows: {len(filtered_rows)}, columns: {len(reader.fieldnames)})")
+
+    if filtered_rows:
+        print("Sample row keys:", list(filtered_rows[0].keys())[:10])
+    else:
+        print("WARNING: No OH rows found after filtering.")
+
+    return len(filtered_rows)
+
+
+
+def fetch_and_save_dataset(slug: str, dataset_id: str) -> None:
+    """
+    High-level helper: resolve download URL, download CSV, and save it.
+    """
+    try:
+        download_url = get_download_url_for_dataset(dataset_id)
+        csv_text = download_csv_text(download_url)
+        output_path = os.path.join(OUTPUT_DIR, f"{slug}.csv")
+        save_csv(csv_text, output_path)
+    except Exception as e:
+        print(f"ERROR processing dataset {slug} ({dataset_id}): {e}")
+
+
+# -----------------------------
+# Main
+# -----------------------------
+
+
+def main():
+    print("=== CMS maternity-related data downloader ===")
+    print(f"Output directory: {OUTPUT_DIR}")
+    print()
+
+    for slug, dataset_id in DATASETS.items():
+        print(f"--- {slug} ({dataset_id}) ---")
+        fetch_and_save_dataset(slug, dataset_id)
+        print()
+
+    print("Done. The filtered CSV (only OH rows) is in the 'data' folder.")
+
+
+if __name__ == "__main__":
+    main()

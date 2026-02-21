@@ -1,0 +1,43 @@
+Build a PDF generation tool again from scratch that exports a competitive SEO intelligence report. The PDF should mirror the structure of the uploaded sample, using a compact and professionally designed layout. The tool should accept a JSON input with SEO metrics for up to 12 domains. It will then render a 2–4 page branded report including cover details, domain comparison tables, performance insights, and strategic recommendations.
+
+The report must start with a cover page showing the title "AI SEO PageScore – Competitive Intelligence Report", the generation date, and optional branding ("© 2025 McDougall Interactive"). Follow with a Key Performance Overview, including:
+
+Total domains analyzed
+
+Market leader (highest traffic)
+
+Average traffic, trust score, and performance
+
+Highlighted domain ("Your Site") with rank and insights
+
+Next, create a Competitive Analysis Matrix with a table showing each domain and columns for:
+
+Traffic/month
+
+Keywords
+
+Backlinks
+
+Trust Score (X/14)
+
+Page Speed (in seconds)
+
+Performance (%)
+
+Then, include a Performance Ranking list (1st, 2nd, etc.), followed by a Market Opportunity Summary:
+
+Traffic Distribution Bar Chart or visual summary
+
+“Traffic Gap” and “Market Leader Gap” in terms of raw visitor count
+
+“Current Position” (e.g., Rank #2 of 5)
+
+Lastly, add AI-generated Strategic Recommendations, such as:
+
+“Link Building: +343 backlinks needed to match market leader”
+
+“Traffic Growth: Estimated X million monthly visits possible”
+
+Use clean fonts (like Inter or Roboto), grayscale tones with one accent color (e.g., blue), zebra-stripe tables, and subtle visual hierarchies for easy reading. Page footers should include page numbers and your brand footer. The tool should generate a final file called seo_analysis_<timestamp>.pdf.
+
+Use WeasyPrint, ReportLab, or HTML-to-PDF conversion (e.g., pdfkit + wkhtmltopdf) depending on layout flexibility. The final result should stay within 3–5 pages even for 10+ domains and be optimized for both PDF viewing and lightweight printing.

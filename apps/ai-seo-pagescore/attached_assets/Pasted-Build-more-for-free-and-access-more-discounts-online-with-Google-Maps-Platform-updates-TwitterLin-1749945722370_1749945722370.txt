@@ -1,0 +1,78 @@
+Build more for free and access more discounts online with Google Maps Platform updates
+
+TwitterLinkedInFacebook
+Email
+Tina Weyand
+Senior Director of Product Management, Google Maps Platform
+Dec 9, 2024
+Editor’s note: The improvements featured in this blog went into effect on March 1, 2025. If you have any questions about these updates, try our calculator, read our FAQs, or watch our overview video.
+
+For nearly two decades, Google Maps Platform has empowered businesses to build useful, innovative products for their customers—from delivering food to ordering a ride, finding a store or restaurant, traveling, or finding a place to live. Today, there are over 10 million websites and apps built with Google Maps Platform—and each day, you trust our tools to transform user experiences, streamline operations, and redefine what’s possible. 
+
+Our fresh, comprehensive map allows you to build solutions that reflect the changes happening in the world. In fact, our map includes rich information about over 250 million businesses and places globally—and it’s updated nearly in real time, with over 100 million updates made to the map each day. Besides bringing you the freshest information, we are constantly innovating to bring first-of-its-kind products to market. Earlier this year, we made it easier to build 3D solutions, launched a service to ground LLM responses in Google Maps information, and made in-app navigation easier with Navigation SDK. 
+
+As we launch new products, we want you to be able to explore many more of them for free, easily find the products you need, and access automatic volume discounts online. These improvements will go into effect on March 1, 2025.
+
+Unlock more volume discounts online
+We’re now making it easier than ever to access volume discounts. By making more volume discounts available online, you will automatically see savings as your usage grows. Our online volume discounts will continue to start at 20% for most products, and now for some products you can see discounts up to 4x higher (or 80%) when your usage exceeds 5 million monthly calls.
+
+Expanding free usage limits across our products 
+Starting in March, you’ll get free* access to each of our products, including Maps, Routes, Places, and Environment APIs and SDKs, up to a monthly limit, so you can build more for free. This means that instead of the fixed monthly $200 credit you get today, you can soon access up to $3,250 worth of free usage every month, distributed across all our products. This update will give you the flexibility to build better solutions and experiment with our APIs and SDKs at no cost. 
+
+Now, you can evaluate whether a new product is right for your business—for example, you can integrate Places Nearby or Dynamic Street View into your app to make the experience more rich and immersive—or build a proof-of-concept delivery service with Routes API before making a major investment. With this expanded free usage, you'll only pay if you exceed the limit. And further, Maps Embed API and Maps SDK—some of our most popular products—will continue to have unlimited free usage.
+
+Let's say you're a real estate company that wants to help renters find the perfect neighborhood. Now you can try more products for free before deciding which APIs or SDKs best suit your needs, and if your usage stays under the monthly free usage limit, provide this solution at no cost. Start with Dynamic Maps to visualize a neighborhood. Use Data-driven styling to highlight school districts virtually or color-code counties by average home rental price. Help renters explore an area with Dynamic Street View and find relevant places like parks and restaurants with Nearby Search and Place Details.
+
+Pricing summary
+Values are based on the number of monthly calls and standard pricing for products shown above (which stays the same after the March 1, 2025 updates). This table is for example purposes only, individual results may vary based on usage. Free usage refers to monthly calls available at no cost.
+
+
+
+Easily find the right Google Maps Platform products for your solution  
+We've also simplified our product offerings by organizing them into easy-to-understand categories: Essentials, Pro, and Enterprise. These categories are based on how much a product can be customized and how many features are included, and are designed to cater to different business needs and usage patterns. Each category includes a number of monthly free calls, and you can easily mix and match products across categories.
+
+Essentials: Perfect for getting started. Integrate core features like Dynamic Maps or Place Details into an experience. Benefit from additional features, including low-cost, low-code ways to bring the familiar Google Maps interface to your applications, starting in early 2025. Get 10k free calls per SKU each month. 
+
+Pro: Take it to the next level with advanced features. Integrate Address Validation to detect inaccurate addresses or Nearby Search to help users find places near a point of interest. Get 5k free calls per SKU each month.
+
+Enterprise: Unlock maximum control and flexibility to transform your business. Access powerful tools like Route Optimization for fleet routing and Photorealistic 3D Tiles to create cutting-edge geospatial experiences. Get 1k free calls per SKU each month.
+
+What’s next?
+All these updates will take effect on March 1, 2025. Visit our pricing calculator to assess the impact of these changes. If you have any questions, please review our FAQs. If you’re an existing customer, we’ve started communicating these updates via emails and will continue to provide resources to help you through the transition. 
+
+We can't wait to see what you build next with Google Maps Platform. 
+
+*Free usage refers to monthly calls available at no cost.
+
+Clay cityscape
+Google Maps Platform
+Get going with Google Maps Platform
+Get started
+*Free usage refers to monthly calls available at no cost. Essentials Map Tiles APIs provide up to 100,000 calls at no cost per SKU per month.
+
+Follow us
+LinkedIn
+Twitter
+YouTube
+Github
+Helpful links
+Documentation
+FAQs
+Quick builder
+Keep up with the latest
+Subscribe to the Google Maps Platform newsletter today to receive product updates, insights, news, and more.
+First Name
+Last Name
+Business Email
+Company Name
+Job Title
+Phone
+Select Industry
+Select Country
+Yes, sign me up to receive communications from Google Maps Platform and Google Cloud.
+
+Yes
+
+No
+Your information will be used in accordance with Google's privacy policy. You may opt out at any time.
+Subscribe

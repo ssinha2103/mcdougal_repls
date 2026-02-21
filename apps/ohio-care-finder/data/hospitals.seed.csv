@@ -1,0 +1,26 @@
+id,name,system,address,city,county,state,zip,lat,lng,has_ld,nicu_level,website,last_verified
+1,Cleveland Clinic Main Campus,Cleveland Clinic,9500 Euclid Ave,Cleveland,Cuyahoga,OH,44195,41.503,-81.620,1,IV,https://my.clevelandclinic.org,2025-10-01
+2,University Hospitals Rainbow Babies & Children's,UH,11100 Euclid Ave,Cleveland,Cuyahoga,OH,44106,41.506,-81.605,1,IV,https://www.uhhospitals.org,2025-10-01
+3,MetroHealth Medical Center,MetroHealth,2500 MetroHealth Dr,Cleveland,Cuyahoga,OH,44109,41.448,-81.699,1,III,https://www.metrohealth.org,2025-09-15
+4,Akron Children's Hospital,Akron Children's,One Perkins Square,Akron,Summit,OH,44308,41.078,-81.518,1,IV,https://www.akronchildrens.org,2025-09-20
+5,Summa Health Akron Campus,Summa Health,525 East Market St,Akron,Summit,OH,44304,41.081,-81.512,1,II,https://www.summahealth.org,2025-09-15
+6,OhioHealth Riverside Methodist Hospital,OhioHealth,3535 Olentangy River Rd,Columbus,Franklin,OH,43214,40.037,-83.021,1,III,https://www.ohiohealth.com,2025-10-01
+7,Nationwide Children's Hospital,Nationwide,700 Children's Dr,Columbus,Franklin,OH,43205,39.951,-82.997,1,IV,https://www.nationwidechildrens.org,2025-10-01
+8,Mount Carmel East Hospital,Trinity Health,6001 East Broad St,Columbus,Franklin,OH,43213,39.963,-82.897,1,II,https://www.mountcarmelhealth.com,2025-09-10
+9,UC Health Medical Center,UC Health,234 Goodman St,Cincinnati,Hamilton,OH,45219,39.125,-84.506,1,IV,https://www.uchealth.com,2025-10-01
+10,Christ Hospital,Christ Hospital,2139 Auburn Ave,Cincinnati,Hamilton,OH,45219,39.127,-84.508,1,III,https://www.thechristhospital.com,2025-09-20
+11,Good Samaritan Hospital,TriHealth,375 Dixmyth Ave,Cincinnati,Hamilton,OH,45220,39.142,-84.527,1,II,https://www.trihealth.com,2025-09-15
+12,ProMedica Toledo Hospital,ProMedica,2142 N Cove Blvd,Toledo,Lucas,OH,43606,41.668,-83.559,1,III,https://www.promedica.org,2025-09-25
+13,Mercy Health St Vincent Medical Center,Mercy Health,2213 Cherry St,Toledo,Lucas,OH,43608,41.655,-83.545,1,II,https://www.mercy.com,2025-09-15
+14,Miami Valley Hospital,Premier Health,One Wyoming St,Dayton,Montgomery,OH,45409,39.744,-84.207,1,III,https://www.miamivalleyhospital.org,2025-10-01
+15,Dayton Children's Hospital,Dayton Children's,One Children's Plaza,Dayton,Montgomery,OH,45404,39.756,-84.210,1,III,https://www.childrensdayton.org,2025-09-20
+16,Kettering Health Main Campus,Kettering Health,3535 Southern Blvd,Kettering,Montgomery,OH,45429,39.686,-84.163,1,II,https://www.ketteringhealth.org,2025-09-10
+17,Aultman Hospital,Aultman Health,2600 Sixth St SW,Canton,Stark,OH,44710,40.784,-81.384,1,II,https://www.aultman.org,2025-09-15
+18,Mercy Medical Center,Bon Secours Mercy Health,1320 Mercy Dr NW,Canton,Stark,OH,44708,40.824,-81.399,1,II,https://www.mercy.com,2025-09-10
+19,St Elizabeth Youngstown Hospital,Mercy Health,1044 Belmont Ave,Youngstown,Mahoning,OH,44504,41.095,-80.666,1,II,https://www.mercy.com,2025-09-15
+20,Community Hospital,Independent,123 Elm St,Smalltown,Fayette,OH,43160,39.540,-83.430,0,None,https://example.org,2025-09-15
+21,Fairfield Medical Center,FMC Health,401 N Ewing St,Lancaster,Fairfield,OH,43130,39.720,-82.599,1,II,https://www.fmchealth.org,2025-09-10
+22,Licking Memorial Hospital,LMH Health,1320 W Main St,Newark,Licking,OH,43055,40.061,-82.435,1,II,https://www.lmhealth.org,2025-09-10
+23,OhioHealth Marion General Hospital,OhioHealth,1000 McKinley Park Dr,Marion,Marion,OH,43302,40.574,-83.158,1,II,https://www.ohiohealth.com,2025-09-05
+24,Blanchard Valley Hospital,BVH,1900 S Main St,Findlay,Hancock,OH,45840,41.031,-83.651,1,II,https://www.bvhealthsystem.org,2025-09-10
+25,Genesis HealthCare System,Genesis,2951 Maple Ave,Zanesville,Muskingum,OH,43701,39.956,-82.013,1,II,https://www.genesishcs.org,2025-09-05

@@ -1,0 +1,137 @@
+Awesome—here are **useful extra fields** you can add to the *Traffic Analytics* block, with the **exact JSON path (or formula)** to compute each value from your DataForSEO responses. I’ve shown paths for **Ranked Keywords → /live** (RK) since that’s what you pasted, and—where applicable—the **Domain Rank Overview → /live** (DRO) equivalents.
+
+---
+
+## Core add-ons
+
+1. **Avg CPC (Implied)**
+
+* **Formula:** `Traffic Cost ÷ ETV`
+* **RK paths:**
+
+  * Traffic Cost → `result[0].metrics.organic.estimated_paid_traffic_cost`
+  * ETV → `result[0].metrics.organic.etv`
+* **DRO paths:**
+
+  * Traffic Cost → `result[0].estimated_paid_traffic_cost`
+  * ETV → `result[0].etv`
+
+2. **Top-10 Coverage (%)**
+
+* **Formula:** `(pos_1 + pos_2_3 + pos_4_10) ÷ count × 100`
+* **RK path:** `result[0].metrics.organic.{pos_1,pos_2_3,pos_4_10,count}`
+
+3. **Top-3 Keywords (# / %)**
+
+* **Formula:**
+
+  * Count = `pos_1 + pos_2_3`
+  * Percent = `Count ÷ count × 100`
+* **RK path:** `result[0].metrics.organic.{pos_1,pos_2_3,count}`
+
+4. **Ranking Distribution (%)**
+
+* **Formula (per bucket):** `bucket ÷ count × 100`
+* **RK buckets:** `pos_1, pos_2_3, pos_4_10, pos_11_20, pos_21_30, pos_31_40, pos_41_50, pos_51_60, pos_61_70, pos_71_80, pos_81_90, pos_91_100`
+
+5. **Momentum (New / Up / Down / Lost)**
+
+* **Values:** absolute and % of total
+* **Formula:** `is_new ÷ count × 100`, etc.
+* **RK path:** `result[0].metrics.organic.{is_new,is_up,is_down,is_lost,count}`
+
+6. **Paid Presence (if any)**
+
+* **Paid Keywords:** `result[0].metrics.paid.count`
+* **Paid ETV:** `result[0].metrics.paid.etv`
+* **Paid Cost:** `result[0].metrics.paid.estimated_paid_traffic_cost`
+* **Mix % (visits):** `paid.etv ÷ (organic.etv + paid.etv) × 100`
+
+7. **Highest-Value Keyword (Ad-Eq)**
+
+* **Algorithm:** find `items[*].ranked_serp_element.serp_item.estimated_paid_traffic_cost` max; report keyword + value.
+* **Paths:**
+
+  * Value → `items[*].ranked_serp_element.serp_item.estimated_paid_traffic_cost`
+  * Keyword → `items[*].keyword_data.keyword`
+
+8. **Keyword Visits (Top KW)**
+
+* **Meaning:** visits from the single highest-value keyword.
+* **Path:** `items[*].ranked_serp_element.serp_item.etv` (take the same max item as above)
+
+9. **Branded Share (approx.)**
+
+* **Heuristic:** tokens from domain/brand (e.g., “mcdougall”, “mcdougall interactive”).
+* **Formula:** `% of items where keyword contains any brand token = branded_count ÷ items_count × 100`
+* **Paths:**
+
+  * Keyword text → `items[*].keyword_data.keyword`
+  * Items total → `result[0].items_count` (or the array length)
+
+10. **Long-Tail Share (approx.)**
+
+* **Heuristic:** keywords with `search_volume < N` (e.g., 200) **and** `token_count ≥ 3`.
+* **Paths:**
+
+  * Volume → `items[*].keyword_data.keyword_info.search_volume`
+  * Keyword string → `items[*].keyword_data.keyword` (count words)
+* **Formula:** `long_tail_count ÷ items_count × 100`
+
+11. **Avg Keyword Difficulty**
+
+* **Path:** `items[*].keyword_data.keyword_properties.keyword_difficulty`
+* **Formula:** mean over the items you pulled (use a sufficiently high `limit`).
+
+12. **Visibility Score (simple)**
+
+* **Custom index (0–100):**
+
+  ```
+  vis = (1.0*pos_1 + 0.9*pos_2_3 + 0.7*pos_4_10 +
+         0.4*pos_11_20 + 0.2*(pos_21_30+pos_31_40+pos_41_50) +
+         0.1*(pos_51_60+…+pos_91_100)) / count * 100
+  ```
+* **RK path:** use the same bucket fields as in #4.
+
+13. **ROI Ratio (if you compute revenue)**
+
+* **Formula:** `Projected Revenue ÷ Traffic Cost`
+* **Inputs:** your revenue model output; Traffic Cost from rollup (see #1 paths).
+
+14. **Country / Locale Stamp**
+
+* **Paths:**
+
+  * RK: `result[0].location_code`, `result[0].language_code`
+  * DRO: `result[0].location_code`, `result[0].language_code`
+* **Use:** render small badge so users know geo/lang scope of all metrics.
+
+---
+
+## Field name suggestions (2–3 words)
+
+* Avg CPC
+* Top-10 Coverage
+* Top-3 KWs
+* Rank Spread
+* Momentum (New/Up/Down/Lost)
+* Paid Mix
+* Top KW Value
+* Top KW Visits
+* Branded %
+* Long-Tail %
+* Avg KD
+* Visibility
+* ROI (Rev/Cost)
+* Locale
+
+---
+
+### Notes
+
+* For **domain-level totals**, prefer **DRO** where available (one authoritative number). The RK rollup gives the same totals but RK is also great for distributions and per-keyword fields.
+* Any share/percent field should gracefully handle `count = 0` or `etv = 0`.
+* For branded/long-tail, show a “method: heuristic” tooltip and make thresholds configurable.
+
+If you want, tell me which of these you want in the UI first and I’ll sequence them (and, if needed, map to your existing component names).

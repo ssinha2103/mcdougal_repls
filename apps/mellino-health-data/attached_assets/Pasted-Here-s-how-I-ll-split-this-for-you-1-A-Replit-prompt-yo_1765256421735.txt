@@ -1,0 +1,501 @@
+Here’s how I’ll split this for you:
+
+1. A **Replit prompt** you can paste into the Replit AI/Agent.
+2. An **updated Python script** that:
+
+   * Still downloads the 3 CMS datasets
+   * Adds a **geocoding step** to compute `geo_lat` / `geo_lng` for Ohio hospitals using a Google Maps–style geocoding service (plug in your key via env var).
+
+---
+
+## 1️⃣ Replit prompt to build the Ohio maternity care finder
+
+Copy–paste this whole block into Replit as your “build this project” prompt:
+
+```text
+You are building a full-stack web app called **Ohio Maternity Care Finder**.
+
+Goal:
+Help pregnant people in Ohio find safe, appropriate maternity hospitals based on:
+- Where they live (ZIP / city / county)
+- Simple pregnancy risk info (e.g., low-risk vs high-risk / prior C-section / chronic conditions)
+- Objective maternity-related quality data from CMS
+
+Tech stack:
+- Python 3 backend using **FastAPI** (or Flask if you prefer, but FastAPI is ideal)
+- **SQLite** as the local database
+- Simple frontend:
+  - Option A: React + Vite + Tailwind
+  - Option B: Server-rendered HTML templates with HTMX / vanilla JS
+- Run in a single Replit project
+
+Data ingestion:
+- There is a Python script named `scripts/download_cms_maternity_data.py` which:
+  - Downloads 3 CMS datasets via API:
+    - Hospital General Information (`xubh-q36u`)
+    - Maternal Health - Hospital (`nrdb-3fcy`)
+    - Birthing Friendly Hospitals with Geocoded Addresses (`hbf-map`)
+  - Saves them as:
+    - `data/hospital_general_information.csv`
+    - `data/maternal_health_hospital.csv`
+    - `data/birthing_friendly_hospitals.csv`
+  - Additionally, after download, it creates a file:
+    - `data/hospital_general_information_geocoded.csv`
+      which contains all rows plus `geo_lat` and `geo_lng` columns for Ohio hospitals.
+
+- Treat this script as a **data pipeline tool**. I should be able to run:
+    `python scripts/download_cms_maternity_data.py`
+  to refresh the local CSVs and geocoded output. Design the project so this script can be run **periodically** (e.g., via Replit deployments / cron later) without breaking the web app.
+
+Data model:
+- Build a small ETL step on app startup (or a CLI command) that:
+  1. Reads `data/hospital_general_information_geocoded.csv`
+  2. Reads `data/maternal_health_hospital.csv`
+  3. Reads `data/birthing_friendly_hospitals.csv`
+  4. Filters to **Ohio** hospitals only
+  5. Joins datasets on the CMS provider/hospital ID (e.g., CCN / provider_id)
+  6. Creates a SQLite table, e.g. `maternity_hospitals` with columns like:
+     - `id` (internal)
+     - `ccn` / `provider_id`
+     - `hospital_name`
+     - `address`
+     - `city`
+     - `state`
+     - `zip_code`
+     - `county`
+     - `geo_lat`
+     - `geo_lng`
+     - maternity-specific fields from the Maternal Health dataset:
+       - severe maternal morbidity measures
+       - C-section rate
+       - low-risk C-section rate (if available)
+       - related outcome metrics
+     - flags such as:
+       - `is_birthing_friendly`
+       - facility type / ownership if helpful
+  7. The ETL should be idempotent: if the DB already exists and is up to date, it shouldn’t duplicate rows.
+
+Backend API:
+- Expose JSON endpoints such as:
+
+  1. `GET /api/hospitals/search`
+     - Query params:
+       - `zip`: string (required)
+       - `max_distance_km`: number (default 80 km / 50 miles)
+       - `risk_level`: one of `low`, `medium`, `high`
+       - optional booleans, e.g. `prefer_birthing_friendly=true`
+     - Behavior:
+       - Use ZIP (or ZIP centroid) to compute distance to each hospital (Haversine distance using `geo_lat` and `geo_lng`)
+       - Filter to hospitals in Ohio within `max_distance_km`
+       - Ranking:
+         - Always factor in distance (closer is better)
+         - For `low` risk:
+           - Weight lower C-section / low-risk C-section rate more
+         - For `high` risk:
+           - Weight outcome metrics and presence of higher-level services more (you can use proxy fields available in CMS data)
+       - Return a list of hospital JSON objects with:
+         - name, address, distance_km
+         - key quality metrics (C-section rate, SMM, outcome summary)
+         - `is_birthing_friendly`
+         - lat / lng
+
+  2. `GET /api/hospitals/{id}`
+     - Returns detailed info for one hospital.
+
+  3. (Optional for later) `GET /api/metrics/deserts`
+     - Return simple summary of “maternity care deserts” by county or ZIP, based on counts of nearby hospitals.
+
+Frontend:
+- Create a single-page UI at `/` with:
+  - A simple form:
+    - Input for location:
+      - Option A: ZIP code text box
+      - Option B (bonus): allow city or county as well
+    - A few simple risk questions:
+      - “Is this pregnancy considered high-risk?” yes/no
+      - “Have you had a prior C-section?” yes/no
+      - “Any of these conditions?” (checklist: high blood pressure, diabetes, twins, etc.) – even if these only map to a simple risk_level for now.
+    - Max travel distance slider or dropdown
+
+  - On submit:
+    - Call the `/api/hospitals/search` endpoint
+    - Show results as:
+      - A list of cards with:
+        - Hospital name
+        - Distance
+        - High-level quality “grade” or labels (e.g. “Lower C-section rate”, “Birthing Friendly”)
+      - (Optional but ideal) A simple map view using a JS mapping library (Leaflet or similar) plotting hospital markers with lat/lng.
+
+  - UX details:
+    - If no hospitals found within the distance: show a clear message like “There are no birthing hospitals within X miles of this ZIP – this is a maternity care desert” and maybe show the nearest few anyway.
+    - Keep language plain and supportive; avoid medical jargon.
+
+Scheduling / periodic update:
+- Structure the project so that:
+  - The downloader script `scripts/download_cms_maternity_data.py` is independent of the web server.
+  - There is a clear single command to refresh data:
+      `python scripts/download_cms_maternity_data.py`
+  - Optionally provide a `Makefile` or `tasks.py` helper with a `refresh_data` command.
+- Assume I will set up a Replit deployment with a cron job later to run that command periodically.
+
+Testing & docs:
+- Include at least:
+  - A short `README.md` explaining:
+    - what the app does
+    - how to set up environment variables (for geocoding API key)
+    - how to run the downloader script
+    - how to start the web server
+  - A couple of unit tests for:
+    - distance calculation
+    - simple ranking logic (e.g., high-risk vs low-risk ordering)
+
+Important:
+- Do not hardcode any secrets. Use environment variables for API keys (e.g., `GOOGLE_MAPS_API_KEY` for geocoding).
+- Keep everything in a single Replit project.
+```
+
+---
+
+## 2️⃣ Updated Python script with geocoding (lat/lng for Ohio hospitals)
+
+Below is your original script, extended so that after downloading the CMS datasets, it:
+
+* Geocodes **Ohio hospitals** using a Google Maps–style Geocoding API.
+* Writes a new file: `data/hospital_general_information_geocoded.csv`
+  containing all hospitals plus `geo_lat` and `geo_lng` columns for rows in Ohio.
+
+> 🔐 You’ll need to set an environment variable in Replit:
+> `GOOGLE_MAPS_API_KEY` = your Google Maps Geocoding API key
+> (or any compatible geocoding endpoint – the function is easy to adjust).
+
+```python
+"""
+Download maternity-relevant hospital data from CMS Provider Data Catalog
+and geocode Ohio hospitals to get latitude/longitude.
+
+Datasets pulled (nationwide):
+- Hospital General Information (xubh-q36u)
+- Maternal Health - Hospital (nrdb-3fcy)
+- Birthing Friendly Hospitals with Geocoded Addresses (hbf-map)
+
+Outputs:
+- data/hospital_general_information.csv
+- data/maternal_health_hospital.csv
+- data/birthing_friendly_hospitals.csv
+- data/hospital_general_information_geocoded.csv   <-- adds geo_lat / geo_lng for OH
+
+Requirements:
+    pip install requests
+Environment:
+    export GOOGLE_MAPS_API_KEY=your_real_api_key
+"""
+
+import os
+import csv
+import time
+from io import StringIO
+from typing import Optional, Tuple
+
+import requests
+
+# -----------------------------
+# Configuration
+# -----------------------------
+
+OUTPUT_DIR = "data"
+
+# CMS dataset IDs we care about
+DATASETS = {
+    "hospital_general_information": "xubh-q36u",
+    "maternal_health_hospital": "nrdb-3fcy",
+    "birthing_friendly_hospitals": "hbf-map",
+}
+
+METASTORE_BASE = (
+    "https://data.cms.gov/provider-data/api/1/metastore/schemas/dataset/items"
+)
+
+# Geocoding service (Google Maps Geocoding API style)
+GOOGLE_GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
+GOOGLE_MAPS_API_KEY = os.environ.get("GOOGLE_MAPS_API_KEY")
+
+
+# -----------------------------
+# Helper functions - CMS
+# -----------------------------
+
+
+def get_download_url_for_dataset(dataset_id: str) -> str:
+    """
+    Call CMS metastore API to get the CSV download URL for a dataset.
+
+    It looks at the `distribution` array and returns the first `downloadURL`
+    it finds (either at distribution[i]['downloadURL'] or
+    distribution[i]['data']['downloadURL']).
+    """
+    url = f"{METASTORE_BASE}/{dataset_id}?show-reference-ids=true"
+    print(f"Fetching metadata for dataset {dataset_id} ...")
+    resp = requests.get(url, timeout=60)
+    resp.raise_for_status()
+    meta = resp.json()
+
+    distributions = meta.get("distribution", [])
+    if not isinstance(distributions, list) or not distributions:
+        raise RuntimeError(f"No distributions found for dataset {dataset_id}")
+
+    for dist in distributions:
+        # Pattern 1: downloadURL at top level
+        if isinstance(dist, dict) and "downloadURL" in dist:
+            return dist["downloadURL"]
+
+        # Pattern 2: nested in dist['data']['downloadURL']
+        data_obj = dist.get("data") if isinstance(dist, dict) else None
+        if isinstance(data_obj, dict) and "downloadURL" in data_obj:
+            return data_obj["downloadURL"]
+
+    raise RuntimeError(
+        f"Could not find a downloadURL in distributions for dataset {dataset_id}"
+    )
+
+
+def download_csv_text(csv_url: str) -> str:
+    """
+    Download raw CSV text from a URL.
+    """
+    print(f"Downloading CSV from {csv_url} ...")
+    resp = requests.get(csv_url, timeout=120)
+    resp.raise_for_status()
+    resp.encoding = resp.apparent_encoding or "utf-8"
+    return resp.text
+
+
+def save_csv(text: str, output_path: str) -> int:
+    """
+    Save CSV text to a file and return number of data rows (excluding header).
+    """
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+    # Just write raw text out; this preserves the exact structure from CMS.
+    with open(output_path, "w", encoding="utf-8", newline="") as f:
+        f.write(text)
+
+    # Quick row count + preview using csv.DictReader
+    reader = csv.DictReader(StringIO(text))
+    rows = list(reader)
+    row_count = len(rows)
+    col_count = len(reader.fieldnames or [])
+
+    print(
+        f"Saved {output_path} "
+        f"(rows: {row_count:,}, columns: {col_count})"
+    )
+
+    # Optional: show a tiny preview of the first row’s keys
+    if rows:
+        sample = rows[0]
+        preview_cols = list(sample.keys())[:10]
+        print("  Sample columns:", ", ".join(preview_cols))
+    else:
+        print("  WARNING: CSV appears to have no data rows.")
+
+    return row_count
+
+
+def fetch_and_save_dataset(slug: str, dataset_id: str) -> None:
+    """
+    High-level helper: resolve download URL, download CSV, and save it.
+    """
+    try:
+        download_url = get_download_url_for_dataset(dataset_id)
+        csv_text = download_csv_text(download_url)
+        output_path = os.path.join(OUTPUT_DIR, f"{slug}.csv")
+        save_csv(csv_text, output_path)
+    except Exception as e:
+        print(f"ERROR processing dataset {slug} ({dataset_id}): {e}")
+
+
+# -----------------------------
+# Helper functions - Geocoding
+# -----------------------------
+
+
+def geocode_address(full_address: str) -> Optional[Tuple[float, float]]:
+    """
+    Geocode a free-text address into (lat, lng).
+
+    This uses a Google Maps–style Geocoding API. You must set:
+        GOOGLE_MAPS_API_KEY
+    in your environment.
+
+    You can swap this implementation to use any other geocoding service.
+    """
+    if not GOOGLE_MAPS_API_KEY:
+        print("  [Geocode] No GOOGLE_MAPS_API_KEY set; skipping geocoding.")
+        return None
+
+    params = {
+        "address": full_address,
+        "key": GOOGLE_MAPS_API_KEY,
+    }
+
+    try:
+        resp = requests.get(GOOGLE_GEOCODE_URL, params=params, timeout=30)
+        resp.raise_for_status()
+    except Exception as e:
+        print(f"  [Geocode] HTTP error for '{full_address}': {e}")
+        return None
+
+    data = resp.json()
+    status = data.get("status")
+    if status != "OK":
+        print(f"  [Geocode] FAILED for '{full_address}' (status={status})")
+        return None
+
+    try:
+        loc = data["results"][0]["geometry"]["location"]
+        lat = float(loc["lat"])
+        lng = float(loc["lng"])
+        return lat, lng
+    except Exception as e:
+        print(f"  [Geocode] Parse error for '{full_address}': {e}")
+        return None
+
+
+def geocode_ohio_hospitals(
+    input_csv: str,
+    output_csv: str,
+    state_filter: str = "OH",
+    sleep_seconds: float = 0.15,
+) -> None:
+    """
+    Read hospital_general_information CSV, geocode rows in the target state,
+    and write a new CSV with extra columns: geo_lat, geo_lng.
+
+    - Only rows where the state column == state_filter are geocoded.
+    - Existing geo_lat/geo_lng values (if any) are preserved.
+    """
+    if not os.path.exists(input_csv):
+        print(f"[Geocode] Hospital CSV {input_csv} not found; skipping geocoding.")
+        return
+
+    print(f"=== Geocoding hospitals in {state_filter} from {input_csv} ===")
+    with open(input_csv, encoding="utf-8") as f_in:
+        reader = csv.DictReader(f_in)
+        rows = list(reader)
+        fieldnames = list(reader.fieldnames or [])
+
+    # Add new columns if they don't exist yet
+    if "geo_lat" not in fieldnames:
+        fieldnames.append("geo_lat")
+    if "geo_lng" not in fieldnames:
+        fieldnames.append("geo_lng")
+
+    def pick(row, *options: str) -> str:
+        """Utility to get the first non-empty value from several possible column names."""
+        for name in options:
+            if name in row and row[name]:
+                return row[name]
+        return ""
+
+    geocoded_count = 0
+    total_in_state = 0
+
+    for row in rows:
+        state_val = pick(
+            row,
+            "state",
+            "provider_state",
+            "facility_state",
+            "state_name",
+        ).upper()
+
+        if state_val != state_filter.upper():
+            # Not in our target state, keep row as-is
+            continue
+
+        total_in_state += 1
+
+        # Skip if already has coordinates
+        if row.get("geo_lat") and row.get("geo_lng"):
+            continue
+
+        address = pick(
+            row,
+            "address",
+            "address_1",
+            "address_line_1",
+            "provider_street_address",
+            "hospital_address",
+            "physical_address",
+        )
+        city = pick(row, "city", "provider_city", "facility_city")
+        zip_code = pick(row, "zip_code", "zip", "provider_zip_code", "facility_zip")
+
+        if not address or not city:
+            print("  [Geocode] Skipping row with missing address/city")
+            continue
+
+        full_address = f"{address}, {city}, {state_filter} {zip_code}".strip()
+        print(f"  [Geocode] Geocoding: {full_address}")
+
+        coords = geocode_address(full_address)
+        if coords:
+            lat, lng = coords
+            row["geo_lat"] = f"{lat:.6f}"
+            row["geo_lng"] = f"{lng:.6f}"
+            geocoded_count += 1
+
+        # Be a good API citizen
+        time.sleep(sleep_seconds)
+
+    print(
+        f"[Geocode] Geocoded {geocoded_count} of {total_in_state} "
+        f"{state_filter} hospitals."
+    )
+
+    os.makedirs(os.path.dirname(output_csv), exist_ok=True)
+    with open(output_csv, "w", encoding="utf-8", newline="") as f_out:
+        writer = csv.DictWriter(f_out, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    print(f"[Geocode] Saved geocoded hospitals CSV to {output_csv}")
+
+
+# -----------------------------
+# Main
+# -----------------------------
+
+
+def main():
+    print("=== CMS maternity-related data downloader ===")
+    print(f"Output directory: {OUTPUT_DIR}")
+    print()
+
+    # 1. Download all raw CMS CSVs
+    for slug, dataset_id in DATASETS.items():
+        print(f"--- {slug} ({dataset_id}) ---")
+        fetch_and_save_dataset(slug, dataset_id)
+        print()
+
+    # 2. Geocode Ohio hospitals in the hospital_general_information file
+    #    and write a new geocoded version.
+    hgi_input = os.path.join(OUTPUT_DIR, "hospital_general_information.csv")
+    hgi_output = os.path.join(
+        OUTPUT_DIR, "hospital_general_information_geocoded.csv"
+    )
+    geocode_ohio_hospitals(hgi_input, hgi_output)
+
+    print("Done. Inspect the CSVs in the 'data' folder to see all available fields.")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+If you want, next step I can help you:
+
+* Design the **SQLite schema + join logic** for those three CMS files
+* Or sketch the **FastAPI endpoints + ranking formula** concretely so the Replit agent has even more precise instructions.

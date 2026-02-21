@@ -1,0 +1,75 @@
+Prompt for Replit (Ghostwriter)
+
+Build a Python FastAPI + SQLite + Jinja + Leaflet app called “Ohio Maternity Access Map” that journalists can cite and link to. It must be production-ready in a single Replit, with clean code, comments, tests, and seed data so it runs immediately.
+
+Summary / Requirements
+
+Purpose: Show Ohio maternity access: which hospitals provide Labor & Delivery (L&D), each hospital’s NICU level (II/III/IV), closures since 2022, and simple drive-time from a ZIP search to the nearest active L&D/NICU.
+
+Tech stack:
+
+FastAPI + Uvicorn (app)
+
+Jinja2 templates (SSR pages)
+
+SQLite via SQLModel or SQLAlchemy
+
+Leaflet (map), Leaflet MarkerCluster, Turf.js (distance), minimal vanilla JS
+
+Data storage (SQLite tables):
+
+hospitals
+
+id (PK), name, system, address, city, county, state, zip, lat, lng, has_ld (bool), nicu_level (TEXT: “None/II/III/IV”), website, last_verified (DATE)
+
+closures
+
+id (PK), hospital_id (FK), closure_date (DATE), service (TEXT: “L&D” or “NICU”), notes, source_url
+
+sources
+
+id (PK), hospital_id (FK, nullable), label, url, verified_at (DATE)
+
+Seed CSVs in /data and an init script to populate DB on first run.
+
+.env support with OPENROUTESERVICE_API_KEY (optional). If missing, app still works (straight-line “as-the-crow-flies” distance); with key, enable real drive-time (isochrone) fetch.
+
+Routes:
+
+GET / → Home: Ohio map with filters (L&D on/off, NICU level, show closures). ZIP search bar.
+
+GET /hospital/{id} → Hospital detail page: data card + small map, outbound links, related sources, nearest higher-level NICU suggestion.
+
+GET /api/search?zip=44114&need=nicu3 → JSON: nearest hospitals for a ZIP; need can be ld, nicu2, nicu3, nicu4.
+
+GET /api/closures → JSON list of closures (since 2022).
+
+GET /download/{table} → CSV export for hospitals or closures.
+
+GET /methodology → Plain-English methodology + citation guidance.
+
+GET /about → Credits and disclaimers (not medical advice).
+
+Front-end (Jinja + JS):
+
+Leaflet base map (MapLibre/OSM tiles), marker clusters.
+
+Filter controls: Has L&D, NICU Level (Any/II/III/IV), Show closures.
+
+ZIP lookup: geocode with a built-in Ohio ZIP → lat/lng mini-CSV (no external calls). Show nearest matches + estimated drive-time if ORS key provided; else straight-line distance and an “estimated time” (distance/45 mph).
+
+“Download CSV” buttons on the map and timeline.
+
+Timeline widget (vanilla) listing closures (date, facility, service, link).
+
+Utility:
+
+Methodology box on home page explaining fields and data provenance.
+
+Plain CSV templates so the client can update data easily.
+
+Tests:
+
+Pytest for /api/search, /api/closures, and DB init.
+
+Project Structure

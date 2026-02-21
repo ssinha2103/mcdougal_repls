@@ -1,0 +1,137 @@
+Here’s a copy-paste, **single prompt** you can give any AI website/app builder to generate a clean, responsive **Tools Directory** web app that matches your gradient/brand and UX:
+
+---
+
+### Prompt: Build a “Free SEO Tools Directory” Web App
+
+**Goal**
+Create a lightweight, responsive web app that lists SEO tools as compact cards with search, category filter, and sort. It must render a **static list first** (server or HTML) and then progressively enhance with JavaScript for filtering/sorting (so content is visible even if JS is blocked). Keep the look calm/minimal with a blue gradient hero area and blue CTAs.
+
+---
+
+#### 1) Tech + Structure
+
+* Use **vanilla HTML/CSS/JS** (no frameworks).
+* Single page `index.html` with one CSS file and one JS file (or inline `<style>` and `<script>` acceptable).
+* SEO-friendly: meaningful headings (`h1` for page title, `h2` optional for section), semantic cards as `<article>`.
+
+---
+
+#### 2) Brand & Style
+
+* **Font:** `Montserrat, Arial, sans-serif`
+* **Primary blue:** `#0e73b8`
+* **Accent blue:** `#46b9fd`
+* **Body text:** `#3b4750`
+* **Muted text:** `#687889`
+* **Card border:** `#e8edf3`
+* **Hero gradient:** `linear-gradient(135deg, #f2f8ff 0%, #eaf6ff 50%, #ffffff 100%)`
+* **CTA button gradient:** `linear-gradient(135deg, #46b9fd, #0e73b8)`
+* **Shadows:** subtle, e.g. `box-shadow: 0 10px 28px rgba(0,0,0,.06)`
+
+---
+
+#### 3) Layout
+
+* **Hero** (rounded 20px, gradient background) with page title and short description.
+* **Controls row:** Search input, Category select, Sort select.
+
+  * Desktop: 3 columns (search grows), gap 10px.
+  * Mobile (<820px): stack vertically.
+* **Cards grid:** responsive CSS Grid
+
+  * Desktop: 3 columns (min card width ~280–320px)
+  * Tablet: 2 columns
+  * Mobile: 1 column
+* **Card content:**
+
+  * Name (linked), short description, small tag chips (categories), “Open Tool” CTA.
+  * Rounded corners (16px), 1px border, white background, subtle shadow.
+  * Keep cards compact and legible.
+
+---
+
+#### 4) Accessibility & UX
+
+* Inputs have labels or `aria-label`.
+* Keyboard-friendly: tab order, visible focus styles (`outline: 2px solid rgba(14,115,184,.18)` on inputs/links/buttons).
+* High contrast links and buttons.
+* `aria-live="polite"` on the grid container to announce updates after filter/sort.
+* Cards use `<article>` and tool names in `<h3>`.
+
+---
+
+#### 5) Data & Rendering
+
+* **Static-first:** Output the initial 9+ cards **as HTML** in the page.
+* Each card includes `data-*` attributes for filtering/sorting:
+
+  * `data-name="AI SEO Page Score"`
+  * `data-desc="Analyze URL for E-E-A-T..."`
+  * `data-cat="Analysis,On-Page"` (comma-separated)
+  * `data-ts="9"` (numeric “newness” for sorting)
+* **Progressive enhancement JS:**
+
+  * On input in search box, filter by substring match in `data-name`, `data-desc`, or `data-cat`.
+  * Category select filters by exact token match in `data-cat`.
+  * Sort select:
+
+    * `az`: ascending by `data-name`
+    * `za`: descending by `data-name`
+    * `new`: descending by `data-ts`
+  * Filtering should toggle `hidden` class (e.g., `display:none`) on cards.
+  * Sorting should **reorder DOM nodes** inside the grid (appendChild in new order).
+  * No frameworks or virtual DOM—just DOM APIs.
+
+---
+
+#### 6) Initial Tools (seed data)
+
+Include at least these 9 items as cards (use exact names/links; feel free to refine descriptions to ~12–24 words):
+
+1. **Keyword Combiner** – [https://www.mcdougallinteractive.com/free-seo-tools/keyword-combiner/](https://www.mcdougallinteractive.com/free-seo-tools/keyword-combiner/) — cat: Utilities, Content — ts: 1
+2. **Word Counter** – [https://www.mcdougallinteractive.com/free-seo-tools/word-counter/](https://www.mcdougallinteractive.com/free-seo-tools/word-counter/) — cat: Utilities, Content — ts: 2
+3. **AI SEO Page Score** – [https://www.mcdougallinteractive.com/free-seo-tools/ai-seo-page-score/](https://www.mcdougallinteractive.com/free-seo-tools/ai-seo-page-score/) — cat: Analysis, On-Page — ts: 3
+4. **SERP Snippet Audit** – [https://www.mcdougallinteractive.com/free-seo-tools/serp-snippet-audit-tool/](https://www.mcdougallinteractive.com/free-seo-tools/serp-snippet-audit-tool/) — cat: On-Page, Analysis — ts: 4
+5. **Header Hierarchy** – [https://www.mcdougallinteractive.com/free-seo-tools/header-hierarchy-tool/](https://www.mcdougallinteractive.com/free-seo-tools/header-hierarchy-tool/) — cat: On-Page, Technical — ts: 5
+6. **Link Auditor** – [https://www.mcdougallinteractive.com/free-seo-tools/link-auditor-tool/](https://www.mcdougallinteractive.com/free-seo-tools/link-auditor-tool/) — cat: Technical, On-Page — ts: 6
+7. **Intent Discover** – [https://www.mcdougallinteractive.com/free-seo-tools/intent-discover/](https://www.mcdougallinteractive.com/free-seo-tools/intent-discover/) — cat: Analysis, Content — ts: 7
+8. **YouTube Insight Tool** – [https://www.mcdougallinteractive.com/free-seo-tools/youtube-insight-tool/](https://www.mcdougallinteractive.com/free-seo-tools/youtube-insight-tool/) — cat: YouTube, Content — ts: 8
+9. **SEO Headline Pro** – [https://www.mcdougallinteractive.com/free-seo-tools/seo-headline-pro/](https://www.mcdougallinteractive.com/free-seo-tools/seo-headline-pro/) — cat: Content, On-Page — ts: 9
+
+---
+
+#### 7) Visual Details (cards & controls)
+
+* **Card title:** `font-size: 1.08–1.12rem; font-weight: 700; color: #0e73b8;`
+* **Description:** `color: #687889; line-height: 1.5;`
+* **Chips:** pill style, `font-size: .78rem; border: 1px solid #e8edf3; color: #0e73b8; background: #fff;`
+* **CTA button:** gradient (`#46b9fd` → `#0e73b8`), `font-weight: 800`, rounded (10px), shadow, “Open Tool”.
+* **Inputs/Selects:** rounded (12px), border `#e8edf3`, subtle shadow, placeholder gray, full width.
+
+---
+
+#### 8) Performance
+
+* Use system/Google fonts (Montserrat via CDN only if needed).
+* Minimize CSS/JS; no heavy libraries.
+* No images required (optional SVG icons if tiny).
+
+---
+
+#### 9) Extensibility (to 50+ tools)
+
+* Document how to add a new tool: duplicate a card block and set `data-*` attributes.
+* Optional: add a small JSON array and a build script to pre-generate HTML cards, but **final output must still include cards in the HTML** for SEO and no-JS fallback.
+
+---
+
+#### 10) Deliverables
+
+* `index.html` containing the hero, controls, and initial card grid (with data attributes).
+* Inline or external CSS/JS that exactly match the colors and gradient above.
+* Clean, commented code.
+
+---
+
+**Design intent recap:** airy gradient header, white cards with soft shadows, strong blue links/buttons, minimal chrome, fast and accessible.

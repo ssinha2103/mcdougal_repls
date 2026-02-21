@@ -1,0 +1,24 @@
+node_modules
+dist
+.DS_Store
+server/public
+vite.config.ts.*
+*.tar.gz
+
+# Environment and secrets
+.env
+.env.local
+.env.production
+gcs-credentials.json
+google-credentials.json
+
+# Docker
+docker-compose.override.yml
+
+# Logs
+*.log
+npm-debug.log*
+
+# Database backups
+*.sql
+backup.sql

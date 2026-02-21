@@ -1,0 +1,45 @@
+Here’s a simplified, **human-readable set of column ideas** for your `Traffic Analytics` section and a **few additional sections** you can add. I’ve also included **only the most practical and relevant metrics** that are easy to extract from APIs like DataForSEO or similar sources.
+
+---
+
+## ✅ **Final Traffic Analytics Columns (5–6 Only)**
+
+| Column Name          | Meaning                                             | How to Get It                                                  |
+| -------------------- | --------------------------------------------------- | -------------------------------------------------------------- |
+| **Organic Traffic**  | Monthly visits from Google organic search           | `etv` from `metrics.organic.etv` (DataForSEO)                  |
+| **Ad Value**         | Cost to buy same traffic via ads (aka Traffic Cost) | `estimated_paid_traffic_cost`                                  |
+| **Avg CPC**          | Average cost per click (if paid ads were run)       | `estimated_paid_traffic_cost ÷ etv`                            |
+| **Top-10 %**         | % of keywords in Google top 10 results              | Count of keywords where `position <= 10` ÷ Total keyword count |
+| **Visibility Score** | Overall visibility across all keywords              | Can be custom or derived from keyword rank distribution        |
+| **Branded %**        | % of traffic coming from branded keywords           | From keyword filtering; not always available in DataForSEO     |
+
+---
+
+## ➕ **Additional Section Suggestions**
+
+### 🔍 **Ranking Snapshot**
+
+| Column Name    | What It Shows                         |
+| -------------- | ------------------------------------- |
+| **Top-3 KWs**  | Keywords ranking #1 to #3             |
+| **Top-10 KWs** | Keywords in Top 10                    |
+| **Pos 11–20**  | Keywords ranking on page 2            |
+| **KWs Gained** | Keywords newly entered search results |
+| **KWs Lost**   | Keywords no longer ranking            |
+
+**🟩 Source**: DataForSEO `ranked_keywords` endpoint — group by `position` ranges.
+
+---
+
+### 🌱 **Growth Snapshot**
+
+| Column Name      | What It Shows                        |
+| ---------------- | ------------------------------------ |
+| **Traffic Δ**    | Change in ETV compared to last month |
+| **Value Δ**      | Change in Traffic Cost (Ad Value)    |
+| **KW Δ**         | Net keyword gain/loss                |
+| **Top KWs Δ**    | Gain/loss of top 10 rankings         |
+| **New Keywords** | Keywords ranked for the first time   |
+
+You can calculate these by saving monthly snapshots and comparing.
+

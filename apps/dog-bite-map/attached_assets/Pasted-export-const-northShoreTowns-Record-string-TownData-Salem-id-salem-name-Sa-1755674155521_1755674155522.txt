@@ -1,0 +1,222 @@
+export const northShoreTowns: Record<string, TownData> = {
+  Salem: {
+    id: 'salem',
+    name: 'Salem',
+    center: [-70.8967, 42.5195],
+    animalControl: {
+      name: 'Scott Considine',
+      phone: '(978) 744-0171 x50121'
+    },
+    police: { phone: '(978) 744-1212' },
+    clerk: { phone: '(978) 745-9595' }
+  },
+  Beverly: {
+    id: 'beverly',
+    name: 'Beverly',
+    center: [-70.8800, 42.5584],
+    animalControl: {
+      name: 'Matt Lipinski',
+      phone: '(978) 605-2361'
+    },
+    police: { phone: '(978) 922-1212' },
+    clerk: { phone: '(978) 605-2324' }
+  },
+  Lynn: {
+    id: 'lynn',
+    name: 'Lynn',
+    center: [-70.9494, 42.4668],
+    animalControl: {
+      name: '', // name not published on official page
+      phone: '(781) 477-4385'
+    },
+    police: { phone: '(781) 595-2000' },
+    clerk: { phone: '(781) 598-4000' }
+  },
+  Peabody: {
+    id: 'peabody',
+    name: 'Peabody',
+    center: [-70.9286, 42.5278],
+    animalControl: {
+      name: 'Lilian (Lily) Pinto',
+      phone: '(978) 538-6340'
+    },
+    police: { phone: '(978) 538-6300' },
+    clerk: { phone: '(978) 538-5756' }
+  },
+  Danvers: {
+    id: 'danvers',
+    name: 'Danvers',
+    center: [-70.9300, 42.5751],
+    animalControl: {
+      name: '',
+      phone: '(978) 777-0001 x3023'
+    },
+    police: { phone: '(978) 774-1212' },
+    clerk: { phone: '(978) 777-0001' }
+  },
+  Marblehead: {
+    id: 'marblehead',
+    name: 'Marblehead',
+    center: [-70.8578, 42.5001],
+    animalControl: {
+      name: 'Betsy Cruger',
+      phone: '(781) 631-1212'
+    },
+    police: { phone: '(781) 631-1212' },
+    clerk: { phone: '(781) 631-0000' } // CHECK (town hall main)
+  },
+  Swampscott: {
+    id: 'swampscott',
+    name: 'Swampscott',
+    center: [-70.9178, 42.4751],
+    animalControl: {
+      name: '',
+      phone: '(781) 595-1111'
+    },
+    police: { phone: '(781) 595-1111' },
+    clerk: { phone: '(781) 596-4167' }
+  },
+  Nahant: {
+    id: 'nahant',
+    name: 'Nahant',
+    center: [-70.9556, 42.4201],
+    animalControl: {
+      name: '',
+      phone: '(781) 230-0060'
+    },
+    police: { phone: '(781) 581-1212' },
+    clerk: { phone: '(781) 581-0017' } // CHECK
+  },
+  Saugus: {
+    id: 'saugus',
+    name: 'Saugus',
+    center: [-71.0101, 42.4668],
+    animalControl: {
+      name: '',
+      phone: '(781) 231-4176'
+    },
+    police: { phone: '(781) 941-1199' },
+    clerk: { phone: '(781) 231-4101' }
+  },
+  Revere: {
+    id: 'revere',
+    name: 'Revere',
+    center: [-71.0128, 42.4084],
+    animalControl: {
+      name: '',
+      phone: '(781) 286-8345'
+    },
+    police: { phone: '(781) 284-1212' },
+    clerk: { phone: '(781) 286-8160' }
+  },
+  Melrose: {
+    id: 'melrose',
+    name: 'Melrose',
+    center: [-71.0617, 42.4584],
+    animalControl: {
+      name: '',
+      phone: '(781) 979-4102'
+    },
+    police: { phone: '(781) 665-1212' },
+    clerk: { phone: '(781) 979-4113' }
+  },
+  Wakefield: {
+    id: 'wakefield',
+    name: 'Wakefield',
+    center: [-71.0723, 42.5001],
+    animalControl: {
+      name: '',
+      phone: '(781) 231-0474'
+    },
+    police: { phone: '(781) 245-1212' },
+    clerk: { phone: '(781) 246-6383' }
+  },
+  Reading: {
+    id: 'reading',
+    name: 'Reading',
+    center: [-71.0951, 42.5251],
+    animalControl: {
+      name: '',
+      phone: '(781) 942-9001' // Animal Control page routes via Town Hall; urgent issues go to PD
+    },
+    police: { phone: '(781) 944-1212' }, // CHECK
+    clerk: { phone: '(781) 942-9050' }
+  },
+  Lynnfield: {
+    id: 'lynnfield',
+    name: 'Lynnfield',
+    center: [-71.0412, 42.5334],
+    animalControl: {
+      name: 'David Crockett',
+      phone: '(781) 983-1804'
+    },
+    police: { phone: '(781) 334-3131' }, // CHECK
+    clerk: { phone: '(781) 334-9400' }
+  },
+  Middleton: {
+    id: 'middleton',
+    name: 'Middleton',
+    center: [-71.0151, 42.5751],
+    animalControl: {
+      name: 'Beverly Milward',
+      phone: '(339) 206-0785'
+    },
+    police: { phone: '(978) 774-4424' },
+    clerk: { phone: '(978) 777-1869' } // CHECK (town hall main)
+  },
+  Topsfield: {
+    id: 'topsfield',
+    name: 'Topsfield',
+    center: [-70.9501, 42.6417],
+    animalControl: {
+      name: 'Beverly Milward',
+      phone: '(978) 887-6533'
+    },
+    police: { phone: '(978) 887-6533' },
+    clerk: { phone: '(978) 887-1505' }
+  },
+  Wenham: {
+    id: 'wenham',
+    name: 'Wenham',
+    center: [-70.8884, 42.6001],
+    animalControl: {
+      name: '', // CHECK (often handled via Police)
+      phone: '(978) 468-4000' // CHECK (Wenham PD business)
+    },
+    police: { phone: '(978) 468-1212' }, // CHECK
+    clerk: { phone: '(978) 468-5520' }
+  },
+  Hamilton: {
+    id: 'hamilton',
+    name: 'Hamilton',
+    center: [-70.8634, 42.6167],
+    animalControl: {
+      name: 'Leslie Leathers',
+      phone: '(978) 626-1819'
+    },
+    police: { phone: '(978) 468-1212' },
+    clerk: { phone: '(978) 468-5577' }
+  },
+  Ipswich: {
+    id: 'ipswich',
+    name: 'Ipswich',
+    center: [-70.8417, 42.6792],
+    animalControl: {
+      name: 'Megan Boissonneau',
+      phone: '(978) 356-6652'
+    },
+    police: { phone: '(978) 356-4343' }, // CHECK
+    clerk: { phone: '(978) 356-6600' }
+  },
+  Essex: {
+    id: 'essex',
+    name: 'Essex',
+    center: [-70.7834, 42.6292],
+    animalControl: {
+      name: '', // CHECK
+      phone: '(978) 768-6363' // CHECK (commonly listed for dog officer)
+    },
+    police: { phone: '(978) 768-1212' },
+    clerk: { phone: '(978) 768-7311' }
+  }
+};

@@ -1,0 +1,131 @@
+
+Sudarshan Sinha <s.sinha2103@gmail.com>
+Attachments
+Aug 17, 2025, 9:38 PM (8 days ago)
+to anna.chernishenko, John
+
+Hi Anna,
+
+I’m Sudarshan, the developer supporting John at McDougall Interactive (cc’d). Thanks for following up — I’ll provide the internal task IDs you need and a couple of clarifying questions so we can align our implementation with your metrics. Additionally, I've attached the file in which I pasted the results of my CURL run.
+
+Internal task ID (example)
+Endpoint: DataForSEO Labs → Google → ranked_keywords → live "https://api.dataforseo.com/v3/dataforseo_labs/google/ranked_keywords/live"
+
+Target: mcdougallinteractive.com
+
+Location / Language: United States / English
+
+Task ID: 08171843-1031-0381-0000-3551c574dd1b
+
+Notable rollups returned in metrics.organic:
+
+count: 1262
+
+etv: 2031.78
+
+estimated_paid_traffic_cost: 24619.41
+
+I’ll send additional IDs for other domains/endpoints where we saw unexpected values (e.g., webris.com) in the next message, but the questions below apply to all of them.
+
+Questions / confirmations
+Traffic cost vs. SEMrush’s “Traffic Cost”
+
+Please confirm that metrics.organic.estimated_paid_traffic_cost in ranked_keywords is your domain-level monthly PPC equivalent cost (USD) for all ranked keywords in the specified location/language.
+
+If our goal is to display one authoritative “Traffic Cost” number per domain (comparable to what many tools call “Traffic Cost”), do you recommend we source it from ranked_keywords rollup or from domain_rank_overview (or another endpoint) to avoid any aggregation pitfalls?
+
+We also see etv alongside that figure; my understanding is that ETV is estimated monthly organic traffic (CTR × search volume, per keyword, summed at domain level). Please confirm.
+
+Any guidance on why your estimated_paid_traffic_cost might diverge substantially from SEMrush on the same domain (e.g., CPC base data/model differences, keyword set breadth, or location normalization)? If there’s a best-practice mapping you recommend when customers compare tools, we’ll implement it.
+
+Clickstream-enriched fields
+
+In responses we currently see clickstream_* fields as null. Are those only available on specific endpoints/plans or behind a parameter? If available, would enabling them generally bring your “Traffic Cost” and ETV closer to third-party estimates, or are they intended for separate use cases?
+
+“Indexed pages” count
+
+For an “Indexed pages” metric, what’s your recommended approach?
+
+We can use the SERP API with keyword: "site:domain.com" and read se_results_count as an approximate index size proxy. Is this still your suggested method, and are there caveats you want us to communicate (e.g., Google’s site: operator imprecision, result caps)?
+
+Alternatively, should we derive this from On-Page API crawl totals for “pages found” (clearly not the same as indexed pages), or is there another endpoint you recommend for a stable “Indexed pages” value?
+
+Non-DataForSEO signals
+
+We also saw a YouTube subscriber mismatch in our tool; that data is from the YouTube API and not your services. Just noting so you don’t spend cycles on it.
+
+If you can confirm the above and point us to any preferred endpoints/flags, I’ll align our implementation accordingly. Happy to provide more task IDs in whatever format helps your investigation most.
+
+Thanks so much
+
+--
+With Regards
+Sudarshan Sinha
+(+91) 8339826421
+ One attachment
+  •  Scanned by Gmail
+
+Sudarshan Sinha <s.sinha2103@gmail.com>
+Aug 21, 2025, 7:23 PM (4 days ago)
+to anna.chernishenko, John
+
+Hi Anna,
+
+Just following up on my Aug 17 email (with task IDs and CURL output).
+Could you please confirm the recommended source for a single domain-level Traffic Cost number — ranked_keywords rollup (metrics.organic.estimated_paid_traffic_cost) vs domain_rank_overview?
+A one-line answer on that will unblock our release.
+
+If possible, a quick note on:
+
+ETV definition (CTR × volume summed at domain level),
+
+availability of clickstream_* fields,
+
+and your preferred method for “Indexed pages” (e.g., site: query se_results_count vs another endpoint).
+
+Happy to resend the task IDs in CSV/JSON or any other data you need.
+
+Thanks,
+Sudarshan
+
+
+Anna Chernishenko
+Aug 22, 2025, 6:18 PM (3 days ago)
+to me, John
+
+Hi Sudarshan,
+
+I am sorry for the delayed response. Let me comment your request:
+
+Questions / confirmations
+Traffic cost vs. SEMrush’s “Traffic Cost”
+
+Please confirm that metrics.organic.estimated_paid_traffic_cost in ranked_keywords is your domain-level monthly PPC equivalent cost (USD) for all ranked keywords in the specified location/language. This article calculates how we calculate it: https://dataforseo.com/help-center/how-is-traffic-cost-calculated
+
+If our goal is to display one authoritative “Traffic Cost” number per domain (comparable to what many tools call “Traffic Cost”), do you recommend we source it from ranked_keywords rollup or from domain_rank_overview (or another endpoint) to avoid any aggregation pitfalls? The data is calculated the same way for both endpoints.
+
+We also see etv alongside that figure; my understanding is that ETV is estimated monthly organic traffic (CTR × search volume, per keyword, summed at domain level). Please confirm. This is correct, how it is calculated can be found here: https://dataforseo.com/help-center/how-is-etv-calculated
+
+Any guidance on why your estimated_paid_traffic_cost might diverge substantially from SEMrush on the same domain (e.g., CPC base data/model differences, keyword set breadth, or location normalization)? If there’s a best-practice mapping you recommend when customers compare tools, we’ll implement it. We do not know how they calculate it so you can just refer to the documents I sent above.
+
+Clickstream-enriched fields
+
+In responses we currently see clickstream_* fields as null. Are those only available on specific endpoints/plans or behind a parameter? If available, would enabling them generally bring your “Traffic Cost” and ETV closer to third-party estimates, or are they intended for separate use cases? Which endpoint do you mean?
+
+“Indexed pages” count
+
+For an “Indexed pages” metric, what’s your recommended approach?
+
+We can use the SERP API with keyword: "site:domain.com" and read se_results_count as an approximate index size proxy. Is this still your suggested method, and are there caveats you want us to communicate (e.g., Google’s site: operator imprecision, result caps)? This is correct!
+
+Alternatively, should we derive this from On-Page API crawl totals for “pages found” (clearly not the same as indexed pages), or is there another endpoint you recommend for a stable “Indexed pages” value? If you need to check all the indexable pages of the site, you can use OnPage. But if you need this information for an URL you can use instant pages not to crawl the whole site, wait etc. https://docs.dataforseo.com/v3/on_page/instant_pages/?bash 
+
+Non-DataForSEO signals
+
+We also saw a YouTube subscriber mismatch in our tool; that data is from the YouTube API and not your services. Just noting so you don’t spend cycles on it.- Do you mean the total number of subscribers of the channel data? Please let me know more about it. DO you mean this metric: "channel_subscribers_count"
+
+--
+Kind regards,
+Anna,
+Customer Success Manager at DataForSEO
+PS: Feel free to contact me if you’re interested in co-marketing opportunities. We’d love to collaborate and explore new ways to create value together!

@@ -1,0 +1,432 @@
+name: mcdougal-local-suite
+
+services:
+  gateway:
+    image: nginx:1.27-alpine
+    ports:
+      - "8000:80"
+    volumes:
+      - ./docker/home/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./docker/home/home.html:/usr/share/nginx/html/home.html:ro
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: mcdougal_tools
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  ai-seo-pagescore:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/ai-seo-pagescore
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/ai-seo-pagescore.env
+    depends_on:
+      - postgres
+    ports:
+      - "8101:5000"
+    restart: unless-stopped
+
+  asbestos-atlas:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/asbestos-atlas
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/asbestos-atlas.env
+    depends_on:
+      - postgres
+    ports:
+      - "8102:5000"
+    restart: unless-stopped
+
+  btucalc:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/btucalc
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/btucalc.env
+    depends_on:
+      - postgres
+    ports:
+      - "8103:5000"
+    restart: unless-stopped
+
+  dog-bite-map:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/dog-bite-map
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/dog-bite-map.env
+    depends_on:
+      - postgres
+    ports:
+      - "8104:5000"
+    restart: unless-stopped
+
+  free-seo-tools-page:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/free-seo-tools-page
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/free-seo-tools-page.env
+    depends_on:
+      - postgres
+    ports:
+      - "8105:5000"
+    restart: unless-stopped
+
+  header-hierarchy:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/header-hierarchy
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/header-hierarchy.env
+    depends_on:
+      - postgres
+    ports:
+      - "8106:5000"
+    restart: unless-stopped
+
+  intent-discover:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/intent-discover
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/intent-discover.env
+    depends_on:
+      - postgres
+    ports:
+      - "8107:5000"
+    restart: unless-stopped
+
+  keyword-mixer:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/keyword-mixer
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/keyword-mixer.env
+    depends_on:
+      - postgres
+    ports:
+      - "8108:5000"
+    restart: unless-stopped
+
+  legal-lens:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/legal-lens
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/legal-lens.env
+    depends_on:
+      - postgres
+    ports:
+      - "8109:5000"
+    restart: unless-stopped
+
+  legal-napaudit:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/legal-napaudit
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/legal-napaudit.env
+    depends_on:
+      - postgres
+    ports:
+      - "8110:5000"
+    restart: unless-stopped
+
+  legal-revamp:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/legal-revamp
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/legal-revamp.env
+    depends_on:
+      - postgres
+    ports:
+      - "8111:5000"
+    restart: unless-stopped
+
+  legal-schema-gen:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/legal-schema-gen
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/legal-schema-gen.env
+    depends_on:
+      - postgres
+    ports:
+      - "8112:5000"
+    restart: unless-stopped
+
+  link-auditor:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/link-auditor
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/link-auditor.env
+    depends_on:
+      - postgres
+    ports:
+      - "8113:5000"
+    restart: unless-stopped
+
+  mellino-health-data:
+    build:
+      context: .
+      dockerfile: docker/app-runner/python-node-hybrid.Dockerfile
+      args:
+        APP_DIR: apps/mellino-health-data
+    environment:
+      PORT: "3000"
+    env_file:
+      - env/mellino-health-data.env
+    depends_on:
+      - postgres
+    ports:
+      - "8114:3000"
+    restart: unless-stopped
+
+  meta-describer:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/meta-describer
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/meta-describer.env
+    depends_on:
+      - postgres
+    ports:
+      - "8115:5000"
+    restart: unless-stopped
+
+  ohio-care-finder:
+    build:
+      context: .
+      dockerfile: docker/app-runner/python-fastapi.Dockerfile
+      args:
+        APP_DIR: apps/ohio-care-finder
+    environment:
+      PORT: "5000"
+    env_file:
+      - env/ohio-care-finder.env
+    depends_on:
+      - postgres
+    ports:
+      - "8116:5000"
+    restart: unless-stopped
+
+  ohio-maternity-monitor:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/ohio-maternity-monitor
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/ohio-maternity-monitor.env
+    depends_on:
+      - postgres
+    ports:
+      - "8117:5000"
+    restart: unless-stopped
+
+  replit-downloader:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/replit-downloader
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/replit-downloader.env
+    depends_on:
+      - postgres
+    ports:
+      - "8118:5000"
+    restart: unless-stopped
+
+  sales-research-flow:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/sales-research-flow
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/sales-research-flow.env
+    depends_on:
+      - postgres
+    ports:
+      - "8119:5000"
+    restart: unless-stopped
+
+  semrush-scraper:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/semrush-scraper
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/semrush-scraper.env
+    depends_on:
+      - postgres
+    ports:
+      - "8120:5000"
+    restart: unless-stopped
+
+  seo-headline-pro:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/seo-headline-pro
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/seo-headline-pro.env
+    depends_on:
+      - postgres
+    ports:
+      - "8121:5000"
+    restart: unless-stopped
+
+  serpsnippet-audit:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/serpsnippet-audit
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/serpsnippet-audit.env
+    depends_on:
+      - postgres
+    ports:
+      - "8122:5000"
+    restart: unless-stopped
+
+  text-clarity:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/text-clarity
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/text-clarity.env
+    depends_on:
+      - postgres
+    ports:
+      - "8123:5000"
+    restart: unless-stopped
+
+  tube-insight:
+    build:
+      context: .
+      dockerfile: docker/app-runner/node-replit.Dockerfile
+      args:
+        APP_DIR: apps/tube-insight
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+    env_file:
+      - env/tube-insight.env
+    depends_on:
+      - postgres
+    ports:
+      - "8124:5000"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

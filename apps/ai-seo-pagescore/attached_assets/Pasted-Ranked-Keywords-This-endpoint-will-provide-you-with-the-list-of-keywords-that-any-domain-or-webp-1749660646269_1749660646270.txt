@@ -1,0 +1,1901 @@
+Ranked Keywords
+‌
+This endpoint will provide you with the list of keywords that any domain or webpage is ranking for. You will also get SERP elements related to the keyword position, as well as impressions, monthly searches and other data relevant to the returned keywords.
+
+Data updates: data is updated weekly, the latest update time is available in the Status endpoint.
+
+Instead of ‘login’ and ‘password’ use your credentials from https://app.dataforseo.com/api-access
+
+# Instead of 'login' and 'password' use your credentials from https://app.dataforseo.com/api-access
+login="login"
+password="password"
+cred="$(printf ${login}:${password} | base64)"
+curl --location --request POST "https://api.dataforseo.com/v3/dataforseo_labs/google/ranked_keywords/live" \
+--header "Authorization: Basic ${cred}" \
+--header "Content-Type: application/json" \
+--data-raw '[
+    {
+        "target": "dataforseo.com",
+        "language_name": "English",
+        "location_name": "United States",
+        "load_rank_absolute": true,
+        "limit": 3
+    }
+]'
+
+The above command returns JSON structured like this:
+
+{
+  "version": "0.1.20240801",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "0.8727 sec.",
+  "cost": 0.0103,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "08221817-1535-0381-0000-e1fa4dc07b78",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "0.8115 sec.",
+      "cost": 0.0103,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "dataforseo_labs",
+        "google",
+        "ranked_keywords",
+        "live"
+      ],
+      "data": {
+        "api": "dataforseo_labs",
+        "function": "ranked_keywords",
+        "se_type": "google",
+        "target": "dataforseo.com",
+        "language_name": "English",
+        "location_name": "United States",
+        "load_rank_absolute": true,
+        "limit": 3
+      },
+      "result": [
+        {
+          "se_type": "google",
+          "target": "dataforseo.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "total_count": 4207,
+          "items_count": 3,
+          "metrics": {
+            "organic": {
+              "pos_1": 24,
+              "pos_2_3": 37,
+              "pos_4_10": 510,
+              "pos_11_20": 688,
+              "pos_21_30": 469,
+              "pos_31_40": 442,
+              "pos_41_50": 405,
+              "pos_51_60": 331,
+              "pos_61_70": 360,
+              "pos_71_80": 345,
+              "pos_81_90": 320,
+              "pos_91_100": 258,
+              "etv": 2996906.1083163265,
+              "count": 4189,
+              "estimated_paid_traffic_cost": 184997.92717040097,
+              "is_new": 1679,
+              "is_up": 1613,
+              "is_down": 711,
+              "is_lost": 0,
+              "clickstream_etv": null,
+              "clickstream_gender_distribution": null,
+              "clickstream_age_distribution": null
+            },
+            "paid": {
+              "pos_1": 13,
+              "pos_2_3": 3,
+              "pos_4_10": 1,
+              "pos_11_20": 0,
+              "pos_21_30": 0,
+              "pos_31_40": 0,
+              "pos_41_50": 0,
+              "pos_51_60": 0,
+              "pos_61_70": 0,
+              "pos_71_80": 0,
+              "pos_81_90": 0,
+              "pos_91_100": 0,
+              "etv": 100.60300242900848,
+              "count": 17,
+              "estimated_paid_traffic_cost": 2614.2928915023804,
+              "is_new": 15,
+              "is_up": 0,
+              "is_down": 1,
+              "is_lost": 0,
+              "clickstream_etv": null,
+              "clickstream_gender_distribution": null,
+              "clickstream_age_distribution": null
+            },
+            "featured_snippet": {
+              "pos_1": 1,
+              "pos_2_3": 0,
+              "pos_4_10": 0,
+              "pos_11_20": 0,
+              "pos_21_30": 0,
+              "pos_31_40": 0,
+              "pos_41_50": 0,
+              "pos_51_60": 0,
+              "pos_61_70": 0,
+              "pos_71_80": 0,
+              "pos_81_90": 0,
+              "pos_91_100": 0,
+              "etv": 12.15999984741211,
+              "count": 1,
+              "estimated_paid_traffic_cost": 0,
+              "is_new": 0,
+              "is_up": 0,
+              "is_down": 0,
+              "is_lost": 0,
+              "clickstream_etv": null,
+              "clickstream_gender_distribution": null,
+              "clickstream_age_distribution": null
+            },
+            "local_pack": {
+              "pos_1": 0,
+              "pos_2_3": 0,
+              "pos_4_10": 0,
+              "pos_11_20": 0,
+              "pos_21_30": 0,
+              "pos_31_40": 0,
+              "pos_41_50": 0,
+              "pos_51_60": 0,
+              "pos_61_70": 0,
+              "pos_71_80": 0,
+              "pos_81_90": 0,
+              "pos_91_100": 0,
+              "etv": 0,
+              "count": 0,
+              "estimated_paid_traffic_cost": 0,
+              "is_new": 0,
+              "is_up": 0,
+              "is_down": 0,
+              "is_lost": 0,
+              "clickstream_etv": null,
+              "clickstream_gender_distribution": null,
+              "clickstream_age_distribution": null
+            }
+          },
+          "metrics_absolute": {
+            "organic": {
+              "pos_1": 19,
+              "pos_2_3": 23,
+              "pos_4_10": 420,
+              "pos_11_20": 719,
+              "pos_21_30": 480,
+              "pos_31_40": 446,
+              "pos_41_50": 403,
+              "pos_51_60": 355,
+              "pos_61_70": 344,
+              "pos_71_80": 353,
+              "pos_81_90": 312,
+              "pos_91_100": 292,
+              "is_new": 1679,
+              "is_up": 1613,
+              "is_down": 711,
+              "is_lost": 0,
+              "clickstream_etv": null,
+              "clickstream_gender_distribution": null,
+              "clickstream_age_distribution": null
+            },
+            "paid": {
+              "pos_1": 5,
+              "pos_2_3": 3,
+              "pos_4_10": 0,
+              "pos_11_20": 0,
+              "pos_21_30": 0,
+              "pos_31_40": 0,
+              "pos_41_50": 0,
+              "pos_51_60": 0,
+              "pos_61_70": 0,
+              "pos_71_80": 0,
+              "pos_81_90": 0,
+              "pos_91_100": 1,
+              "is_new": 15,
+              "is_up": 0,
+              "is_down": 1,
+              "is_lost": 0,
+              "clickstream_etv": null,
+              "clickstream_gender_distribution": null,
+              "clickstream_age_distribution": null
+            },
+            "featured_snippet": {
+              "pos_1": 1,
+              "pos_2_3": 0,
+              "pos_4_10": 0,
+              "pos_11_20": 0,
+              "pos_21_30": 0,
+              "pos_31_40": 0,
+              "pos_41_50": 0,
+              "pos_51_60": 0,
+              "pos_61_70": 0,
+              "pos_71_80": 0,
+              "pos_81_90": 0,
+              "pos_91_100": 0,
+              "is_new": 0,
+              "is_up": 0,
+              "is_down": 0,
+              "is_lost": 0,
+              "clickstream_etv": null,
+              "clickstream_gender_distribution": null,
+              "clickstream_age_distribution": null
+            },
+            "local_pack": {
+              "pos_1": 0,
+              "pos_2_3": 0,
+              "pos_4_10": 0,
+              "pos_11_20": 0,
+              "pos_21_30": 0,
+              "pos_31_40": 0,
+              "pos_41_50": 0,
+              "pos_51_60": 0,
+              "pos_61_70": 0,
+              "pos_71_80": 0,
+              "pos_81_90": 0,
+              "pos_91_100": 0,
+              "is_new": 0,
+              "is_up": 0,
+              "is_down": 0,
+              "is_lost": 0,
+              "clickstream_etv": null,
+              "clickstream_gender_distribution": null,
+              "clickstream_age_distribution": null
+            }
+          },
+          "items": [
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "1000 keywords",
+                "location_code": 2840,
+                "language_code": "en",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2024-08-09 15:36:13 +00:00",
+                  "competition": 0.019999999552965164,
+                  "competition_level": "LOW",
+                  "cpc": null,
+                  "search_volume": 90,
+                  "low_top_of_page_bid": null,
+                  "high_top_of_page_bid": null,
+                  "categories": [
+                    10001,
+                    10007,
+                    10024,
+                    10182,
+                    13418
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2024,
+                      "month": 7,
+                      "search_volume": 50
+                    },
+                    {
+                      "year": 2024,
+                      "month": 6,
+                      "search_volume": 50
+                    },
+                    {
+                      "year": 2024,
+                      "month": 5,
+                      "search_volume": 70
+                    },
+                    {
+                      "year": 2024,
+                      "month": 4,
+                      "search_volume": 50
+                    },
+                    {
+                      "year": 2024,
+                      "month": 3,
+                      "search_volume": 30
+                    },
+                    {
+                      "year": 2024,
+                      "month": 2,
+                      "search_volume": 30
+                    },
+                    {
+                      "year": 2024,
+                      "month": 1,
+                      "search_volume": 20
+                    },
+                    {
+                      "year": 2023,
+                      "month": 12,
+                      "search_volume": 10
+                    },
+                    {
+                      "year": 2023,
+                      "month": 11,
+                      "search_volume": 140
+                    },
+                    {
+                      "year": 2023,
+                      "month": 10,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2023,
+                      "month": 9,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2023,
+                      "month": 8,
+                      "search_volume": 170
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": 22,
+                    "quarterly": 22,
+                    "yearly": 0
+                  }
+                },
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": null,
+                  "synonym_clustering_algorithm": null,
+                  "keyword_difficulty": 39,
+                  "detected_language": "en",
+                  "is_another_language": false
+                },
+                "serp_info": {
+                  "se_type": "google",
+                  "check_url": "https://www.google.com/search?q=1000%20keywords&num=100&hl=en&gl=US&gws_rd=cr&ie=UTF-8&oe=UTF-8&glp=1&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+                  "serp_item_types": [
+                    "organic",
+                    "people_also_ask",
+                    "images"
+                  ],
+                  "se_results_count": 375000000,
+                  "last_updated_time": "2024-07-18 16:46:17 +00:00",
+                  "previous_updated_time": "2024-05-31 11:45:33 +00:00"
+                },
+                "avg_backlinks_info": {
+                  "se_type": "google",
+                  "backlinks": 218.8000030517578,
+                  "dofollow": 113.5,
+                  "referring_pages": 186,
+                  "referring_domains": 85,
+                  "referring_main_domains": 83,
+                  "rank": 130.3000030517578,
+                  "main_domain_rank": 499.29998779296875,
+                  "last_updated_time": "2024-07-18 16:46:18 +00:00"
+                },
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "commercial",
+                  "foreign_intent": [
+                    "navigational",
+                    "informational"
+                  ],
+                  "last_updated_time": "2023-03-03 20:51:09 +00:00"
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null
+              },
+              "ranked_serp_element": {
+                "se_type": "google",
+                "serp_item": {
+                  "se_type": "google",
+                  "type": "organic",
+                  "rank_group": 1,
+                  "rank_absolute": 1,
+                  "position": "left",
+                  "xpath": "/html[1]/body[1]/div[4]/div[1]/div[13]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]",
+                  "domain": "dataforseo.com",
+                  "title": "Top 1000 Websites By Ranking Keywords",
+                  "url": "https://dataforseo.com/free-seo-stats/top-1000-websites",
+                  "breadcrumb": "https://dataforseo.com › Free SEO Stats",
+                  "website_name": "DataForSEO",
+                  "is_image": false,
+                  "is_video": false,
+                  "is_featured_snippet": false,
+                  "is_malicious": false,
+                  "description": "The table below contains the 1000 most ranked websites on Google across 75 countries. It is created based on our extensive database of over 270 million ...",
+                  "pre_snippet": null,
+                  "extended_snippet": null,
+                  "amp_version": false,
+                  "rating": null,
+                  "highlighted": [
+                    "1000"
+                  ],
+                  "links": null,
+                  "about_this_result": null,
+                  "main_domain": "dataforseo.com",
+                  "relative_url": "/free-seo-stats/top-1000-websites",
+                  "etv": 27.360000610351562,
+                  "estimated_paid_traffic_cost": null,
+                  "clickstream_etv": null,
+                  "rank_changes": {
+                    "previous_rank_absolute": 2,
+                    "is_new": false,
+                    "is_up": true,
+                    "is_down": false
+                  },
+                  "backlinks_info": {
+                    "referring_domains": 11,
+                    "referring_main_domains": 11,
+                    "referring_pages": 14,
+                    "dofollow": 13,
+                    "backlinks": 18,
+                    "time_update": "2024-08-08 11:26:29 +00:00"
+                  },
+                  "rank_info": {
+                    "page_rank": 211,
+                    "main_domain_rank": 419
+                  }
+                },
+                "check_url": "https://www.google.com/search?q=1000%20keywords&num=100&hl=en&gl=US&gws_rd=cr&ie=UTF-8&oe=UTF-8&glp=1&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+                "serp_item_types": [
+                  "organic",
+                  "people_also_ask",
+                  "images"
+                ],
+                "se_results_count": 375000000,
+                "keyword_difficulty": 39,
+                "is_lost": false,
+                "last_updated_time": "2024-07-18 16:46:17 +00:00",
+                "previous_updated_time": "2024-05-31 11:45:33 +00:00"
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "1000 most popular websites",
+                "location_code": 2840,
+                "language_code": "en",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2024-08-11 01:30:28 +00:00",
+                  "competition": null,
+                  "competition_level": "LOW",
+                  "cpc": null,
+                  "search_volume": 30,
+                  "low_top_of_page_bid": null,
+                  "high_top_of_page_bid": null,
+                  "categories": [
+                    10004,
+                    10007,
+                    10013,
+                    10273,
+                    11068,
+                    11493,
+                    13388,
+                    13418
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2024,
+                      "month": 7,
+                      "search_volume": 10
+                    },
+                    {
+                      "year": 2024,
+                      "month": 6,
+                      "search_volume": 10
+                    },
+                    {
+                      "year": 2024,
+                      "month": 5,
+                      "search_volume": 10
+                    },
+                    {
+                      "year": 2024,
+                      "month": 4,
+                      "search_volume": 10
+                    },
+                    {
+                      "year": 2024,
+                      "month": 3,
+                      "search_volume": 10
+                    },
+                    {
+                      "year": 2024,
+                      "month": 2,
+                      "search_volume": 10
+                    },
+                    {
+                      "year": 2024,
+                      "month": 1,
+                      "search_volume": 10
+                    },
+                    {
+                      "year": 2023,
+                      "month": 12,
+                      "search_volume": 10
+                    },
+                    {
+                      "year": 2023,
+                      "month": 11,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2023,
+                      "month": 10,
+                      "search_volume": 90
+                    },
+                    {
+                      "year": 2023,
+                      "month": 9,
+                      "search_volume": 50
+                    },
+                    {
+                      "year": 2023,
+                      "month": 8,
+                      "search_volume": 50
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": 22,
+                    "quarterly": 22,
+                    "yearly": 0
+                  }
+                },
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": null,
+                  "synonym_clustering_algorithm": null,
+                  "keyword_difficulty": 57,
+                  "detected_language": "en",
+                  "is_another_language": false
+                },
+                "serp_info": {
+                  "se_type": "google",
+                  "check_url": "https://www.google.com/search?q=1000%20most%20popular%20websites&num=100&hl=en&gl=US&gws_rd=cr&ie=UTF-8&oe=UTF-8&glp=1&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+                  "serp_item_types": [
+                    "organic",
+                    "discussions_and_forums",
+                    "related_searches"
+                  ],
+                  "se_results_count": 880000000,
+                  "last_updated_time": "2024-05-28 06:04:40 +00:00",
+                  "previous_updated_time": "2024-04-14 20:43:29 +00:00"
+                },
+                "avg_backlinks_info": {
+                  "se_type": "google",
+                  "backlinks": 121.30000305175781,
+                  "dofollow": 88.19999694824219,
+                  "referring_pages": 116,
+                  "referring_domains": 41.900001525878906,
+                  "referring_main_domains": 39,
+                  "rank": 148,
+                  "main_domain_rank": 675,
+                  "last_updated_time": "2024-05-28 06:04:40 +00:00"
+                },
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "commercial",
+                  "foreign_intent": [
+                    "transactional",
+                    "informational"
+                  ],
+                  "last_updated_time": "2023-03-03 20:51:17 +00:00"
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null
+              },
+              "ranked_serp_element": {
+                "se_type": "google",
+                "serp_item": {
+                  "se_type": "google",
+                  "type": "organic",
+                  "rank_group": 1,
+                  "rank_absolute": 1,
+                  "position": "left",
+                  "xpath": "/html[1]/body[1]/div[4]/div[1]/div[13]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]",
+                  "domain": "dataforseo.com",
+                  "title": "Top 1000 Websites By Ranking Keywords",
+                  "url": "https://dataforseo.com/free-seo-stats/top-1000-websites",
+                  "breadcrumb": "https://dataforseo.com › Free SEO Stats",
+                  "website_name": "DataForSEO",
+                  "is_image": false,
+                  "is_video": false,
+                  "is_featured_snippet": false,
+                  "is_malicious": false,
+                  "description": "The table below contains the 1000 most ranked websites on Google across 75 countries. It is created based on our extensive database of over 270 million ...",
+                  "pre_snippet": null,
+                  "extended_snippet": null,
+                  "amp_version": false,
+                  "rating": null,
+                  "highlighted": [
+                    "1000 most",
+                    "websites"
+                  ],
+                  "links": null,
+                  "about_this_result": null,
+                  "main_domain": "dataforseo.com",
+                  "relative_url": "/free-seo-stats/top-1000-websites",
+                  "etv": 9.119999885559082,
+                  "estimated_paid_traffic_cost": null,
+                  "clickstream_etv": null,
+                  "rank_changes": {
+                    "previous_rank_absolute": 1,
+                    "is_new": false,
+                    "is_up": false,
+                    "is_down": false
+                  },
+                  "backlinks_info": {
+                    "referring_domains": 11,
+                    "referring_main_domains": 11,
+                    "referring_pages": 14,
+                    "dofollow": 13,
+                    "backlinks": 18,
+                    "time_update": "2024-08-08 11:26:29 +00:00"
+                  },
+                  "rank_info": {
+                    "page_rank": 210,
+                    "main_domain_rank": 419
+                  }
+                },
+                "check_url": "https://www.google.com/search?q=1000%20most%20popular%20websites&num=100&hl=en&gl=US&gws_rd=cr&ie=UTF-8&oe=UTF-8&glp=1&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+                "serp_item_types": [
+                  "organic",
+                  "discussions_and_forums",
+                  "related_searches"
+                ],
+                "se_results_count": 880000000,
+                "keyword_difficulty": 57,
+                "is_lost": false,
+                "last_updated_time": "2024-05-28 06:04:40 +00:00",
+                "previous_updated_time": "2024-04-14 20:43:29 +00:00"
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "1000 useful websites",
+                "location_code": 2840,
+                "language_code": "en",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2024-08-11 14:48:47 +00:00",
+                  "competition": 0.009999999776482582,
+                  "competition_level": "LOW",
+                  "cpc": 0.09000000357627869,
+                  "search_volume": 70,
+                  "low_top_of_page_bid": null,
+                  "high_top_of_page_bid": null,
+                  "categories": [
+                    10108
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2024,
+                      "month": 7,
+                      "search_volume": 90
+                    },
+                    {
+                      "year": 2024,
+                      "month": 6,
+                      "search_volume": 50
+                    },
+                    {
+                      "year": 2024,
+                      "month": 5,
+                      "search_volume": 70
+                    },
+                    {
+                      "year": 2024,
+                      "month": 4,
+                      "search_volume": 70
+                    },
+                    {
+                      "year": 2024,
+                      "month": 3,
+                      "search_volume": 90
+                    },
+                    {
+                      "year": 2024,
+                      "month": 2,
+                      "search_volume": 70
+                    },
+                    {
+                      "year": 2024,
+                      "month": 1,
+                      "search_volume": 90
+                    },
+                    {
+                      "year": 2023,
+                      "month": 12,
+                      "search_volume": 70
+                    },
+                    {
+                      "year": 2023,
+                      "month": 11,
+                      "search_volume": 70
+                    },
+                    {
+                      "year": 2023,
+                      "month": 10,
+                      "search_volume": 70
+                    },
+                    {
+                      "year": 2023,
+                      "month": 9,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2023,
+                      "month": 8,
+                      "search_volume": 70
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": 22,
+                    "quarterly": 22,
+                    "yearly": 0
+                  }
+                },
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": null,
+                  "synonym_clustering_algorithm": null,
+                  "keyword_difficulty": 24,
+                  "detected_language": "en",
+                  "is_another_language": false
+                },
+                "serp_info": {
+                  "se_type": "google",
+                  "check_url": "https://www.google.com/search?q=1000%20useful%20websites&num=100&hl=en&gl=US&gws_rd=cr&ie=UTF-8&oe=UTF-8&glp=1&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+                  "serp_item_types": [
+                    "organic",
+                    "related_searches"
+                  ],
+                  "se_results_count": 225000000,
+                  "last_updated_time": "2024-07-11 04:16:53 +00:00",
+                  "previous_updated_time": "2024-04-12 01:48:36 +00:00"
+                },
+                "avg_backlinks_info": {
+                  "se_type": "google",
+                  "backlinks": 267.79998779296875,
+                  "dofollow": 151.5,
+                  "referring_pages": 249.10000610351562,
+                  "referring_domains": 101.69999694824219,
+                  "referring_main_domains": 97.80000305175781,
+                  "rank": 120.80000305175781,
+                  "main_domain_rank": 651.2999877929688,
+                  "last_updated_time": "2024-07-11 04:16:55 +00:00"
+                },
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "commercial",
+                  "foreign_intent": [
+                    "navigational"
+                  ],
+                  "last_updated_time": "2023-03-03 20:51:33 +00:00"
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null
+              },
+              "ranked_serp_element": {
+                "se_type": "google",
+                "serp_item": {
+                  "se_type": "google",
+                  "type": "organic",
+                  "rank_group": 1,
+                  "rank_absolute": 1,
+                  "position": "left",
+                  "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]",
+                  "domain": "dataforseo.com",
+                  "title": "Top 1000 Websites By Ranking Keywords",
+                  "url": "https://dataforseo.com/free-seo-stats/top-1000-websites",
+                  "breadcrumb": "https://dataforseo.com › Free SEO Stats",
+                  "website_name": "DataForSEO",
+                  "is_image": false,
+                  "is_video": false,
+                  "is_featured_snippet": false,
+                  "is_malicious": false,
+                  "description": "Check the Top 1000 Websites in the US And 74 More Countries ; 1. youtube.com. 406314379 ; 2. facebook.com. 282938147 ; 3. wikipedia.org. 253976519 ; 4. reddit.com.",
+                  "pre_snippet": null,
+                  "extended_snippet": null,
+                  "amp_version": false,
+                  "rating": null,
+                  "highlighted": [
+                    "1000 Websites"
+                  ],
+                  "links": null,
+                  "about_this_result": null,
+                  "main_domain": "dataforseo.com",
+                  "relative_url": "/free-seo-stats/top-1000-websites",
+                  "etv": 21.280000686645508,
+                  "estimated_paid_traffic_cost": 1.9151999950408936,
+                  "clickstream_etv": null,
+                  "rank_changes": {
+                    "previous_rank_absolute": 1,
+                    "is_new": false,
+                    "is_up": false,
+                    "is_down": false
+                  },
+                  "backlinks_info": {
+                    "referring_domains": 11,
+                    "referring_main_domains": 11,
+                    "referring_pages": 14,
+                    "dofollow": 13,
+                    "backlinks": 18,
+                    "time_update": "2024-08-08 11:26:29 +00:00"
+                  },
+                  "rank_info": {
+                    "page_rank": 211,
+                    "main_domain_rank": 419
+                  }
+                },
+                "check_url": "https://www.google.com/search?q=1000%20useful%20websites&num=100&hl=en&gl=US&gws_rd=cr&ie=UTF-8&oe=UTF-8&glp=1&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+                "serp_item_types": [
+                  "organic",
+                  "related_searches"
+                ],
+                "se_results_count": 225000000,
+                "keyword_difficulty": 24,
+                "is_lost": false,
+                "last_updated_time": "2024-07-11 04:16:53 +00:00",
+                "previous_updated_time": "2024-04-12 01:48:36 +00:00"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+POST https://api.dataforseo.com/v3/dataforseo_labs/google/ranked_keywords/live
+ Your account will be charged for each request.
+The cost can be calculated on the Pricing page.
+All POST data should be sent in the JSON format (UTF-8 encoding). The task setting is done using the POST method. When setting a task, you should send all task parameters in the task array of the generic POST array. You can send up to 2000 API calls per minute. The maximum number of requests that can be sent simultaneously is limited to 30.
+
+You can specify the number of results you want to retrieve, filter and sort them.
+
+Below you will find a detailed description of the fields you can use for setting a task.
+
+Description of the fields for setting a task:
+
+Field name	Type	Description
+target	string	domain name or page url
+required field
+the domain name of the target website or URL of the target webpage;
+the domain name must be specified without https:// or www.;
+the webpage URL must be specified with https:// or www.
+Note: if you specify the webpage URL without https:// or www., the result will be returned for the entire domain rather than the specific page
+location_name	string	full name of the location
+optional field
+if you use this field, you don’t need to specify location_code
+you can receive the list of available locations with their location_name by making a separate request to the
+https://api.dataforseo.com/v3/dataforseo_labs/locations_and_languages
+ignore this field to get the results for all available locations
+example:
+United Kingdom
+location_code	integer	location code
+optional field
+if you use this field, you don’t need to specify location_name
+you can receive the list of available locations with their location_code by making a separate request to the
+https://api.dataforseo.com/v3/dataforseo_labs/locations_and_languages
+ignore this field to get the results for all available locations
+example:
+2840
+language_name	string	full name of the language
+optional field
+if you use this field, you don’t need to specify language_code
+you can receive the list of available languages with their language_name by making a separate request to the
+https://api.dataforseo.com/v3/dataforseo_labs/locations_and_languages
+ignore this field to get the results for all available languages
+example:
+English
+language_code	string	language code
+optional field
+if you use this field, you don’t need to specify language_name
+you can receive the list of available languages with their language_code by making a separate request to the
+https://api.dataforseo.com/v3/dataforseo_labs/locations_and_languages
+ignore this field to get the results for all available languages
+example:
+en
+ignore_synonyms	boolean	ignore highly similar keywords
+optional field
+if set to true only core keywords will be returned, all highly similar keywords will be excluded;
+default value: false
+item_types	array	display results by item type
+optional field
+indicates the type of search results included in the response
+Note: if the item_types array contains item types that are different from organic, the results will be ordered by the first item type in the array; you will not be able to sort and filter results by the types of search results not included in the response;
+
+possible values:
+["organic", "paid", "featured_snippet", "local_pack"]
+default value:
+["organic", "paid"]
+
+include_clickstream_data	boolean	include or exclude data from clickstream-based metrics in the result
+optional field
+if the parameter is set to true, you will receive clickstream_keyword_info, clickstream_etv, clickstream_gender_distribution, clickstream_age_distribution, keyword_info_normalized_with_clickstream, and keyword_info_normalized_with_bing fields in the response
+default value: false
+with this parameter enabled, you will be charged double the price for the request
+learn more about how clickstream-based metrics are calculated in this help center article
+
+limit	integer	the maximum number of returned keywords
+optional field
+default value: 100
+maximum value: 1000
+offset	integer	offset in the results array of returned keywords
+optional field
+default value: 0
+if you specify the 10 value, the first ten keywords in the results array will be omitted and the data will be provided for the successive keywords
+load_rank_absolute	boolean	return rankings distribution by rank_absolute
+optional field
+default value: false
+if set to true, we will return the field metrics_absolute containing rankings distribution by the rank_absolute parameter that indicates the result’s position among all SERP elements
+historical_serp_mode	string	data collection mode
+optional field
+you can use this field to filter the results;
+possible types of filtering:
+live — return keywords for which the specified target currently has ranking results in SERP;
+lost — return keywords for which the specified target had previously had ranking results in SERP, but didn’t have them during the last check;
+all — return both types of keywords.
+default value: live
+filters	array	array of results filtering parameters
+optional field
+you can add several filters at once (8 filters maximum)
+you should set a logical operator and, or between the conditions
+the following operators are supported:
+regex, not_regex, <, <=, >, >=, =, <>, in, not_in, match, not_match, ilike, not_ilike, like, not_like
+you can use the % operator with like and not_like, as well as ilike and not_ilike to match any string of zero or more characters
+example:
+["ranked_serp_element.serp_item.rank_group","<=",10]
+[["ranked_serp_element.serp_item.rank_group","<=",10],
+"and",
+["ranked_serp_element.serp_item.type","<>","paid"]]
+
+[["keyword_data.keyword_info.search_volume","<>",0],
+"and",
+[["ranked_serp_element.serp_item.type","<>","paid"],"or",["ranked_serp_element.serp_item.is_malicious","=",false]]]
+
+if you want to get the keywords a particular webpage ranks for, you can use a target field or filter by the ranked_serp_element.serp_item.relative_url parameter
+example:
+["ranked_serp_element.serp_item.relative_url", "=", "/apis/rank-tracker-api"]
+for more information about filters, please refer to Dataforseo Labs – Filters or this help center guide
+
+order_by	array	results sorting rules
+optional field
+you can use the same values as in the filters array to sort the results
+possible sorting types:
+asc – results will be sorted in the ascending order
+desc – results will be sorted in the descending order
+you should use a comma to set up a sorting type
+example:
+["keyword_data.keyword_info.competition,desc"]
+default rule:
+["ranked_serp_element.serp_item.rank_group,asc"]
+note that you can set no more than three sorting rules in a single request
+you should use a comma to separate several sorting rules
+example:
+["keyword_data.keyword_info.search_volume,desc","keyword_data.keyword_info.cpc,desc"]
+tag	string	user-defined task identifier
+optional field
+the character limit is 255
+you can use this parameter to identify the task and match it with the result
+you will find the specified tag value in the data object of the response
+‌
+
+As a response of the API server, you will receive JSON-encoded data containing a tasks array with the information specific to the set tasks.
+
+Description of the fields in the results array:
+
+ 
+
+Field name	Type	Description
+version	string	the current version of the API
+status_code	integer	general status code
+you can find the full list of the response codes here
+Note: we strongly recommend designing a necessary system for handling related exceptional or error conditions
+status_message	string	general informational message
+you can find the full list of general informational messages here
+time	string	execution time, seconds
+cost	float	total tasks cost, USD
+tasks_count	integer	the number of tasks in the tasks array
+tasks_error	integer	the number of tasks in the tasks array returned with an error
+tasks	array	array of tasks
+        id	string	task identifier
+unique task identifier in our system in the UUID format
+        status_code	integer	status code of the task
+generated by DataForSEO; can be within the following range: 10000-60000
+you can find the full list of the response codes here
+        status_message	string	informational message of the task
+you can find the full list of general informational messages here
+        time	string	execution time, seconds
+        cost	float	cost of the task, USD
+        result_count	integer	number of elements in the result array
+        path	array	URL path
+        data	object	contains the same parameters that you specified in the POST request
+        result	array	array of results
+            se_type	string	search engine type
+            target	string	target domain in a POST array
+            location_code	integer	location code in a POST array
+if there is no data, then the value is null
+            language_code	string	language code in a POST array
+if there is no data, then the value is null
+            total_count	integer	total number of results in our database relevant to your request
+            items_count	integer	the number of results returned in the items array
+            metrics	object	ranking data relevant to the specified domain
+ranking data is provided by the rank_group parameters that show the result’s rank considering only equivalent SERP elements
+                organic	object	ranking and traffic data from organic search
+                    pos_1	integer	number of organic SERPs where the domain ranks #1
+                    pos_2_3	integer	number of organic SERPs where the domain ranks #2-3
+                    pos_4_10	integer	number of organic SERPs where the domain ranks #4-10
+                    pos_11_20	integer	number of organic SERPs where the domain ranks #11-20
+                    pos_21_30	integer	number of organic SERPs where the domain ranks #21-30
+                    pos_31_40	integer	number of organic SERPs where the domain ranks #31-40
+                    pos_41_50	integer	number of organic SERPs where the domain ranks #41-50
+                    pos_51_60	integer	number of organic SERPs where the domain ranks #51-60
+                    pos_61_70	integer	number of organic SERPs where the domain ranks #61-70
+                    pos_71_80	integer	number of organic SERPs where the domain ranks #71-80
+                    pos_81_90	integer	number of organic SERPs where the domain ranks #81-90
+                    pos_91_100	integer	number of organic SERPs where the domain ranks #91-100
+                    etv	float	estimated traffic volume
+estimated organic monthly traffic to the domain
+calculated as the product of CTR (click-through-rate) and search volume values of all keywords the domain ranks for
+learn more about how the metric is calculated in this help center article
+                    count	integer	total count of organic SERPs that contain the domain
+                    estimated_paid_traffic_cost	float	estimated cost of converting organic search traffic into paid
+represents the estimated monthly cost of running ads for all keywords that a domain ranks for
+the metric is calculated as the product of organic etv and paid cpc values and indicates the cost of driving the estimated volume of monthly organic traffic through PPC advertising in Google Search
+learn more about how the metric is calculated in this help center article
+                    is_new	integer	number of new ranked elements
+indicates how many new ranked elements were found for this domain
+                    is_up	integer	rank went up
+indicates how many ranked elements of this domain went up in Google Search
+                    is_down	integer	rank went down
+indicates how many ranked elements of this domain went down in Google Search
+                    is_lost	integer	lost ranked elements
+indicates how many ranked elements of this domain were previously presented in SERPs, but weren’t found during the last check
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                paid	object	ranking and traffic data from paid search
+                    pos_1	integer	number of paid SERPs where the domain ranks #1
+                    pos_2_3	integer	number of paid SERPs where the domain ranks #2-3
+                    pos_4_10	integer	number of paid SERPs where the domain ranks #4-10
+                    pos_11_20	integer	number of paid SERPs where the domain ranks #11-20
+                    pos_21_30	integer	number of paid SERPs where the domain ranks #21-30
+                    pos_31_40	integer	number of paid SERPs where the domain ranks #31-40
+                    pos_41_50	integer	number of paid SERPs where the domain ranks #41-50
+                    pos_51_60	integer	number of paid SERPs where the domain ranks #51-60
+                    pos_61_70	integer	number of paid SERPs where the domain ranks #61-70
+                    pos_71_80	integer	number of paid SERPs where the domain ranks #71-80
+                    pos_81_90	integer	number of paid SERPs where the domain ranks #81-90
+                    pos_91_100	integer	number of paid SERPs where the domain ranks #91-100
+                    etv	float	estimated traffic volume
+estimated paid monthly traffic to the domain
+calculated as the product of CTR (click-through-rate) and search volume values of all keywords the domain ranks for
+learn more about how the metric is calculated in this help center article
+                    count	integer	total count of paid SERPs that contain the domain
+                    estimated_paid_traffic_cost	float	estimated cost of monthly search traffic
+represents the estimated cost of paid monthly traffic based on etv and cpc values
+learn more about how the metric is calculated in this help center article
+                    is_new	integer	number of new ranked elements
+indicates how many new ranked elements were found for this domain
+                    is_up	integer	rank went up
+indicates how many ranked elements of this domain went up in Google Search
+                    is_down	integer	rank went down
+indicates how many ranked elements of this domain went down in Google Search
+                    is_lost	integer	lost ranked elements
+indicates how many ranked elements of this domain were previously presented in SERPs, but weren’t found during the last check
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                featured_snippet	object	ranking and traffic data from the featured snippet results in Google SERP
+                    pos_1	integer	number of featured snippet items where the domain ranks #1
+                    pos_2_3	integer	number of featured snippet items where the domain ranks #2-3
+                    pos_4_10	integer	number of featured snippet items where the domain ranks #4-10
+                    pos_11_20	integer	number of featured snippet items where the domain ranks #11-20
+                    pos_21_30	integer	number of featured snippet items where the domain ranks #21-30
+                    pos_31_40	integer	number of featured snippet items where the domain ranks #31-40
+                    pos_41_50	integer	number of featured snippet items where the domain ranks #41-50
+                    pos_51_60	integer	number of featured snippet items where the domain ranks #51-60
+                    pos_61_70	integer	number of featured snippet items where the domain ranks #61-70
+                    pos_71_80	integer	number of featured snippet items where the domain ranks #71-80
+                    pos_81_90	integer	number of featured snippet items where the domain ranks #81-90
+                    pos_91_100	integer	number of featured snippet items where the domain ranks #91-100
+                    etv	float	estimated traffic volume
+estimated paid monthly traffic to the domain
+calculated as the product of CTR (click-through-rate) and search volume values of all keywords in the category that the domain ranks for
+learn more about how the metric is calculated in this help center article
+                    count	integer	total count of featured snippet items that contain the domain
+                    estimated_paid_traffic_cost	float	estimated cost of monthly search traffic
+represents the estimated cost of paid monthly traffic (USD) based on etv and cpc values of all keywords in the category that the domain ranks for
+learn more about how the metric is calculated in this help center article
+                    is_new	integer	number of new ranked elements
+indicates how many new ranked elements were found for the indicated target
+                    is_up	integer	rank went up
+indicates how many ranked elements of the indicated target went up
+                    is_down	integer	rank went down
+indicates how many ranked elements of the indicated target went down
+                    is_lost	integer	lost ranked elements
+indicates how many ranked elements of the indicated target were previously presented in SERPs, but weren’t found during the last check
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                local_pack	object	ranking and traffic data from the local pack results in SERP
+                    pos_1	integer	number of local pack items where the domain ranks #1
+                    pos_2_3	integer	number of local pack items where the domain ranks #2-3
+                    pos_4_10	integer	number of local pack items where the domain ranks #4-10
+                    pos_11_20	integer	number of local pack items where the domain ranks #11-20
+                    pos_21_30	integer	number of local pack items where the domain ranks #21-30
+                    pos_31_40	integer	number of local pack items where the domain ranks #31-40
+                    pos_41_50	integer	number of local pack items where the domain ranks #41-50
+                    pos_51_60	integer	number of local pack items where the domain ranks #51-60
+                    pos_61_70	integer	number of local pack items where the domain ranks #61-70
+                    pos_71_80	integer	number of local pack items where the domain ranks #71-80
+                    pos_81_90	integer	number of local pack items where the domain ranks #81-90
+                    pos_91_100	integer	number of local pack items where the domain ranks #91-100
+                    etv	float	estimated traffic volume
+estimated paid monthly traffic to the domain
+calculated as the product of CTR (click-through-rate) and search volume values of all keywords in the category that the domain ranks for
+learn more about how the metric is calculated in this help center article
+                    count	integer	total count of local pack items that contain the domain
+                    estimated_paid_traffic_cost	float	estimated cost of monthly search traffic
+represents the estimated cost of paid monthly traffic (USD) based on etv and cpc values of all keywords in the category that the domain ranks for
+learn more about how the metric is calculated in this help center article
+                    is_new	integer	number of new ranked elements
+indicates how many new ranked elements were found for the indicated target
+                    is_up	integer	rank went up
+indicates how many ranked elements of the indicated target went up
+                    is_down	integer	rank went down
+indicates how many ranked elements of the indicated target went down
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+learn more about how the metric is calculated in this help center article
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                    is_lost	integer	lost ranked elements
+indicates how many ranked elements of the indicated target were previously presented in SERPs, but weren’t found during the last check
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+            metrics_absolute	object	ranking data relevant to the specified domain
+ranking data is provided by the rank_absolute parameters that indicate the result’s position among all SERP elements
+                organic	object	ranking data from organic search
+                    pos_1	integer	number of organic SERPs where the domain ranks #1
+                    pos_2_3	integer	number of organic SERPs where the domain ranks #2-3
+                    pos_4_10	integer	number of organic SERPs where the domain ranks #4-10
+                    pos_11_20	integer	number of organic SERPs where the domain ranks #11-20
+                    pos_21_30	integer	number of organic SERPs where the domain ranks #21-30
+                    pos_31_40	integer	number of organic SERPs where the domain ranks #31-40
+                    pos_41_50	integer	number of organic SERPs where the domain ranks #41-50
+                    pos_51_60	integer	number of organic SERPs where the domain ranks #51-60
+                    pos_61_70	integer	number of organic SERPs where the domain ranks #61-70
+                    pos_71_80	integer	number of organic SERPs where the domain ranks #71-80
+                    pos_81_90	integer	number of organic SERPs where the domain ranks #81-90
+                    pos_91_100	integer	number of organic SERPs where the domain ranks #91-100
+                    is_new	integer	number of new ranked elements
+indicates how many new ranked elements were found for this domain
+                    is_up	integer	rank went up
+indicates how many ranked elements of this domain went up in Google Search
+                    is_down	integer	rank went down
+indicates how many ranked elements of this domain went down in Google Search
+                    is_lost	integer	lost ranked elements
+indicates how many ranked elements of this domain were previously presented in SERPs, but weren’t found during the last check
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                paid	object	ranking data from paid search
+                    pos_1	integer	number of paid SERPs where the domain ranks #1
+                    pos_2_3	integer	number of paid SERPs where the domain ranks #2-3
+                    pos_4_10	integer	number of paid SERPs where the domain ranks #4-10
+                    pos_11_20	integer	number of paid SERPs where the domain ranks #11-20
+                    pos_21_30	integer	number of paid SERPs where the domain ranks #21-30
+                    pos_31_40	integer	number of paid SERPs where the domain ranks #31-40
+                    pos_41_50	integer	number of paid SERPs where the domain ranks #41-50
+                    pos_51_60	integer	number of paid SERPs where the domain ranks #51-60
+                    pos_61_70	integer	number of paid SERPs where the domain ranks #61-70
+                    pos_71_80	integer	number of paid SERPs where the domain ranks #71-80
+                    pos_81_90	integer	number of paid SERPs where the domain ranks #81-90
+                    pos_91_100	integer	number of paid SERPs where the domain ranks #91-100
+                    is_new	integer	number of new ranked elements
+indicates how many new ranked elements were found for this domain
+                    is_up	integer	rank went up
+indicates how many ranked elements of this domain went up in Google Search
+                    is_down	integer	rank went down
+indicates how many ranked elements of this domain went down in Google Search
+                    is_lost	integer	lost ranked elements
+indicates how many ranked elements of this domain were previously presented in SERPs, but weren’t found during the last check
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                featured_snippet	object	ranking and traffic data from the featured snippet results in Google SERP
+                    pos_1	integer	number of featured snippet items where the domain ranks #1
+                    pos_2_3	integer	number of featured snippet items where the domain ranks #2-3
+                    pos_4_10	integer	number of featured snippet items where the domain ranks #4-10
+                    pos_11_20	integer	number of featured snippet items where the domain ranks #11-20
+                    pos_21_30	integer	number of featured snippet items where the domain ranks #21-30
+                    pos_31_40	integer	number of featured snippet items where the domain ranks #31-40
+                    pos_41_50	integer	number of featured snippet items where the domain ranks #41-50
+                    pos_51_60	integer	number of featured snippet items where the domain ranks #51-60
+                    pos_61_70	integer	number of featured snippet items where the domain ranks #61-70
+                    pos_71_80	integer	number of featured snippet items where the domain ranks #71-80
+                    pos_81_90	integer	number of featured snippet items where the domain ranks #81-90
+                    pos_91_100	integer	number of featured snippet items where the domain ranks #91-100
+                    etv	float	estimated traffic volume
+estimated paid monthly traffic to the domain
+calculated as the product of CTR (click-through-rate) and search volume values of all keywords in the category that the domain ranks for
+learn more about how the metric is calculated in this help center article
+                    count	integer	total count of featured snippet items that contain the domain
+                    estimated_paid_traffic_cost	float	estimated cost of monthly search traffic
+represents the estimated cost of paid monthly traffic (USD) based on etv and cpc values of all keywords in the category that the domain ranks for
+learn more about how the metric is calculated in this help center article
+                    is_new	integer	number of new ranked elements
+indicates how many new ranked elements were found for the indicated target
+                    is_up	integer	rank went up
+indicates how many ranked elements of the indicated target went up
+                    is_down	integer	rank went down
+indicates how many ranked elements of the indicated target went down
+                    is_lost	integer	lost ranked elements
+indicates how many ranked elements of the indicated target were previously presented in SERPs, but weren’t found during the last check
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                local_pack	object	ranking and traffic data from the local pack results in SERP
+                    pos_1	integer	number of local pack items where the domain ranks #1
+                    pos_2_3	integer	number of local pack items where the domain ranks #2-3
+                    pos_4_10	integer	number of local pack items where the domain ranks #4-10
+                    pos_11_20	integer	number of local pack items where the domain ranks #11-20
+                    pos_21_30	integer	number of local pack items where the domain ranks #21-30
+                    pos_31_40	integer	number of local pack items where the domain ranks #31-40
+                    pos_41_50	integer	number of local pack items where the domain ranks #41-50
+                    pos_51_60	integer	number of local pack items where the domain ranks #51-60
+                    pos_61_70	integer	number of local pack items where the domain ranks #61-70
+                    pos_71_80	integer	number of local pack items where the domain ranks #71-80
+                    pos_81_90	integer	number of local pack items where the domain ranks #81-90
+                    pos_91_100	integer	number of local pack items where the domain ranks #91-100
+                    etv	float	estimated traffic volume
+estimated paid monthly traffic to the domain
+calculated as the product of CTR (click-through-rate) and search volume values of all keywords in the category that the domain ranks for
+learn more about how the metric is calculated in this help center article
+                    count	integer	total count of local pack items that contain the domain
+                    estimated_paid_traffic_cost	float	estimated cost of monthly search traffic
+represents the estimated cost of paid monthly traffic (USD) based on etv and cpc values of all keywords in the category that the domain ranks for
+learn more about how the metric is calculated in this help center article
+                    is_new	integer	number of new ranked elements
+indicates how many new ranked elements were found for the indicated target
+                    is_up	integer	rank went up
+indicates how many ranked elements of the indicated target went up
+                    is_down	integer	rank went down
+indicates how many ranked elements of the indicated target went down
+                    is_lost	integer	lost ranked elements
+indicates how many ranked elements of the indicated target were previously presented in SERPs, but weren’t found during the last check
+                    clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                    clickstream_gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       female	integer	number of female users in the relevant clickstream dataset
+                       male	integer	number of male users in the relevant clickstream dataset
+                    clickstream_age_distribution	object	distribution of clickstream-based metrics by age
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                       25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                       35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                       45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                       55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                items	array	contains ranked keywords and related data
+                    se_type	string	search engine type
+                    keyword_data	object	keyword data for the returned keyword
+                        se_type	string	search engine type
+                        keyword	string	returned keyword
+                        location_code	integer	location code in a POST array
+                        language_code	string	language code in a POST array
+                        keyword_info	object	keyword data for the returned keyword
+                            se_type	string	search engine type
+                            last_updated_time	string	date and time when keyword data was updated
+in the UTC format: “yyyy-mm-dd hh-mm-ss +00:00”
+example:
+2019-11-15 12:57:46 +00:00
+                            competition	float	competition
+represents the relative amount of competition associated with the given keyword;
+the value is based on Google Ads data and can be between 0 and 1 (inclusive)
+                            competition_level	string	competition level
+represents the relative level of competition associated with the given keyword in paid SERP only;
+possible values: LOW, MEDIUM, HIGH
+if competition level is unknown, the value is null;
+learn more about the metric in this help center article
+                            cpc	float	cost-per-click
+represents the average cost per click (USD) historically paid for the keyword
+                            search_volume	integer	average monthly search volume rate
+represents the (approximate) number of searches for the given keyword idea on google.com
+                            low_top_of_page_bid	float	minimum bid for the ad to be displayed at the top of the first page
+indicates the value greater than about 20% of the lowest bids for which ads were displayed (based on Google Ads statistics for advertisers)
+the value may differ depending on the location specified in a POST request
+                            high_top_of_page_bid	float	maximum bid for the ad to be displayed at the top of the first page
+indicates the value greater than about 80% of the lowest bids for which ads were displayed (based on Google Ads statistics for advertisers)
+the value may differ depending on the location specified in a POST request
+                            categories	array	product and service categories
+you can download the full list of possible categories
+if there is no data then the value is null
+                            monthly_searches	array	monthly searches
+represents the (approximate) number of searches on this keyword (as available for the past twelve months), targeted to the specified geographic locations
+if there is no data then the value is null
+                                year	integer	year
+                                month	integer	month
+                                search_volume	integer	monthly average search volume rate
+                            search_volume_trend	object	search volume trend changes
+represents search volume change in percent compared to the previous period
+                                monthly	integer	search volume change in percent compared to the previous month
+                                quarterly	integer	search volume change in percent compared to the previous quarter
+                                yearly	integer	search volume change in percent compared to the previous year
+                        clickstream_keyword_info	object	clickstream data for the returned keyword
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+                            search_volume	integer	monthly average clickstream search volume rate
+                            last_updated_time	string	date and time when the clickstream dataset was updated
+in the UTC format: “yyyy-mm-dd hh-mm-ss +00:00”
+                            gender_distribution	object	distribution of estimated clickstream-based metrics by gender
+learn more about how the metric is calculated in this help center article
+                                female	integer	number of female users in the relevant clickstream dataset
+                                male	integer	number of male users in the relevant clickstream dataset
+                            age_distribution	object	distribution of clickstream-based metrics by age
+learn more about how the metric is calculated in this help center article
+                                18-24	integer	number of users in the relevant clickstream dataset that fall within the 18-24 age range
+                                25-34	integer	number of users in the relevant clickstream dataset that fall within the 25-34 age range
+                                35-44	integer	number of users in the relevant clickstream dataset that fall within the 35-44 age range
+                                45-54	integer	number of users in the relevant clickstream dataset that fall within the 45-54 age range
+                                55-64	integer	number of users in the relevant clickstream dataset that fall within the 55-64 age range
+                            monthly_searches	array	monthly clickstream search volume rates
+array of objects with clickstream search volume rates in a certain month of a year
+                                year	integer	year
+                                month	integer	month
+                                search_volume	integer	clickstream-based search volume rate in a certain month of a year
+                        keyword_properties	object	additional information about the keyword
+                            se_type	string	search engine type
+                            core_keyword	string	main keyword in a group
+contains the main keyword in a group determined by the synonym clustering algorithm
+if the value is null, our database does not contain any keywords the corresponding algorithm could identify as synonymous with keyword
+                            synonym_clustering_algorithm	string	the algorithm used to identify synonyms
+possible values:
+keyword_metrics – indicates the algorithm based on keyword_info parameters
+text_processing – indicates the text-based algorithm
+if the value is null, our database does not contain any keywords the corresponding algorithm could identify as synonymous with keyword
+                            keyword_difficulty	integer	difficulty of ranking in the first top-10 organic results for a keyword
+indicates the chance of getting in top-10 organic results for a keyword on a logarithmic scale from 0 to 100;
+calculated by analysing, among other parameters, link profiles of the first 10 pages in SERP;
+learn more about the metric in this help center guide
+                            detected_language	string	detected language of the keyword
+indicates the language of the keyword as identified by our system
+                            is_another_language	boolean	detected language of the keyword is different from the set language
+if true, the language set in the request does not match the language determined by our system for a given keyword
+                        serp_info	array	SERP data
+                            se_type	string	search engine type
+                            check_url	string	direct URL to search engine results
+you can use it to make sure that we provided accurate results
+                            serp_item_types	array	types of search results in SERP
+contains types of search results (items) found in SERP
+possible item types:
+answer_box, app, carousel, multi_carousel, featured_snippet, google_flights, google_reviews, third_party_reviews, google_posts, images, jobs, knowledge_graph, local_pack, hotels_pack, map, organic, paid, people_also_ask, related_searches, people_also_search, shopping, top_stories, twitter, video, events, mention_carousel, recipes, top_sights, scholarly_articles, popular_products, podcasts, questions_and_answers, find_results_on, stocks_box, visual_stories, commercial_units, local_services, google_hotels, math_solver, currency_box, product_considerations, found_on_web, short_videos, refine_products, explore_brands, perspectives, discussions_and_forums, compare_sites, courses, ai_overview;
+note that the actual results will be returned only for organic, paid, featured_snippet, and local_pack elements
+                            se_results_count	string	number of search results for the returned keyword
+                            keyword_difficulty	integer	difficulty of ranking in the first top-10 organic results for a keyword
+indicates the chance of getting in top-10 organic results for a keyword on a logarithmic scale from 0 to 100;
+calculated by analysing, among other parameters, link profiles of the first 10 pages in SERP;
+learn more about the metric in this help center guide
+                            last_updated_time	string	date and time when SERP data was updated
+in the UTC format: “yyyy-mm-dd hh-mm-ss +00:00”
+example:
+2019-11-15 12:57:46 +00:00
+                            previous_updated_time	string	previous to the most recent date and time when SERP data was updated
+in the UTC format: “yyyy-mm-dd hh-mm-ss +00:00”
+example:
+2019-10-15 12:57:46 +00:00
+                        avg_backlinks_info	object	backlink data for the returned keyword
+this object provides the average number of backlinks, referring pages and domains, as well as the average rank values among the top-10 webpages ranking organically for the keyword
+                            se_type	string	search engine type
+                            backlinks	float	average number of backlinks
+                            dofollow	float	average number of dofollow links
+                            referring_pages	float	average number of referring pages
+                            referring_domains	float	average number of referring domains
+                            referring_main_domains	float	average number of referring main domains
+                            rank	float	average rank
+learn more about the metric and its calculation formula in this help center article
+                            main_domain_rank	float	average main domain rank
+learn more about the metric and its calculation formula in this help center article
+                            last_updated_time	string	date and time when backlink data was updated
+in the UTC format: “yyyy-mm-dd hh-mm-ss +00:00”
+example:
+2019-11-15 12:57:46 +00:00
+                    search_intent_info	object	search intent info for the returned keyword
+learn about search intent in this help center article
+                            se_type	string	search engine type
+possible values: google
+                            main_intent	string	main search intent
+possible values: informational, navigational, commercial, transactional
+                            foreign_intent	array	supplementary search intents
+possible values: informational, navigational, commercial, transactional
+                            last_updated_time	string	date and time when search intent data was last updated
+in the UTC format: “yyyy-mm-dd hh-mm-ss +00:00”
+example:
+2019-11-15 12:57:46 +00:00
+                    keyword_info_normalized_with_bing	object	contains keyword search volume normalized with Bing search volume
+                        last_updated_time	string	date and time when the dataset was updated
+in the UTC format: “yyyy-mm-dd hh-mm-ss +00:00”
+example:
+2019-11-15 12:57:46 +00:00
+
+                        search_volume	integer	current search volume rate of a keyword
+                        is_normalized	boolean	keyword info is normalized
+if true, values are normalized with Bing data
+                        monthly_searches	integer	monthly search volume rates
+array of objects with search volume rates in a certain month of a year
+                            year	integer	year
+                            month	integer	month
+                            search_volume	integer	search volume rate in a certain month of a year
+                    keyword_info_normalized_with_clickstream	object	contains keyword search volume normalized with clickstream data
+                        last_updated_time	string	date and time when the dataset was updated
+in the UTC format: “yyyy-mm-dd hh-mm-ss +00:00”
+example:
+2019-11-15 12:57:46 +00:00
+
+                        search_volume	integer	current search volume rate of a keyword
+                        is_normalized	boolean	keyword info is normalized
+if true, values are normalized with clickstream data
+                        monthly_searches	integer	monthly search volume rates
+array of objects with search volume rates in a certain month of a year
+                            year	integer	year
+                            month	integer	month
+                            search_volume	integer	search volume rate in a certain month of a year
+                        ranked_serp_element	object	contains data on the domain’s SERP element found for the returned keyword
+                          se_type	string	search engine type
+                          serp_item	object	contains data on the SERP element
+the list of supported SERP elements can be found below
+                           se_type	string	search engine type
+                       ‘organic’ element in SERP		
+                           type	string	type of element = ‘organic’
+                           rank_group	integer	position within a group of elements with identical type values
+positions of elements with different type values are omitted from rank_group
+                           rank_absolute	integer	absolute rank in SERP
+absolute position among all the elements in SERP
+                           position	string	the alignment of the element in SERP
+can take the following values:
+left, right
+                           xpath	string	the XPath of the element
+                           domain	string	subdomain in SERP
+                           title	string	title of the result in SERP
+                           url	string	relevant URL in SERP
+                           breadcrumb	string	breadcrumb in SERP
+                           website_name	string	relevant website name in SERP
+                           is_image	boolean	indicates whether the element contains an image
+                           is_video	boolean	indicates whether the element contains a video
+                           is_featured_snippet	boolean	indicates whether the element is a featured_snippet
+                           is_malicious	boolean	indicates whether the element is marked as malicious
+                           description	string	description of the results element in SERP
+                           pre_snippet	string	includes additional information appended before the result description in SERP
+                           extended_snippet	string	includes additional information appended after the result description in SERP
+                           amp_version	boolean	Accelerated Mobile Pages
+indicates whether an item has the Accelerated Mobile Page (AMP) version
+                           rating	object	the item’s rating
+the popularity rate based on reviews and displayed in SERP
+                             rating_type	string	the type of rating
+here you can find the following elements: Max5, Percents, CustomMax
+                             value	integer	the value of the rating
+                             votes_count	integer	the amount of feedback
+                             rating_max	integer	the maximum value for a rating_type
+                           highlighted	array	words highlighted in bold within the results description
+                           links	array	sitelinks
+the links shown below some of Google’s search results
+if there are none, equals null
+                             type	string	type of element = ‘link_element‘
+                             title	string	title of the result in SERP
+                             description	string	description of the results element in SERP
+                             url	string	sitelink URL
+                          about_this_result	object	contains information from the ‘About this result’ panel
+‘About this result’ panel provides additional context about why Google returned this result for the given query;
+this feature appears after clicking on the three dots next to most results
+                             type	string	type of element = ‘about_this_result_element‘
+                             url	string	result’s URL
+                             source	string	source of additional information about the result
+                             source_info	string	additional information about the result
+description of the website from Wikipedia or another additional context
+                             source_url	string	URL to full information from the source
+                             language	string	the language of the result
+                             location	string	location for which the result is relevant
+                             search_terms	array	matching search terms that appear in the result
+                             related_terms	array	related search terms that appear in the result
+                           main_domain	string	primary domain name in SERP
+                           relative_url	string	URL in SERP that does not specify the HTTPs protocol and domain name
+                           etv	float	estimated traffic volume
+estimated organic monthly traffic to the domain
+calculated as the product of CTR (click-through-rate) and search volume values of the returned keyword
+learn more about how the metric is calculated in this help center article
+                           estimated_paid_traffic_cost	float	estimated cost of converting organic search traffic into paid
+represents the estimated monthly cost of running ads for the returned keyword
+the metric is calculated as the product of organic etv and paid cpc values and indicates the cost of driving the estimated volume of monthly organic traffic through PPC advertising in Google Search
+learn more about how the metric is calculated in this help center article
+                           rank_changes	object	changes in rankings
+contains information about the ranking changes of the SERP element since the previous_updated_time
+                               previous_rank_absolute	integer	previous absolute rank in SERP
+indicates previous rank of the element in Google SERP;
+if this element is new, the value will be null
+                               is_new	boolean	element was previously present in SERP
+if the value is true, previously collected SERP didn’t contain this element
+                               is_up	boolean	rank of this element went up
+if the value is true, position of the element in SERP is higher compared to the previous check
+                               is_down	boolean	rank of this element went down
+if the value is true, position of the element in SERP is lower compared to the previous check
+                           backlinks_info	object	backlinks information for the target website
+                               referring_domains	integer	number of referring domains
+referring domains include subdomains that are counted as separate domains for this metric
+                               referring_main_domains	integer	number of referring main domains
+                               referring_pages	integer	number of pages pointing to the target website
+                               dofollow	integer	number of dofollow links
+                               backlinks	integer	total number of backlinks
+the total number of backlinks, including dofollow and nofollow links
+                               time_update	string	date and time when backlink data was updated
+in the UTC format: “yyyy-mm-dd hh-mm-ss +00:00”;
+example:
+2019-11-15 12:57:46 +00:00
+                           rank_info	object	page and domain rank information
+                               page_rank	integer	page rank
+page_rank is calculated based on the method for node ranking in a linked database – a principle used in the original Google PageRank algorithm;
+learn more about the metric and how it is calculated in this help center article
+                               main_domain_rank	integer	main domain rank
+main_domain_rank is calculated based on the method for node ranking in a linked database – a principle used in the original Google PageRank algorithm
+learn more about the metric and how it is calculated in this help center article
+                               clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       ‘paid’ element in SERP		
+                           type	string	type of element = ‘paid’
+                           rank_group	integer	position within a group of elements with identical type values
+positions of elements with different type values are omitted from rank_group
+                           rank_absolute	integer	absolute rank in SERP
+absolute position among all the elements in SERP
+                           position	string	the alignment of the element in SERP
+can take the following values:
+left, right
+                           xpath	string	the XPath of the element
+                           title	string	title of the result in SERP
+                           domain	string	domain in SERP of the Ad element
+                           description	string	description of the results element in SERP
+                           breadcrumb	string	breadcrumb of the Ad element in SERP
+                           url	string	relevant URL of the Ad element in SERP
+                           highlighted	array	words highlighted in bold within the results description
+                           extra	object	additional information about the result
+                             ad_aclk	string	the identifier of the ad
+                           description_rows	array	extended description
+if there is none, equals null
+                           links	array	sitelinks
+the links shown below some of Google’s search results
+if there are none, equals null
+                             type	string	type of element = ‘ad_link_element‘
+                             title	string	title of the link element
+                             description	string	description of the results element in SERP
+                             url	string	URL link
+                             ad_aclk	string	the identifier of the ad
+                           main_domain	string	primary domain name in SERP
+                           relative_url	string	URL in SERP that does not specify the HTTPs protocol and domain name
+                           etv	float	estimated traffic volume
+estimated organic monthly traffic to the domain
+calculated as the product of CTR (click-through-rate) and search volume values of the returned keyword
+learn more about how the metric is calculated in this help center article
+                           estimated_paid_traffic_cost	float	estimated cost of paid monthly search traffic
+represents the estimated cost of paid monthly traffic based on etv and cpc values
+learn more about how the metric is calculated in this help center article
+                           rank_changes	object	changes in rankings
+contains information about the ranking changes of the SERP element since the previous_updated_time
+                               previous_rank_absolute	integer	previous absolute rank in SERP
+indicates previous rank of the element in Google SERP;
+if this element is new, the value will be null
+                               is_new	boolean	element was previously present in SERP
+if the value is true, previously collected SERP didn’t contain this element
+                               is_up	boolean	rank of this element went up
+if the value is true, position of the element in SERP is higher compared to the previous check
+                               is_down	boolean	rank of this element went down
+if the value is true, position of the element in SERP is lower compared to the previous check
+                           backlinks_info	object	backlinks information for the target website
+                               referring_domains	integer	number of referring domains
+referring domains include subdomains that are counted as separate domains for this metric
+                               referring_main_domains	integer	number of referring main domains
+                               referring_pages	integer	number of pages pointing to the target website
+                               dofollow	integer	number of dofollow links
+                               backlinks	integer	total number of backlinks
+the total number of backlinks, including dofollow and nofollow links
+                               time_update	string	date and time when backlink data was updated
+in the UTC format: “yyyy-mm-dd hh-mm-ss +00:00”;
+example:
+2019-11-15 12:57:46 +00:00
+                           rank_info	object	page and domain rank information
+                               page_rank	integer	page rank
+page_rank is calculated based on the method for node ranking in a linked database – a principle used in the original Google PageRank algorithm;
+learn more about the metric and how it is calculated in this help center article
+                               main_domain_rank	integer	main domain rank
+main_domain_rank is calculated based on the method for node ranking in a linked database – a principle used in the original Google PageRank algorithm
+learn more about the metric and how it is calculated in this help center article
+                               clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       ‘local_pack’ element in SERP		
+                           type	string	type of element = ‘local_pack’
+                           rank_group	integer	position within a group of elements with identical type values
+positions of elements with different type values are omitted from rank_group
+                           rank_absolute	integer	absolute rank in SERP
+absolute position among all the elements in SERP
+                           position	string	the alignment of the element in SERP
+can take the following values:
+left, right
+                           xpath	string	the XPath of the element
+                           title	string	title of the result in SERP
+                           description	string	description of the results element in SERP
+                           domain	string	domain in SERP
+                           phone	string	phone number
+                           url	string	relevant URL
+                           is_paid	boolean	indicates whether the element is an ad
+                           rating	object	the item’s rating
+the popularity rate based on reviews and displayed in SERP
+                             rating_type	string	the type of rating
+here you can find the following elements: Max5, Percents, CustomMax
+                             value	integer	the value of the rating
+                             votes_count	integer	the amount of feedback
+                             rating_max	integer	the maximum value for a rating_type
+                           main_domain	string	primary domain name in SERP
+                           relative_url	string	URL in SERP that does not specify the HTTPs protocol and domain name
+                           etv	float	estimated traffic volume
+estimated organic monthly traffic to the domain
+calculated as the product of CTR (click-through-rate) and search volume values of the returned keyword
+learn more about how the metric is calculated in this help center article
+                           estimated_paid_traffic_cost	float	estimated cost of converting organic search traffic into paid
+represents the estimated monthly cost of running ads for the returned keyword
+the metric is calculated as the product of organic etv and paid cpc values and indicates the cost of driving the estimated volume of monthly organic traffic through PPC advertising in Google Search
+learn more about how the metric is calculated in this help center article
+                           rank_changes	object	changes in rankings
+contains information about the ranking changes of the SERP element since the previous_updated_time
+                               previous_rank_absolute	integer	previous absolute rank in SERP
+indicates previous rank of the element in Google SERP;
+if this element is new, the value will be null
+                               is_new	boolean	element was previously present in SERP
+if the value is true, previously collected SERP didn’t contain this element
+                               is_up	boolean	rank of this element went up
+if the value is true, position of the element in SERP is higher compared to the previous check
+                               is_down	boolean	rank of this element went down
+if the value is true, position of the element in SERP is lower compared to the previous check
+                           backlinks_info	object	backlinks information for the target website
+                               referring_domains	integer	number of referring domains
+referring domains include subdomains that are counted as separate domains for this metric
+                               referring_main_domains	integer	number of referring main domains
+                               referring_pages	integer	number of pages pointing to the target website
+                               dofollow	integer	number of dofollow links
+                               backlinks	integer	total number of backlinks
+the total number of backlinks, including dofollow and nofollow links
+                               time_update	string	date and time when backlink data was updated
+in the UTC format: “yyyy-mm-dd hh-mm-ss +00:00”;
+example:
+2019-11-15 12:57:46 +00:00
+                           rank_info	object	page and domain rank information
+                               page_rank	integer	page rank
+page_rank is calculated based on the method for node ranking in a linked database – a principle used in the original Google PageRank algorithm;
+learn more about the metric and how it is calculated in this help center article
+                               main_domain_rank	integer	main domain rank
+main_domain_rank is calculated based on the method for node ranking in a linked database – a principle used in the original Google PageRank algorithm
+learn more about the metric and how it is calculated in this help center article
+                               clickstream_etv	integer	estimated traffic volume based on clickstream data
+calculated as the product of click-through-rate and clickstream search volume values of all keywords the domain ranks for
+to retrieve results for this field, the parameter include_clickstream_data must be set to true
+learn more about how the metric is calculated in this help center article
+                       ‘featured_snippet’ element in SERP		
+                           type	string	type of element = ‘featured_snippet’
+                           rank_group	integer	position within a group of elements with identical type values
+positions of elements with different type values are omitted from rank_group
+                           rank_absolute	integer	absolute rank in SERP
+absolute position among all the elements in SERP
+                           position	string	the alignment of the element in SERP
+can take the following values:
+left, right
+                           xpath	string	the XPath of the element
+                           domain	string	domain in SERP
+                           title	string	title of the result in SERP
+                           featured_title	string	the title of the featured snippets source page
+                           description	string	description of the results element in SERP
+                           url	string	relevant URL
+                           table	object	results table
+if there are none, equals null
+                             table_header	array	column names
+                             table_content	array	the content of the table
+one line of the table in this element of the array
+                           main_domain	string	primary domain name in SERP
+                           relative_url	string	URL in SERP that does not specify the HTTPs protocol and domain name
+                           etv	float	estimated traffic volume
+estimated organic monthly traffic to the domain
+calculated as the product of CTR (click-through-rate) and search volume values of the returned keyword
+learn more about how the metric is calculated in this help center article
+                           estimated_paid_traffic_cost	float	estimated cost of converting organic search traffic into paid
+represents the estimated monthly cost of running ads for the returned keyword
+the metric is calculated as the product of organic etv and paid cpc values and indicates the cost of driving the estimated volume of monthly organic traffic through PPC advertising in Google Search
+learn more about how the metric is calculated in this help center article
+                           rank_changes	object	changes in rankings
+contains information about the ranking changes of the SERP element since the previous_updated_time
+                               previous_rank_absolute	integer	previous absolute rank in SERP
+indicates previous rank of the element in Google SERP;
+if this element is new, the value will be null
+                               is_new	boolean	element was previously present in SERP
+if the value is true, previously collected SERP didn’t contain this element
+                               is_up	boolean	rank of this element went up
+if the value is true, position of the element in SERP is higher compared to the previous check
+                               is_down	boolean	rank of this element went down
+if the value is true, position of the element in SERP is lower compared to the previous check
+                           backlinks_info	object	backlinks information for the target website
+                               referring_domains	integer	number of referring domains
+referring domains include subdomains that are counted as separate domains for this metric
+                               referring_main_domains	integer	number of referring main domains
+                               referring_pages	integer	number of pages pointing to the target website
+                               dofollow	integer	number of dofollow links
+                               backlinks	integer	total number of backlinks
+the total number of backlinks, including dofollow and nofollow links
+                               time_update	string	date and time when backlink data was updated
+in the UTC format: “yyyy-mm-dd hh-mm-ss +00:00”;
+example:
+2019-11-15 12:57:46 +00:00
+                           rank_info	object	page and domain rank information
+                               page_rank	integer	page rank
+page_rank is calculated based on the method for node ranking in a linked database – a principle used in the original Google PageRank algorithm;
+learn more about the metric and how it is calculated in this help center article
+                               main_domain_rank	integer	main domain rank
+main_domain_rank is calculated based on the method for node ranking in a linked database – a principle used in the original Google PageRank algorithm
+learn more about the metric and how it is calculated in this help center article

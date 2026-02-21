@@ -1,0 +1,152 @@
+Got it — you want a **scrape + screenshot-first** system that visits the exact SEMrush UI pages, saves those sections as images, extracts data from those same pages, stores both in your DB, and then ranks/filters 500–1,000 domains for outreach.
+
+Here’s a **copy-paste prompt** you can give to a coding model to build exactly that (no code included below):
+
+---
+
+## Prompt: Build “SEMrush Screenshot Scraper & Prospecting UI” (UI capture + data extraction + analysis)
+
+**Objective**
+Create a production-grade application that, for each domain in an input list (500–1,000+), will:
+
+1. **Visit SEMrush organic overview UI pages** at URLs like
+   `https://www.semrush.com/analytics/organic/overview/?db=us&q=<DOMAIN>&searchType=domain`
+2. **Capture full-fidelity screenshots** of specific sections (see “Target sections” below)
+3. **Extract the data** shown in those sections (DOM parsing when possible; fallback OCR for charts)
+4. **Persist** both the screenshots and the extracted, structured data in a database
+5. Provide a **web UI** where I can click a domain to see all stored screenshots + key metrics
+6. Provide **export** (ZIP/CSV/PDF) of exactly those screenshots and the associated data
+7. Run **analysis & ranking** across the whole list to find the worst/best SEO performers so I can shortlist prospects
+
+> Important: **Design for ToS-aware operation.** Do not bypass authentication or protections. Add configurable throttling, human-like pacing, and run scheduling. Build everything so I can switch to official APIs later.
+
+---
+
+### Target sections to capture per domain (screenshots + data)
+
+Build reusable “section harvesters.” Each harvester must:
+
+* wait for the section to load,
+* screenshot only that section (clean crop),
+* extract the visible numbers/labels (DOM text or table HTML; if not available, OCR the screenshot),
+* return a JSON payload and the screenshot path.
+
+1. **Header KPIs**: Keywords, Traffic, Traffic Cost, Branded/Non-Branded Traffic, mini sparkline.
+2. **Organic Keywords Trend** (1M/6M/1Y/2Y/All-time toggle): bar/line chart + legend checkboxes (Top 3, 4–10, 11–20, 21–50, 51–100).
+3. **Top Keywords table** (first screenful): keyword, position, volume, traffic %, KD.
+4. **Keywords by Intent**: intent distribution (informational, navigational, commercial, transactional).
+5. **Organic Search Positions table** (first screenful): keyword, intent, position, SERP features, traffic, volume, KD, URL, “Updated”.
+6. **Position Changes Trend** (Monthly): line + stacked bars; hover value or visible legend for Traffic/Improved/Declined counts.
+7. **Top Page Changes** (Last 28 days): URL, traffic, traffic diff.
+8. **Competitive Positioning Map**: bubble chart (capture screenshot), plus the **Organic Competitors** table (first screenful): domain, common keywords, traffic, costs, etc.
+9. **Organic Pages** table: URL, traffic, traffic %, keywords count, etc.
+
+> Implementation hint: prefer **DOM text extraction** for tables/lists; use **OCR** for charts/sparklines when raw numbers aren’t in the DOM. Store raw screenshots regardless.
+
+---
+
+### Compliance, stability & risk controls
+
+* **User login flow**: allow manual login, persisted session cookies, and 2FA handling. Never hardcode credentials.
+* **Rate limits** (configurable): max requests/hour/day; random delays between 10–30s; long cooldowns after bursts.
+* **Backoff & retries**: exponential backoff on 429/5xx; abort on captcha.
+* **Polite rendering**: set realistic viewport; disable animations if possible; wait for network idle + section selectors.
+* **Feature flag**: `ENABLE_UI_SCRAPE=true/false` so I can switch to API mode later without code changes.
+* **Audit log**: per domain, record timestamps, URL visited, success/failure, and selector versions.
+
+---
+
+### Data model (store *both* screenshots and data)
+
+* **Domains**: `id`, `domain`, `status`, `last_crawled_at`
+* **Snapshots** (one row per domain per run): `snapshot_id`, `domain_id`, `run_id`, timestamps
+* **Sections** (per snapshot): `section_type` (enum: header_kpis, organic_trend, top_keywords, …), `screenshot_path`, `extracted_json` (JSONB), `extraction_method` (dom|ocr), `notes`
+* **Metrics rollup** (per snapshot): normalized fields for analysis (e.g., `total_keywords`, `traffic`, `traffic_cost`, `pct_top3`, `intent_commercial_pct`, `improved_count`, `declined_count`, `competitors_count`, etc.)
+* **Runs**: `run_id`, config used, pacing stats, error counts
+
+> Use a relational DB (e.g., Postgres) with JSONB columns for section payloads. Index domain + run_id. Keep all screenshot files on disk or object storage; store paths in DB.
+
+---
+
+### Extraction strategy
+
+* **Tables/lists**: parse DOM with stable locators (role/name, `data-*` attributes, ARIA labels, or visible text + relative XPaths). Normalize headers to canonical names.
+* **Charts/sparklines**: if values aren’t in DOM, crop screenshot to the chart area and OCR the value popovers or axis labels; store both the raw OCR text and a parsed numeric series when feasible.
+* **Sanity checks**: validate numbers (e.g., “Keywords total” ≥ sum of buckets, non-negative, realistic bounds). Log anomalies.
+
+---
+
+### Analysis & ranking (prospecting)
+
+Create a scoring pipeline that turns each snapshot’s normalized metrics into a single **prospect score** (higher = better target). Example components (weights configurable):
+
+* **Decline signal**: month-over-month negative trend in Organic Keywords Trend (use slope or %Δ last 3/6/12 months).
+* **Fragile rankings**: low share of keywords in Top 3 and 4–10; high share in 21–100 (easy wins).
+* **Intent mix**: too skewed to informational vs commercial/transactional (under-monetized).
+* **Position changes**: high “Declined” vs “Improved” recently.
+* **Top page changes**: many pages with negative traffic diff.
+* **Competition gap**: many competitors outranking with higher traffic/costs.
+* **Authority proxy**: low Traffic Cost vs keywords count (underpowered pages).
+
+Output:
+
+* **Leaderboards**: “worst SEO health,” “biggest recent declines,” “most fixable,” etc.
+* **Shortlist generator**: pick top N prospects (e.g., 100–200) based on score and your filters.
+
+---
+
+### Web UI (operator console)
+
+* **Upload**: CSV/JSON/TXT of domains; choose SEMrush database (`db=us` etc.).
+* **Run control**: start/pause/stop, concurrency level, pacing profile, daily cap.
+* **Per-domain view**: gallery of stored screenshots (by section), extracted metrics table, notes.
+* **Compare & rank**: aggregated tables with sorting/filters (decline %, top-3 share, intent mix, etc.).
+* **Exports**:
+
+  * **ZIP**: exact screenshots per domain/run
+  * **CSV**: normalized metrics
+  * **PDF**: one-pager per domain with embedded screenshots + key stats
+* **History**: list past runs; re-open reports; re-export assets.
+* **Admin**: selector versions, OCR on/off, throttling config, session status.
+
+---
+
+### Scheduler & throughput
+
+* **Queue-based crawler**: enqueue domains; worker pulls next domain, visits target URL, loops through section harvesters.
+* **Pacing**: default ≤120 page interactions/hour with random jitter; nightly cooldown windows; configurable daily ceilings.
+* **Resilience**: checkpoint after each section; if a section fails, skip and continue; retry failed sections at end.
+* **Idempotency**: if a domain was captured this run, skip unless `force=true`.
+
+---
+
+### Observability
+
+* **Metrics**: pages/hour, success rate, avg wait per section, OCR hit rate, % DOM vs OCR extraction.
+* **Logs**: structured JSON logs per step; redaction for sensitive fields.
+* **Alerts**: optional email/Slack when error rate spikes or captcha detected.
+
+---
+
+### Compliance notes
+
+* Must be **toggleable** to an **API/exports mode** later.
+* Prominently document that automated UI capture can violate site **Terms of Service**; include an acknowledgment flag in config to run.
+* Never ship default credentials; require explicit, interactive login and session storage with expiry.
+
+---
+
+### Acceptance criteria
+
+* Given 500–1,000 domains, the system:
+
+  1. Visits each SEMrush overview URL, **captures all target sections**, and **stores both screenshots and extracted data** per section.
+  2. Survives intermittent failures with retries and checkpoints, without crashing the run.
+  3. Provides a UI where clicking a domain shows **all screenshots** and **parsed metrics** side-by-side.
+  4. Produces **exportable artifacts** (ZIP of screenshots, CSV of metrics, PDF one-pagers).
+  5. Computes prospect scores and **ranks domains**, allowing shortlist to 100–200 with filters.
+  6. Respects configured pacing; logs every step; can pause/resume runs.
+
+---
+
+If any selector is unstable, infer a robust locator strategy (role+text, proximity to headings, or data attributes) and document it next to the harvester. Keep everything modular so I can add or remove UI sections later.

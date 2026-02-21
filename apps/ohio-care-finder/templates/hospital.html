@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hospital-detail">
+    <div class="container">
+        <a href="/" class="back-link">← Back to Map</a>
+        
+        <div class="hospital-card">
+            <h1>{{ hospital.name }}</h1>
+            
+            <div class="hospital-info">
+                <div class="info-section">
+                    <h3>Facility Information</h3>
+                    <p><strong>System:</strong> {{ hospital.system }}</p>
+                    <p><strong>Address:</strong> {{ hospital.address }}, {{ hospital.city }}, {{ hospital.state }} {{ hospital.zip }}</p>
+                    <p><strong>County:</strong> {{ hospital.county }}</p>
+                    {% if hospital.website %}
+                    <p><strong>Website:</strong> <a href="{{ hospital.website }}" target="_blank" rel="noopener">Visit Website →</a></p>
+                    {% endif %}
+                </div>
+                
+                <div class="info-section">
+                    <h3>Services</h3>
+                    <p><strong>Labor & Delivery:</strong> 
+                        {% if hospital.has_ld %}
+                        <span class="badge badge-yes">Yes</span>
+                        {% else %}
+                        <span class="badge badge-no">No</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>NICU Level:</strong> 
+                        <span class="badge badge-nicu-{{ hospital.nicu_level.lower() }}">{{ hospital.nicu_level }}</span>
+                    </p>
+                    {% if hospital.last_verified %}
+                    <p class="text-muted"><small>Last verified: {{ hospital.last_verified }}</small></p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {% if higher_nicu %}
+            <div class="suggestion-box">
+                <h3>🏥 Nearest Higher-Level NICU</h3>
+                <p>For more specialized neonatal care, the nearest facility with a higher NICU level is:</p>
+                <p><strong><a href="/hospital/{{ higher_nicu.id }}">{{ higher_nicu.name }}</a></strong> ({{ higher_nicu.city }})</p>
+                <p>NICU Level {{ higher_nicu.nicu_level }} • ~{{ higher_nicu.distance_km }} km away</p>
+            </div>
+            {% endif %}
+            
+            {% if closures %}
+            <div class="closures-section">
+                <h3>Service Closures</h3>
+                {% for closure in closures %}
+                <div class="closure-item">
+                    <p><strong>{{ closure.service }}</strong> - Closed {{ closure.closure_date }}</p>
+                    {% if closure.notes %}
+                    <p>{{ closure.notes }}</p>
+                    {% endif %}
+                    {% if closure.source_url %}
+                    <p><a href="{{ closure.source_url }}" target="_blank" rel="noopener">Source →</a></p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            {% if sources %}
+            <div class="sources-section">
+                <h3>Data Sources</h3>
+                <ul>
+                {% for source in sources %}
+                    <li>
+                        <a href="{{ source.url }}" target="_blank" rel="noopener">{{ source.label }}</a>
+                        {% if source.verified_at %}<small>(verified {{ source.verified_at }})</small>{% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="hospital-map">
+            <h3>Location</h3>
+            <div id="detailMap" style="height: 400px;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    const map = L.map('detailMap').setView([{{ hospital.lat }}, {{ hospital.lng }}], 13);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    
+    const marker = L.marker([{{ hospital.lat }}, {{ hospital.lng }}]).addTo(map);
+    marker.bindPopup('<strong>{{ hospital.name }}</strong>').openPopup();
+</script>
+{% endblock %}

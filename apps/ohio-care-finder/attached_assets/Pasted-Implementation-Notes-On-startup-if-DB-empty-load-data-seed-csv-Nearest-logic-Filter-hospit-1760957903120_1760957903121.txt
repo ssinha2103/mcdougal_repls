@@ -1,0 +1,137 @@
+Implementation Notes
+
+On startup, if DB empty, load /data/*.seed.csv.
+
+Nearest logic:
+
+Filter hospitals where has_ld=1 when need=ld.
+
+For need=nicu3 or need=nicu4, filter nicu_level >= requested level.
+
+Compute distance with haversine; if OPENROUTESERVICE_API_KEY present, call ORS /v2/directions/driving-car to get real travel time. If the key is absent, show a tooltip “Travel times estimated without live routing.”
+
+Detail page suggests a higher-level NICU if current hospital’s nicu_level is lower than requested.
+
+Map markers:
+
+Color by NICU level: gray(None), blue(II), orange(III), red(IV); add an “L&D” badge if has_ld=1.
+
+Timeline: List closures (newest first) with date, facility name (linked to detail), service, and source URL.
+
+CSV downloads: Stream from DB with proper Content-Disposition.
+
+SEO:
+
+<title>Ohio Maternity Care Access Map (2025) | L&D & NICU Levels</title>
+
+<meta name="description" content="Search Ohio hospitals for Labor & Delivery and NICU levels. See closures since 2022 and estimate travel time from your ZIP. Download CSVs for reporting.">
+
+Create clean slugs and canonical tags; add Open Graph tags with a static preview image.
+
+Accessibility: Keyboard focus states, ARIA labels for filters, high-contrast marker legend.
+
+Disclaimers: Prominent box—“Informational only, not medical advice; verify with your provider.”
+
+Key Files (content outline)
+
+app/main.py
+
+Create FastAPI, mount static, JinjaTemplates, include routers.
+
+On startup: create tables, call seed_db_if_empty().
+
+app/models.py
+
+SQLModel/SQLAlchemy models for tables above with indexes on (county, has_ld, nicu_level).
+
+app/routers/pages.py
+
+/, /hospital/{id}, /methodology, /about.
+
+app/routers/api.py
+
+/api/search, /api/closures, /download/{table} with validation.
+
+app/services/nearest.py
+
+get_nearest(lat, lng, need, limit=5) returning list with distance_km and eta_minutes.
+
+app/services/routing.py
+
+estimate_eta_km(distance_km) fallback (assume 45 mph ≈ 72 km/h).
+
+ors_eta_minutes(origin, dest, api_key) safe wrapper; if 4xx/5xx, fallback.
+
+templates/index.html
+
+Map container + controls:
+
+ZIP input, “Need” select (Any L&D / NICU II / NICU III / NICU IV), checkboxes: “Show closures”, “Only hospitals with L&D”.
+
+Legend and Download buttons.
+
+“Methodology” sidebar with sources list.
+
+Results panel shows top 3 nearest with distance + ETA.
+
+templates/hospital.html
+
+Hospital card (name, system, address, county, L&D yes/no, NICU level, last_verified, website link).
+
+Mini map pin.
+
+“Nearest higher-level NICU” widget (if applicable).
+
+Sources list.
+
+/static/js/app.js
+
+Initialize map, load hospitals as GeoJSON, apply filters, cluster markers.
+
+ZIP lookup reads local zips_ohio.csv (pre-embedded in bundle as a JS object or fetched via static CSV).
+
+Calls /api/search and updates a side panel.
+
+/static/css/styles.css
+
+Simple, responsive, news-room friendly styles.
+
+README.md
+
+What it is, how to run locally:
+
+pip install -r requirements.txt
+
+copy .env.example to .env and optionally add OPENROUTESERVICE_API_KEY=...
+
+uvicorn app.main:app --reload
+
+How to update CSVs and re-seed.
+
+Disclaimers and data source credits.
+
+tests/test_api.py
+
+Seed in test DB; tests for /api/search with and without ORS key; tests for /api/closures.
+
+Acceptance Criteria
+
+Runs on first try in Replit with seeded Ohio sample data.
+
+Home page shows a working Leaflet map, filters, ZIP search, nearest list, and a closures timeline.
+
+/download/hospitals and /download/closures return valid CSVs.
+
+Hospital detail pages render and link back to map.
+
+If .env lacks ORS key, app still works and labels ETAs as “estimated.”
+
+Code is organized, commented, and has basic tests that pass.
+
+Stretch (nice-to-have, if time):
+
+Admin-only /admin/upload route to replace CSVs and re-seed (password via env var).
+
+Simple Makefile with run, test, seed.
+
+Please generate all files and glue code now, including minimal working seed data and passing tests.

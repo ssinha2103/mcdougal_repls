@@ -1,0 +1,15 @@
+Here is the full **paragraph-style prompt** that you can use directly in Replit or with an AI agent to build your enhanced SEO Competitive Intelligence PDF generator:
+
+---
+
+Build a professional and insight-driven PDF report generator for an AI-powered SEO Competitive Intelligence Dashboard. The tool should take structured JSON input containing data for up to 12 domains and generate a compact, branded, and visually clean PDF report. Each report must include a cover page titled “AI SEO PageScore – Competitive Intelligence Report” with the date, branding (e.g., © 2025 McDougall Interactive), and a list of domains analyzed. The executive summary should highlight key figures such as the number of domains analyzed, the market leader with its traffic stats, average traffic across domains, the trust score range, the user’s domain rank, and a high-level performance overview.
+
+The core of the report will feature a comparative matrix for all domains, listing metrics like monthly traffic, keyword count, backlink volume, trust score (on a 14-point scale), page speed, and an overall performance score. Add a performance ranking section and—if possible—small sparklines or line graphs showing traffic trends over the past few months. To deepen value, include an "AI SEO Health Indicators" section that presents E-E-A-T scores, AI readiness, technical SEO audit items (like mobile-friendliness or schema usage), and content freshness using radar or bar charts. Also include a breakdown of each domain’s technology stack (e.g., CMS, analytics tools), and summarize the top performing and underperforming keywords per site.
+
+Social media insights should include LinkedIn followers, YouTube subscribers, recent video activity, and Twitter/X engagement. The security & compliance section will indicate whether HTTPS, a cookie consent banner, and a privacy policy are present. Include a clear and actionable Competitive Opportunities Table comparing the user’s site with the leader across trust, speed, backlinks, and content quality, along with concrete recommendations. If traffic value and CPC estimates are available, estimate potential traffic growth and its monetary value as an ROI projection.
+
+The final PDF should be concise (ideally 3–5 pages) and beautifully formatted using clean fonts like Inter or Roboto, light-colored section backgrounds, striped tables, and minimal icons or badges for visual clarity. Generate the file using WeasyPrint, ReportLab, or pdfkit (HTML + CSS with headless rendering), and save the output as `seo_analysis_<timestamp>.pdf`. The PDF should be optimized for sharing with clients, marketers, or stakeholders to make informed decisions on SEO investments and positioning.
+
+---
+
+Let me know if you want the working Python code or HTML template next!

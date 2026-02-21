@@ -1,0 +1,64 @@
+Perfect—that red-outlined node is the culprit.
+
+### What’s happening
+
+* It’s Leaflet’s internal **zoom proxy**:
+  `<div class="leaflet-proxy leaflet-zoom-animated" style="transform: … scale(2048)">`
+* Because it’s being **scaled to 2048×** during zoom animations **and isn’t positioned out of normal flow**, the browser counts its (huge) bounding box toward the page height → you see a big white space at the bottom.
+* This almost always means **Leaflet’s CSS is missing or got overridden** (the proxy should be `position:absolute` under a clipped container).
+
+### Quick verify (optional)
+
+In DevTools console:
+
+```js
+getComputedStyle(document.querySelector('.leaflet-proxy')).position
+// should be "absolute". If it's "static", that's the bug.
+```
+
+### Fix (choose ONE of these)
+
+**A) Proper fix — include Leaflet’s stylesheet**
+
+* If you’re using modules:
+
+  ```ts
+  // in your app entry (client-side)
+  import 'leaflet/dist/leaflet.css';
+  ```
+* Or in HTML:
+
+  ```html
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  ```
+
+**B) Hot patch — add minimal CSS to your app**
+
+```css
+/* Keep the map itself from affecting page height */
+.leaflet-container { position: relative; overflow: hidden; }
+
+/* Ensure all moving panes are out of normal flow */
+.leaflet-map-pane,
+.leaflet-tile-pane,
+.leaflet-overlay-pane,
+.leaflet-marker-pane,
+.leaflet-shadow-pane,
+.leaflet-zoom-animated,
+.leaflet-proxy {
+  position: absolute;
+  top: 0; left: 0;
+}
+```
+
+### Also sanity-check
+
+* Give the map container an explicit height (not `min-height`):
+
+  ```css
+  #map { height: 600px; } /* or h-[600px] in Tailwind */
+  ```
+* Avoid `min-h-screen` on the map wrapper.
+* Make sure no global CSS is resetting Leaflet classes (e.g., `position: initial !important`).
+
+Once the proxy is absolutely positioned inside a clipped `.leaflet-container`, the extra page height/white space will disappear. The `undefined` you saw in console is just from the earlier helper snippet returning no printable value—nothing to worry about.

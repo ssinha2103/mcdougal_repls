@@ -1,0 +1,33 @@
+Here are simple, **human-readable formulas** for each column in the **Traffic Opportunities** section you shared:
+
+---
+
+### ✅ Columns and Formulas
+
+| Column Name             | Description                                                           | Formula / Value Source                                                                                                   |
+| ----------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Traffic from Top 10** | Estimated monthly visits from keywords ranked in positions 1–10.      | Sum of `etv` (Estimated Traffic Volume) for top 10 positions. DataForSEO `ranked_keywords` API → filter `position <= 10` |
+| **Lost Traffic**        | Potential extra traffic if poorly ranked keywords improved to top 10. | Sum of potential `etv` if keywords ranked #11–100 were moved to top 10 — estimated using CTR uplift model.               |
+| **Opportunity Value**   | Ad value of the Lost Traffic (if it ranked in top 10).                | `Lost Traffic × Avg CPC` (Cost Per Click)                                                                                |
+| **Ranking Strength**    | Score of current rankings weighted by volume and position.            | Custom: weighted average of keyword CTR \* volume \* visibility score (or inversely related to avg rank)                 |
+| **Focus Priority**      | How critical it is to improve rankings based on current weaknesses.   | Derived from `Opportunity Value` and `Lost Traffic`. Thresholds classify priority as “Low”, “Medium”, “High”.            |
+
+---
+
+### 🔍 Where to Get These Inputs
+
+* **`etv`**: From `metrics.organic.etv` or each keyword’s ETV from `ranked_keywords` endpoint.
+* **`Avg CPC`**: Available per keyword in `ranked_keywords → keyword_data → cpc`.
+* **`Position`**: From `ranked_keywords → position`.
+* **Volume**: From `ranked_keywords → keyword_data → search_volume`.
+
+If you don't already fetch position-wise keywords, you’ll need to expand your current query for each domain using the `/ranked_keywords/live` endpoint.
+
+---
+
+### 🧠 Tips
+
+* If you're getting `NaN` values: it’s likely that no keywords are ranking in the top 100 or data is missing from your API call.
+* Add fallback logic to avoid `NaN` by checking for 0s or empty keyword lists.
+
+Let me know if you want a pre-built logic model in Python or SQL later on.

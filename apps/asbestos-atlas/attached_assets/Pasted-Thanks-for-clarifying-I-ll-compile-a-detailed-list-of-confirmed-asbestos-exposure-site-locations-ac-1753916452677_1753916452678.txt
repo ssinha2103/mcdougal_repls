@@ -1,0 +1,84 @@
+Thanks for clarifying. I’ll compile a detailed list of confirmed asbestos exposure site locations across the U.S., including those identified by the EPA as Superfund sites and ATSDR priority locations. I’ll also look for a public API (with `curl` example usage if available) that you can use to fetch this data programmatically for your web app.
+
+I’ll update you once I’ve gathered everything.
+
+
+# Confirmed Asbestos Exposure Site Locations in the U.S. (EPA & ATSDR Focus)
+
+## EPA Superfund Sites with Asbestos Contamination (NPL Sites)
+
+The following table lists major **EPA Superfund** sites (primarily on the National Priorities List, NPL) where asbestos contamination has been confirmed. These include former mines, manufacturing facilities, and waste disposal areas where **workers and residents** were at risk of exposure. Each site’s location (city and state) is given, along with a brief description of the site type:
+
+| **Site Name**                      | **Location (City, State)**     | **Site Type**                                                          |
+| ---------------------------------- | ------------------------------ | ---------------------------------------------------------------------- |
+| **Torch Lake Superfund Site**      | Houghton County, Michigan      | Former copper mine/tailings (asbestos in waste)                        |
+| **Ambler Asbestos Piles**          | Ambler, Pennsylvania           | Asbestos product waste disposal piles                                  |
+| **BoRit Asbestos Site**            | Ambler, Pennsylvania           | Asbestos waste pile, reservoir & dump (from nearby plant)              |
+| **Carter Carburetor Site**         | St. Louis, Missouri            | Former manufacturing facility (asbestos in buildings/soil)             |
+| **North Ridge Estates**            | Klamath Falls (near), Oregon   | Former military housing (buried asbestos materials)                    |
+| **Johns Manville Corp. Site**      | Waukegan, Illinois             | Former asbestos products plant & waste disposal area                   |
+| **Powhatan Mining Co. (POWMINCO)** | Powhatan, Maryland             | Asbestos waste disposal/landfill (former mine area)                    |
+| **Libby Asbestos Site**            | Libby, Montana                 | Vermiculite mine & processing (Libby amphibole asbestos)               |
+| **Atlas Asbestos Mine**            | Fresno/San Benito Co., CA      | Former asbestos ore mine (natural deposit)                             |
+| **Coalinga Asbestos Mine**         | Fresno County, California      | Former asbestos mine & mill (natural deposit)                          |
+| **El Dorado Hills**                | El Dorado County, California   | Community area with naturally occurring asbestos                       |
+| **South Bay Asbestos Area**        | Santa Clara County, California | Asbestos-contaminated soil/sediments (waste disposal in bay area)      |
+| **Sumas Mountain Asbestos Site**   | Whatcom County, Washington     | Naturally occurring asbestos deposit (disturbed by mining)             |
+| **Blackburn & Union Privileges**   | Walpole, Massachusetts         | Former asbestos brake linings factory (soil/groundwater contamination) |
+
+**Sources:** These sites are highlighted by EPA as examples of asbestos-contaminated Superfund locations. Many are on the EPA’s NPL and have ongoing or completed cleanups. Notably, the **Libby, MT** site was so severe that EPA declared a first-ever Public Health Emergency there in 2009. The Ambler sites in PA (Ambler Piles and BoRit) are another well-known community affected by legacy asbestos waste. The Johns Manville site in IL was one of the earliest NPL sites due to enormous asbestos wastes from decades of manufacturing. Each of these locations had confirmed asbestos exposure risks to workers or nearby residents until remedial actions were taken.
+
+## ATSDR Priority Asbestos Exposure Sites (Vermiculite Processing Facilities)
+
+In addition to Superfund NPL sites, the **Agency for Toxic Substances and Disease Registry (ATSDR)** identified a set of priority sites nationwide that received vermiculite ore from the Libby, Montana mine (contaminated with Libby amphibole asbestos). These were mostly former **vermiculite exfoliation plants** where workers and communities were exposed in the past. ATSDR initially evaluated **28 priority sites** (out of about 245 processing sites) that together received the majority of the Libby ore. The table below lists these sites by city and state (many were added to EPA’s evaluation list as well):
+
+| **Location (City, State)**               | **Site Description/Type**                           |
+| ---------------------------------------- | --------------------------------------------------- |
+| **Beltsville, MD**                       | Vermiculite processing plant (W\.R. Grace/Zonolite) |
+| **Dallas, TX**                           | Vermiculite processing plant (W\.R. Grace)          |
+| **Dearborn, MI**                         | Vermiculite exfoliation facility                    |
+| **Denver, CO**                           | Vermiculite processing plant                        |
+| **Easthampton, MA**                      | Vermiculite processing facility                     |
+| **Edgewater, NJ**                        | Vermiculite processing facility                     |
+| **Ellwood City, PA**                     | Vermiculite processing facility                     |
+| **Glendale, AZ**                         | Vermiculite processing plant (W\.R. Grace)          |
+| **Hamilton Township, NJ** (near Trenton) | Vermiculite processing facility                     |
+| **Honolulu, HI**                         | Vermiculite processing facility                     |
+| **Libby, MT**                            | Vermiculite mine and processing (source site)       |
+| **Los Angeles, CA** (Glendale area)      | Vermiculite processing facility                     |
+| **Marysville, OH**                       | Vermiculite processing plant                        |
+| **Minneapolis, MN**                      | Vermiculite processing plant (Western Minerals)     |
+| **Minot, ND**                            | Vermiculite processing facility                     |
+| **New Castle, PA**                       | Vermiculite processing facility                     |
+| **New Orleans, LA**                      | Vermiculite processing facility                     |
+| **Newark, CA**                           | Vermiculite processing facility                     |
+| **Omaha, NE**                            | Vermiculite processing plant                        |
+| **Phoenix, AZ**                          | Vermiculite processing plant (W\.R. Grace)          |
+| **Portland, OR (N. Harding Ave.)**       | Vermiculite processing facility                     |
+| **Portland, OR (N. Suttle Rd.)**         | Vermiculite processing facility                     |
+| **Santa Ana, CA**                        | Vermiculite processing facility                     |
+| **Spokane, WA**                          | Vermiculite processing facility                     |
+| **St. Louis, MO**                        | Vermiculite processing facility                     |
+| **Tampa, FL**                            | Vermiculite processing facility                     |
+| **Trenton, NJ** (see Hamilton Twp)       | Vermiculite processing facility                     |
+| **Weedsport, NY** (Town of Brutus)       | Vermiculite processing facility                     |
+| **West Chicago, IL**                     | Vermiculite processing facility                     |
+| **Wilder, KY**                           | Vermiculite processing facility                     |
+
+**Sources:** These locations were identified by ATSDR’s **National Asbestos Exposure Review** as sites that received asbestos-contaminated vermiculite from Libby. ATSDR conducted health consultations at these sites, confirming past asbestos exposure pathways to workers, their household contacts, and nearby community members (e.g. children playing with waste rock). The list of priority sites (above) is documented in ATSDR and EPA materials. Many of these did **not** become full Superfund NPL sites but were addressed through cleanups or state actions. **Libby, MT** is both the source of the vermiculite and an NPL Superfund site. Other sites (e.g., Minneapolis, MN; Spokane, WA; etc.) had removals or cleanups due to the asbestos contamination from Libby ore. The EPA and ATSDR have published reports for each of these sites detailing the exposure findings.
+
+## Accessing Asbestos Site Data via Public APIs or Downloads
+
+To programmatically access data on these asbestos sites, one can use **official EPA data services**. The EPA’s Envirofacts REST **API** provides direct access to Superfund site information from the SEMS (Superfund Enterprise Management System) database. For example, you can query the database for sites where a specific contaminant is present.
+
+* **EPA Envirofacts API (Superfund SEMS data):** Using the RESTful interface, you can retrieve sites with asbestos listed as a contaminant. For instance, a query could be constructed as follows (returns JSON by default):
+
+  ```bash
+  curl "https://data.epa.gov/efservice/SEMS_ACTIVE_SITE/CONTAMINANT_NAME/ASBESTOS/JSON"
+  ```
+
+  In this example, `SEMS_ACTIVE_SITE` is the table of active Superfund sites, and the query filters where `CONTAMINANT_NAME` equals “ASBESTOS”, returning matching site records in JSON format. The API supports other formats (XML, CSV, etc.) by changing the URL suffix. This allows integration of up-to-date site data (including site name, location, NPL status, and contaminants) into web applications. *(Note: The exact table/field names may differ; see EPA’s Envirofacts API documentation for the Superfund schema. The “Contaminant of Concern” dataset is also available via EPA’s data services, which includes contaminants by media for NPL sites.)*
+
+* **EPA Superfund Data Downloads:** If a direct API query is not feasible, the EPA provides downloadable datasets covering Superfund sites and contaminants. For example, the **“All Final NPL and Deleted NPL sites (FOIA 15)”** dataset contains information on all NPL sites nationwide, including the **contaminants of concern for each site**. This dataset (and others like it) can be obtained from EPA’s Superfund Data and Reports page on EPA.gov. One can download the data (often as Excel or CSV files) and filter for asbestos-related entries. Similarly, the ATSDR has published reports (PDFs and summaries) for the Libby vermiculite sites, which can be parsed or compiled into a dataset for use in applications.
+
+**Recommendation:** For live programmatic access, the EPA’s Envirofacts API is preferred for its flexibility and direct querying of contaminants. The example `curl` command above demonstrates how a web application might retrieve all Superfund site records where “ASBESTOS” is listed, which would include the confirmed asbestos sites. In absence of an official ATSDR API, those site locations (from the Libby vermiculite investigations) can be integrated by downloading ATSDR’s public reports or data summaries and ingesting them into your application’s database. Always ensure the data is up-to-date and sourced from **official government databases** (EPA or ATSDR) for accuracy.

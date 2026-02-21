@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+    
+    <meta name="description" content="Search Ohio hospitals for Labor & Delivery and NICU levels. See closures since 2022 and estimate travel time from your ZIP. Download CSVs for reporting.">
+    <meta name="keywords" content="Ohio, maternity care, hospitals, NICU, labor and delivery, healthcare access">
+    
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="Interactive map of Ohio maternity care access - L&D and NICU services">
+    <meta property="og:type" content="website">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="/static/css/styles.css">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="/">Ohio Maternity Access Map</a></h1>
+            <nav>
+                <a href="/">Map</a>
+                <a href="/methodology">Methodology</a>
+                <a href="/about">About</a>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p><strong>Disclaimer:</strong> This is informational only, not medical advice. Always verify with your healthcare provider.</p>
+            <p>&copy; 2025 Ohio Maternity Access Map | <a href="/methodology">How to Cite</a></p>
+        </div>
+    </footer>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

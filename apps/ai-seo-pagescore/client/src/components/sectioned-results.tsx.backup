@@ -1,0 +1,748 @@
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { 
+  Search, 
+  TrendingUp, 
+  Gauge, 
+  Users, 
+  Globe,
+  Eye,
+  Link,
+  Zap,
+  Star,
+  Youtube,
+  Linkedin,
+  BarChart3
+} from "lucide-react";
+import { SeoMetrics } from "@/lib/api";
+
+interface SectionedResultsProps {
+  metrics: SeoMetrics[];
+  onExport: () => void;
+  analysisJob?: { urls: string[] };
+}
+
+export function SectionedResults({ metrics, onExport, analysisJob }: SectionedResultsProps) {
+  const [faviconCache, setFaviconCache] = useState<Record<string, string>>({});
+
+  // Get user's domain from the first URL in the analysis job
+  const userDomain = analysisJob?.urls?.[0] ? new URL(analysisJob.urls[0]).hostname.replace('www.', '') : null;
+
+  const formatNumber = (num: number | null | undefined): string => {
+    if (num === null || num === undefined) return 'N/A';
+    if (num >= 1000000000) return `${(num / 1000000000).toFixed(1)}B`;
+    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
+    return num.toString();
+  };
+
+  // E-E-A-T Score calculation
+  const getEEATScore = (metric: SeoMetrics) => {
+    let score = 0;
+    if (metric.hasAuthorBox) score += 2;
+    if (metric.hasLinkedAuthor) score += 2;
+    if (metric.hasStructuredData) score += 2;
+    if ((metric.structuredContentScore || 0) > 5) score += 2;
+    if ((metric.experienceSignals || 0) > 0) score += 1;
+    if ((metric.originalMediaCount || 0) > 5) score += 1;
+    return Math.min(score, 10);
+  };
+
+  // AI Readiness calculation
+  const getAIReadiness = (metric: SeoMetrics) => {
+    let score = 0;
+    if (metric.hasStructuredData) score += 25;
+    if ((metric.structuredContentScore || 0) > 5) score += 25;
+    if (metric.pageSpeed && parseFloat(metric.pageSpeed) < 3) score += 20;
+    if ((metric.originalMediaCount || 0) > 5) score += 15;
+    if (metric.hasAuthorBox) score += 15;
+    return Math.min(score, 100);
+  };
+
+  // Content Authority calculation
+  const getContentAuthority = (metric: SeoMetrics) => {
+    const eeeatScore = getEEATScore(metric);
+    const trustScore = metric.trustSignalsScore || 0;
+    const combined = (eeeatScore + trustScore) / 2;
+    
+    if (combined >= 7) return 'Expert';
+    if (combined >= 4) return 'Good';
+    return 'Basic';
+  };
+
+  // Favicon fetching with retry mechanism
+  const fetchFavicon = async (domain: string, retryCount = 0): Promise<string> => {
+    const maxRetries = 2;
+    
+    // Special handling for common domains
+    const specialFavicons: Record<string, string> = {
+      'gmail.com': 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico',
+      'google.com': 'https://www.google.com/favicon.ico',
+      'youtube.com': 'https://s.ytimg.com/yts/img/favicon_32-vflOogEID.png',
+      'facebook.com': 'https://static.xx.fbcdn.net/rsrc.php/yo/r/iRmz9lCMBD2.ico',
+      'twitter.com': 'https://abs.twimg.com/favicons/twitter.2.ico',
+      'linkedin.com': 'https://static.licdn.com/aero-v1/sc/h/al2o9zrvru7aqj8e1x2rzsrca'
+    };
+
+    // Use special favicon if available
+    if (specialFavicons[domain]) {
+      return specialFavicons[domain];
+    }
+
+    const sources = [
+      `https://www.google.com/s2/favicons?domain=${domain}&sz=32`,
+      `https://icon.horse/icon/${domain}`,
+      `https://${domain}/favicon.ico`,
+      `https://favicons.githubusercontent.com/${domain}`,
+      `https://www.google.com/s2/favicons?sz=32&domain_url=https://${domain}`
+    ];
+
+    for (const source of sources) {
+      try {
+        // For Google favicons service, just return it directly since it's reliable
+        if (source.includes('google.com/s2/favicons')) {
+          return source;
+        }
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+        
+        const response = await fetch(source, { 
+          method: 'HEAD',
+          mode: 'no-cors',
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (response.ok || response.type === 'opaque') {
+          return source;
+        }
+      } catch (err) {
+        // Continue to next source
+      }
+    }
+
+    // Retry with exponential backoff
+    if (retryCount < maxRetries) {
+      await new Promise(resolve => setTimeout(resolve, Math.pow(2, retryCount) * 500));
+      return fetchFavicon(domain, retryCount + 1);
+    }
+
+    // Fallback to Google favicons service (most reliable)
+    return `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+  };
+
+  // Load favicons for all domains
+  useEffect(() => {
+    const loadFavicons = async () => {
+      const newCache: Record<string, string> = {};
+      
+      for (const metric of metrics) {
+        // Always reload Gmail favicon to ensure it displays properly
+        if (!faviconCache[metric.domain] || metric.domain === 'gmail.com') {
+          try {
+            const faviconUrl = await fetchFavicon(metric.domain);
+            newCache[metric.domain] = faviconUrl;
+            console.log(`Loaded favicon for ${metric.domain}: ${faviconUrl}`);
+          } catch (err) {
+            console.warn(`Failed to load favicon for ${metric.domain}:`, err);
+            newCache[metric.domain] = `https://www.google.com/s2/favicons?domain=${metric.domain}&sz=32`;
+          }
+        }
+      }
+
+      if (Object.keys(newCache).length > 0) {
+        setFaviconCache(prev => ({ ...prev, ...newCache }));
+      }
+    };
+
+    loadFavicons();
+  }, [metrics]); // Removed faviconCache dependency to avoid infinite loops
+
+  // Favicon component with fallback
+  const FaviconImage = ({ domain }: { domain: string }) => {
+    const [imageError, setImageError] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [retryCount, setRetryCount] = useState(0);
+    
+    const getFaviconUrl = () => {
+      if (faviconCache[domain]) {
+        return faviconCache[domain];
+      }
+      
+      // Special favicons for common domains
+      const specialFavicons: Record<string, string> = {
+        'gmail.com': 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico',
+        'google.com': 'https://www.google.com/favicon.ico'
+      };
+      
+      return specialFavicons[domain] || `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+    };
+    
+    const faviconUrl = getFaviconUrl();
+    
+    const handleImageError = () => {
+      if (retryCount < 2) {
+        // Try fallback URLs
+        const fallbacks = [
+          `https://www.google.com/s2/favicons?domain=${domain}&sz=32`,
+          `https://icon.horse/icon/${domain}`,
+          `https://www.google.com/s2/favicons?sz=32&domain_url=https://${domain}`
+        ];
+        
+        if (fallbacks[retryCount] && faviconUrl !== fallbacks[retryCount]) {
+          setRetryCount(prev => prev + 1);
+          setIsLoading(true);
+          setImageError(false);
+          return;
+        }
+      }
+      
+      setImageError(true);
+      setIsLoading(false);
+    };
+    
+    const currentUrl = retryCount > 0 ? [
+      `https://www.google.com/s2/favicons?domain=${domain}&sz=32`,
+      `https://icon.horse/icon/${domain}`,
+      `https://www.google.com/s2/favicons?sz=32&domain_url=https://${domain}`
+    ][retryCount - 1] || faviconUrl : faviconUrl;
+    
+    return (
+      <div className="w-8 h-8 flex items-center justify-center rounded-xl overflow-hidden enhanced-favicon">
+        {!imageError ? (
+          <img
+            key={`${domain}-${retryCount}`} // Force re-render on retry
+            src={currentUrl}
+            alt={`${domain} favicon`}
+            className="w-full h-full object-contain"
+            onLoad={() => setIsLoading(false)}
+            onError={handleImageError}
+            style={{ display: isLoading ? 'none' : 'block' }}
+          />
+        ) : (
+          <Globe className="h-4 w-4 text-muted-foreground" />
+        )}
+        {isLoading && (
+          <div className="w-4 h-4 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 animate-pulse"></div>
+        )}
+      </div>
+    );
+  };
+
+  const getPageSpeedBadge = (speed: string | null | undefined) => {
+    if (!speed) return <Badge variant="secondary">N/A</Badge>;
+    
+    const speedNum = parseFloat(speed);
+    if (speedNum < 0.5) return <Badge variant="default" className="bg-green-500">Excellent</Badge>;
+    if (speedNum < 1.5) return <Badge variant="default" className="bg-yellow-500">Good</Badge>;
+    if (speedNum < 3) return <Badge variant="default" className="bg-orange-500">Fair</Badge>;
+    return <Badge variant="destructive">Poor</Badge>;
+  };
+
+  const getTrustScoreBadge = (score: number) => {
+    if (score >= 8) {
+      return <Badge variant="default" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100">Excellent</Badge>;
+    } else if (score >= 5) {
+      return <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">Good</Badge>;
+    } else if (score >= 2) {
+      return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100">Basic</Badge>;
+    } else {
+      return <Badge variant="destructive" className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100">Needs Work</Badge>;
+    }
+  };
+
+  const getPerformanceScore = (metric: SeoMetrics) => {
+    let score = 0;
+    let maxScore = 0;
+
+    // Organic traffic (40% weight)
+    if (metric.organicTraffic !== null && metric.organicTraffic !== undefined) {
+      const trafficScore = Math.min(metric.organicTraffic / 10000, 1);
+      score += trafficScore * 40;
+    }
+    maxScore += 40;
+
+    // Trust signals (25% weight)
+    const trustScore = Math.min(metric.trustSignalsScore || 0, 10) / 10; // Max 10 points
+    score += trustScore * 25;
+    maxScore += 25;
+
+    // Backlinks (20% weight)
+    if (metric.backlinks !== null && metric.backlinks !== undefined) {
+      const backlinkScore = Math.min(metric.backlinks / 1000, 1);
+      score += backlinkScore * 20;
+    }
+    maxScore += 20;
+
+    // Page speed (15% weight)
+    if (metric.pageSpeed) {
+      const speedNum = parseFloat(metric.pageSpeed);
+      const speedScore = speedNum < 1 ? 1 : speedNum < 3 ? 0.7 : speedNum < 5 ? 0.4 : 0.1;
+      score += speedScore * 15;
+    }
+    maxScore += 15;
+
+    return Math.round((score / maxScore) * 100);
+  };
+
+  return (
+    <div className="space-y-8 px-6">
+      {/* SEO Metrics Section */}
+      <Card className="glass-card rounded-3xl border-0 shadow-2xl" style={{ background: 'var(--liquid-gradient-1)' }}>
+        <CardHeader className="pb-6 rounded-t-3xl px-10 py-8">
+          <CardTitle className="flex items-center gap-3 text-xl font-bold">
+            <div className="p-3 rounded-2xl glass-card" style={{ background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(37, 99, 235, 0.3))' }}>
+              <Search className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+            </div>
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">SEO Metrics</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="px-10 pb-8">
+          <div className="overflow-x-auto rounded-2xl glass-table border-0">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-white/10 bg-white/5 dark:bg-white/5 backdrop-blur-sm">
+                  <th className="text-left py-4 pl-6 pr-4 font-semibold rounded-tl-2xl text-gray-700 dark:text-gray-200">Domain</th>
+                  <th className="text-right py-4 px-4 font-semibold text-gray-700 dark:text-gray-200">
+                    <div className="flex items-center justify-end gap-2">
+                      <Eye className="h-4 w-4 text-blue-500" />
+                      Indexed Pages
+                    </div>
+                  </th>
+                  <th className="text-right py-4 px-4 font-semibold text-gray-700 dark:text-gray-200">
+                    <div className="flex items-center justify-end gap-2">
+                      <Globe className="h-4 w-4 text-blue-500" />
+                      Ref. Domains
+                    </div>
+                  </th>
+                  <th className="text-right py-4 px-4 font-semibold text-gray-700 dark:text-gray-200">
+                    <div className="flex items-center justify-end gap-2">
+                      <Link className="h-4 w-4 text-blue-500" />
+                      Backlinks
+                    </div>
+                  </th>
+                  <th className="text-right py-4 pl-4 pr-6 font-semibold rounded-tr-2xl text-gray-700 dark:text-gray-200">Top 100 Keywords</th>
+                </tr>
+              </thead>
+              <tbody>
+                {metrics.map((metric, index) => (
+                  <tr key={metric.id} className={`${userDomain ? metric.domain === userDomain : index === 0 ? 'bg-blue-100/95 dark:bg-blue-900/50 border-blue-200/50 dark:border-blue-700/50' : ''} ${index === metrics.length - 1 ? '' : 'border-b border-muted/30'} hover:bg-gray-50/50 dark:hover:bg-gray-700/30 transition-colors`}>
+                    <td className={`py-3 pl-4 pr-4 ${index === metrics.length - 1 ? 'rounded-bl-xl' : ''}`}>
+                      <div className="flex items-center gap-3">
+                        <div className="relative">
+                          <FaviconImage domain={metric.domain} />
+                          {userDomain ? metric.domain === userDomain : index === 0 && (
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full border-2 border-white dark:border-gray-900"></div>
+                          )}
+                        </div>
+                        <div>
+                          <div className={`font-medium ${userDomain ? metric.domain === userDomain : index === 0 ? 'text-blue-900 dark:text-white font-semibold' : 'text-gray-900 dark:text-gray-100'}`}>
+                            {metric.domain}
+                            {userDomain ? metric.domain === userDomain : index === 0 && <span className="text-xs text-blue-800 dark:text-blue-200 ml-2 font-medium">(Your Site)</span>}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-right font-mono">{formatNumber(metric.indexedPages)}</td>
+                    <td className="py-3 px-4 text-right font-mono">{formatNumber(metric.referringDomains)}</td>
+                    <td className="py-3 px-4 text-right font-mono">{formatNumber(metric.backlinks)}</td>
+                    <td className={`py-3 pl-4 pr-4 text-right ${index === metrics.length - 1 ? 'rounded-br-xl' : ''}`}>
+                      <div className="flex flex-col items-end">
+                        <span className="font-mono font-bold text-blue-600">
+                          {formatNumber(metric.top100Keywords)}
+                        </span>
+                        <span className="text-xs text-muted-foreground">top 100</span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Traffic Section */}
+      <Card className="glass-card rounded-3xl border-0 shadow-2xl" style={{ background: 'var(--liquid-gradient-2)' }}>
+        <CardHeader className="pb-6 rounded-t-3xl px-10 py-8">
+          <CardTitle className="flex items-center gap-3 text-xl font-bold">
+            <div className="p-3 rounded-2xl glass-card" style={{ background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(22, 163, 74, 0.3))' }}>
+              <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
+            </div>
+            <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Traffic Analytics</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="px-10 pb-8">
+          <div className="overflow-x-auto rounded-2xl glass-table border-0">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-muted/50 bg-gray-50/50 dark:bg-gray-800/50">
+                  <th className="text-left py-3 pl-4 pr-4 font-medium rounded-tl-xl">Domain</th>
+                  <th className="text-right py-3 px-4 font-medium">
+                    <div className="flex items-center justify-end gap-1">
+                      <Users className="h-3 w-3" />
+                      Organic Traffic
+                    </div>
+                  </th>
+                  <th className="text-right py-3 pl-4 pr-4 font-medium rounded-tr-xl">Traffic Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                {metrics.map((metric, index) => (
+                  <tr key={metric.id} className={`${userDomain ? metric.domain === userDomain : index === 0 ? 'bg-blue-100/95 dark:bg-blue-900/50 border-blue-200/50 dark:border-blue-700/50' : ''} ${index === metrics.length - 1 ? '' : 'border-b border-muted/30'} hover:bg-gray-50/50 dark:hover:bg-gray-700/30 transition-colors`}>
+                    <td className={`py-3 pl-4 pr-4 ${index === metrics.length - 1 ? 'rounded-bl-xl' : ''}`}>
+                      <div className="flex items-center gap-3">
+                        <div className="relative">
+                          <FaviconImage domain={metric.domain} />
+                          {userDomain ? metric.domain === userDomain : index === 0 && (
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full border-2 border-white dark:border-gray-900"></div>
+                          )}
+                        </div>
+                        <div>
+                          <div className={`font-medium ${userDomain ? metric.domain === userDomain : index === 0 ? 'text-blue-900 dark:text-white font-semibold' : 'text-gray-900 dark:text-gray-100'}`}>
+                            {metric.domain}
+                            {userDomain ? metric.domain === userDomain : index === 0 && <span className="text-xs text-blue-800 dark:text-blue-200 ml-2 font-medium">(Your Site)</span>}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-right">
+                      <span className="font-mono text-lg font-bold text-green-600">
+                        {formatNumber(metric.organicTraffic)}
+                      </span>
+                      <div className="text-xs text-muted-foreground">monthly visits</div>
+                    </td>
+                    <td className={`py-3 pl-4 pr-4 text-right ${index === metrics.length - 1 ? 'rounded-br-xl' : ''}`}>
+                      <span className="font-mono text-lg font-bold text-green-600">
+                        {metric.trafficCost || 'N/A'}
+                      </span>
+                      <div className="text-xs text-muted-foreground">equivalent value</div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Performance Section */}
+      <Card className="glass-card rounded-3xl border-0 shadow-2xl" style={{ background: 'var(--liquid-gradient-3)' }}>
+        <CardHeader className="pb-6 rounded-t-3xl px-10 py-8">
+          <CardTitle className="flex items-center gap-3 text-xl font-bold">
+            <div className="p-3 rounded-2xl glass-card" style={{ background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(147, 51, 234, 0.3))' }}>
+              <Gauge className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+            </div>
+            <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Performance Metrics</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="px-10 pb-8">
+          <div className="overflow-x-auto rounded-2xl glass-table border-0">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-muted/50 bg-gray-50/50 dark:bg-gray-800/50">
+                  <th className="text-left py-3 pl-4 pr-4 font-medium rounded-tl-xl">Domain</th>
+                  <th className="text-right py-3 px-4 font-medium">
+                    <div className="flex items-center justify-end gap-1">
+                      <Zap className="h-3 w-3" />
+                      Page Speed
+                    </div>
+                  </th>
+                  <th className="text-right py-3 px-4 font-medium">AI Trust Score</th>
+                  <th className="text-right py-3 pl-4 pr-4 font-medium rounded-tr-xl">Performance %</th>
+                </tr>
+              </thead>
+              <tbody>
+                {metrics.map((metric, index) => (
+                  <tr key={metric.id} className={`${userDomain ? metric.domain === userDomain : index === 0 ? 'bg-blue-100/95 dark:bg-blue-900/50 border-blue-200/50 dark:border-blue-700/50' : ''} ${index === metrics.length - 1 ? '' : 'border-b border-muted/30'} hover:bg-gray-50/50 dark:hover:bg-gray-700/30 transition-colors`}>
+                    <td className={`py-3 pl-4 pr-4 ${index === metrics.length - 1 ? 'rounded-bl-xl' : ''}`}>
+                      <div className="flex items-center gap-3">
+                        <div className="relative">
+                          <FaviconImage domain={metric.domain} />
+                          {userDomain ? metric.domain === userDomain : index === 0 && (
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full border-2 border-white dark:border-gray-900"></div>
+                          )}
+                        </div>
+                        <div>
+                          <div className={`font-medium ${userDomain ? metric.domain === userDomain : index === 0 ? 'text-blue-900 dark:text-white font-semibold' : 'text-gray-900 dark:text-gray-100'}`}>
+                            {metric.domain}
+                            {userDomain ? metric.domain === userDomain : index === 0 && <span className="text-xs text-blue-800 dark:text-blue-200 ml-2 font-medium">(Your Site)</span>}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-right">
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="font-mono font-bold">
+                          {metric.pageSpeed ? `${metric.pageSpeed}s` : 'N/A'}
+                        </span>
+                        {getPageSpeedBadge(metric.pageSpeed)}
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-right">
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="font-mono font-bold">
+                          {Math.min(metric.trustSignalsScore || 0, 10).toFixed(1)}/10
+                        </span>
+                        {getTrustScoreBadge(Math.min(metric.trustSignalsScore || 0, 10))}
+                      </div>
+                    </td>
+                    <td className={`py-3 pl-4 pr-4 text-right ${index === metrics.length - 1 ? 'rounded-br-xl' : ''}`}>
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="font-mono font-bold">
+                          {getPerformanceScore(metric)}%
+                        </span>
+                        <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full transition-[width,background-color] duration-300 ease-out"
+                            style={{ 
+                              width: `${getPerformanceScore(metric)}%`,
+                              backgroundColor: getPerformanceScore(metric) >= 80 ? '#10b981' : 
+                                             getPerformanceScore(metric) >= 60 ? '#3b82f6' :
+                                             getPerformanceScore(metric) >= 40 ? '#f59e0b' :
+                                             getPerformanceScore(metric) >= 20 ? '#f97316' : '#ef4444'
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Social & Trust Section */}
+      <Card className="glass-card rounded-3xl border-0 shadow-2xl" style={{ background: 'var(--liquid-gradient-4)' }}>
+        <CardHeader className="pb-6 rounded-t-3xl px-10 py-8">
+          <CardTitle className="flex items-center gap-3 text-xl font-bold">
+            <div className="p-3 rounded-2xl glass-card" style={{ background: 'linear-gradient(135deg, rgba(251, 146, 60, 0.3), rgba(245, 158, 11, 0.3))' }}>
+              <Users className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+            </div>
+            <span className="bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">Social & Trust Signals</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="px-10 pb-8">
+          <div className="overflow-x-auto rounded-2xl glass-table border-0">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-muted/50 bg-gray-50/50 dark:bg-gray-800/50">
+                  <th className="text-left py-3 pl-4 pr-4 font-medium rounded-tl-xl">Domain</th>
+                  <th className="text-right py-3 px-4 font-medium">
+                    <div className="flex items-center justify-end gap-1">
+                      <Star className="h-3 w-3" />
+                      Reviews
+                    </div>
+                  </th>
+                  <th className="text-right py-3 px-4 font-medium">
+                    <div className="flex items-center justify-end gap-1">
+                      <Youtube className="h-3 w-3" />
+                      YouTube
+                    </div>
+                  </th>
+                  <th className="text-right py-3 pl-4 pr-4 font-medium rounded-tr-xl">
+                    <div className="flex items-center justify-end gap-1">
+                      <Linkedin className="h-3 w-3" />
+                      LinkedIn
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {metrics.map((metric, index) => (
+                  <tr key={metric.id} className={`${userDomain ? metric.domain === userDomain : index === 0 ? 'bg-blue-100/95 dark:bg-blue-900/50 border-blue-200/50 dark:border-blue-700/50' : ''} ${index === metrics.length - 1 ? '' : 'border-b border-muted/30'} hover:bg-gray-50/50 dark:hover:bg-gray-700/30 transition-colors`}>
+                    <td className={`py-3 pl-4 pr-4 ${index === metrics.length - 1 ? 'rounded-bl-xl' : ''}`}>
+                      <div className="flex items-center gap-3">
+                        <div className="relative">
+                          <FaviconImage domain={metric.domain} />
+                          {userDomain ? metric.domain === userDomain : index === 0 && (
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full border-2 border-white dark:border-gray-900"></div>
+                          )}
+                        </div>
+                        <div>
+                          <div className={`font-medium ${userDomain ? metric.domain === userDomain : index === 0 ? 'text-blue-900 dark:text-white font-semibold' : 'text-gray-900 dark:text-gray-100'}`}>
+                            {metric.domain}
+                            {userDomain ? metric.domain === userDomain : index === 0 && <span className="text-xs text-blue-800 dark:text-blue-200 ml-2 font-medium">(Your Site)</span>}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-right">
+                      {metric.googleReviewsCount && metric.googleReviewsCount > 0 ? (
+                        <div className="flex flex-col items-end">
+                          <span className="font-mono font-bold">
+                            {formatNumber(metric.googleReviewsCount)}
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {metric.googleRating ? `${metric.googleRating}★` : 'No rating'}
+                          </span>
+                          {getTrustScoreBadge(Math.min(metric.trustSignalsScore || 0, 10))}
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-end">
+                          <span className="text-muted-foreground text-sm">No reviews</span>
+                          {getTrustScoreBadge(Math.min(metric.trustSignalsScore || 0, 10))}
+                        </div>
+                      )}
+                    </td>
+                    <td className="py-3 px-4 text-right">
+                      {metric.youtubeChannelUrl ? (
+                        <div className="flex flex-col items-end">
+                          <span className="font-mono text-sm font-bold">
+                            {formatNumber(metric.youtubeSubscribers)} subs
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {metric.youtubeVideoCount ? `${formatNumber(metric.youtubeVideoCount)} videos` : ''}
+                          </span>
+                          {metric.youtubePostingFrequency && (
+                            <Badge variant="outline" className="text-xs mt-1">
+                              {metric.youtubePostingFrequency}
+                            </Badge>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-muted-foreground text-sm">No channel</span>
+                      )}
+                    </td>
+                    <td className={`py-3 pl-4 pr-4 text-right ${index === metrics.length - 1 ? 'rounded-br-xl' : ''}`}>
+                      {(() => {
+                        try {
+                          const linkedinData = metric.socialMediaAnalytics?.linkedin;
+                          if (linkedinData && linkedinData.followers && linkedinData.followers > 0) {
+                            const activityStatus = linkedinData.activity === 'active' ? 'Active' : 'Inactive';
+                            const activityColor = linkedinData.activity === 'active' ? 'text-green-600' : 'text-red-600';
+                            
+                            return (
+                              <div className="flex flex-col items-end">
+                                <span className="font-mono text-sm font-bold">
+                                  {formatNumber(linkedinData.followers)} followers
+                                </span>
+                                <Badge variant="secondary" className={`text-xs ${activityColor}`}>
+                                  {activityStatus}
+                                </Badge>
+                              </div>
+                            );
+                          } else if (metric.socialMediaPresence && metric.socialMediaPresence.includes('linkedin')) {
+                            return (
+                              <div className="flex flex-col items-end">
+                                <Badge variant="secondary" className="text-xs">
+                                  LinkedIn Page
+                                </Badge>
+                                <div className="text-xs text-muted-foreground">
+                                  Private data
+                                </div>
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <span className="text-muted-foreground text-sm">No LinkedIn</span>
+                            );
+                          }
+                        } catch (e) {
+                          return <span className="text-muted-foreground text-sm">No data</span>;
+                        }
+                      })()}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Advanced AI Search Analysis Section */}
+      <Card className="glass-card rounded-3xl border-0 shadow-2xl floating" style={{ background: 'var(--liquid-gradient-3)', animationDelay: '4s' }}>
+        <CardHeader className="pb-6 rounded-t-3xl px-10 py-8">
+          <CardTitle className="flex items-center gap-3 text-xl font-bold">
+            <div className="p-3 rounded-2xl glass-card" style={{ background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(147, 51, 234, 0.3))' }}>
+              <BarChart3 className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+            </div>
+            <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Advanced AI Search Analysis</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="px-10 pb-8">
+          <div className="overflow-x-auto rounded-2xl glass-table border-0">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-white/10 bg-white/5 dark:bg-white/5 backdrop-blur-sm">
+                  <th className="text-left py-4 pl-6 pr-4 font-semibold rounded-tl-2xl text-gray-700 dark:text-gray-200">Domain</th>
+                  <th className="text-right py-4 px-4 font-semibold text-gray-700 dark:text-gray-200">
+                    <div className="flex items-center justify-end gap-2">
+                      <Search className="h-4 w-4 text-purple-500" />
+                      E-E-A-T Score
+                    </div>
+                  </th>
+                  <th className="text-right py-4 px-4 font-semibold text-gray-700 dark:text-gray-200">
+                    <div className="flex items-center justify-end gap-2">
+                      <Users className="h-4 w-4 text-purple-500" />
+                      Trust Signals
+                    </div>
+                  </th>
+                  <th className="text-right py-4 px-4 font-semibold text-gray-700 dark:text-gray-200">
+                    <div className="flex items-center justify-end gap-2">
+                      <Gauge className="h-4 w-4 text-purple-500" />
+                      AI Readiness
+                    </div>
+                  </th>
+                  <th className="text-right py-4 pl-4 pr-6 font-semibold rounded-tr-2xl text-gray-700 dark:text-gray-200">Content Authority</th>
+                </tr>
+              </thead>
+              <tbody>
+                {metrics.map((metric, index) => (
+                  <tr key={metric.id} className={`${userDomain ? metric.domain === userDomain : index === 0 ? 'bg-purple-500/10 dark:bg-purple-400/10' : 'bg-white/5 dark:bg-white/5'} ${index === metrics.length - 1 ? '' : 'border-b border-white/10'} hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-300 backdrop-blur-sm`}>
+                    <td className={`py-4 pl-6 pr-4 ${index === metrics.length - 1 ? 'rounded-bl-2xl' : ''}`}>
+                      <div className="flex items-center gap-4">
+                        <FaviconImage domain={metric.domain} />
+                        <div>
+                          <div className="font-medium flex items-center gap-2">
+                            {metric.domain}
+                            {userDomain ? metric.domain === userDomain : index === 0 && (
+                              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="text-right py-4 px-4 font-medium">
+                      <div className="flex items-center justify-end gap-2">
+                        <div className={`w-2 h-2 rounded-full ${getEEATScore(metric) >= 7 ? 'bg-green-400' : getEEATScore(metric) >= 4 ? 'bg-yellow-400' : 'bg-red-400'}`}></div>
+                        <span className={getEEATScore(metric) >= 7 ? 'text-green-600 dark:text-green-400' : getEEATScore(metric) >= 4 ? 'text-yellow-600 dark:text-yellow-400' : 'text-red-600 dark:text-red-400'}>
+                          {getEEATScore(metric)}/10
+                        </span>
+                      </div>
+                    </td>
+                    <td className="text-right py-4 px-4 font-medium">
+                      <span className={`px-2 py-1 rounded-lg text-xs font-semibold ${(metric.trustSignalsScore || 0) >= 6 ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : (metric.trustSignalsScore || 0) >= 3 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'}`}>
+                        {metric.trustSignalsScore || 0}/10
+                      </span>
+                    </td>
+                    <td className="text-right py-4 px-4 font-medium">
+                      <div className="flex items-center justify-end gap-2">
+                        <div className={`w-2 h-2 rounded-full ${getAIReadiness(metric) >= 80 ? 'bg-green-400' : getAIReadiness(metric) >= 60 ? 'bg-yellow-400' : 'bg-red-400'}`}></div>
+                        <span className={getAIReadiness(metric) >= 80 ? 'text-green-600 dark:text-green-400' : getAIReadiness(metric) >= 60 ? 'text-yellow-600 dark:text-yellow-400' : 'text-red-600 dark:text-red-400'}>
+                          {getAIReadiness(metric)}%
+                        </span>
+                      </div>
+                    </td>
+                    <td className={`text-right py-4 pl-4 pr-6 font-medium ${index === metrics.length - 1 ? 'rounded-br-2xl' : ''}`}>
+                      <span className={`px-2 py-1 rounded-lg text-xs font-semibold ${getContentAuthority(metric) === 'Expert' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : getContentAuthority(metric) === 'Good' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'}`}>
+                        {getContentAuthority(metric)}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

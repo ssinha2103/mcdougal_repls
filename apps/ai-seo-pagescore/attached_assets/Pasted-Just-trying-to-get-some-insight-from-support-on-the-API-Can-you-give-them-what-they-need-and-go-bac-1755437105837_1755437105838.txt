@@ -1,0 +1,24 @@
+Just trying to get some insight from support on the API. Can you give them what they need and go back-and-forth with them a little bit before giving up on that API?
+
+John McDougall
+McDougall Interactive
+978–423–4274
+From: Anna Chernishenko <anna.chernishenko@dataforseo.com>
+Sent: Wednesday, August 13, 2025 10:02:39 AM
+To: John McDougall <jdm@mcdia.com>
+Subject: Re: DataforSEO: are you getting desirable results?
+ 
+Hi John,
+
+Thank you for the feedback. I appreciate it. But we badly need the ID examples for every case so that we can review them and advise you on the best way of operating with our data. Without the ID, we can not investigate the problems you are referring to. So please kindly ask the dev to provide us with our internal IDs for every task that returned unexpected values. Thank you!
+
+On Wed, Aug 13, 2025 at 2:22 PM John McDougall <jdm@mcdia.com> wrote:
+Thanks for reaching out, Anna. I have been excited about it, but also a little frustrated that the keyword traffic value or what SEMrush calls traffic cost seems way off.
+
+mcdougallinteractive.com and webris.com for example, have roughly the same amount of keywords ranking in Google but webris has a higher value of those keywords. If those values are if I remember correct like $1300 a month and $5000 a month from your data. They look like 20,000 a month and 70,000 a month or something like that. Just going from memory, but that’s all of the traffic cost numbers look. Way higher than Semrush. I know that it’s calculated differently, but I’m struggling with how extreme it is.
+
+I have to check to make sure my tool is using your number of index pages, but I also saw the number of index pages was way off when we tested again yesterday. One site that I ran and screaming frog had only three main website pages, but my tool is saying 250 pages index for that site. Again, I’m not 100% sure it’s using your data for that but just mentioning it to illustrate what I’m going through trying to figure out how to get my search engine optimization and social media. Competitive analysis tool to work with consistent reasonable data.
+
+I’m also using the YouTube API and Google places API and in that same test, I did one of the sites had 5 million subscribers supposedly but when I went to their website and clicked on their YouTube link, they had 18 subscribers. Again, this might not even be your data because I have a developer in India helping me using Replit and he’s kind of switched it around from how it was originally getting that data. These various weird fluctuations or just overly high extrapolated numbers are making it so I don’t have confidence in my tool yet.
+
+Open to all suggestions, as we start to learn to make these kind of tools.

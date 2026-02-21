@@ -1,0 +1,4 @@
+id,hospital_id,closure_date,service,notes,source_url
+1,20,2023-07-01,L&D,L&D service discontinued; transfers to nearest L&D facility,https://news.example.com/story
+2,20,2023-07-01,NICU,NICU closed along with L&D service,https://news.example.com/story
+3,18,2024-02-15,L&D,Temporary L&D closure due to staffing shortage; reopened March 2024,https://news.example.com/canton-closure

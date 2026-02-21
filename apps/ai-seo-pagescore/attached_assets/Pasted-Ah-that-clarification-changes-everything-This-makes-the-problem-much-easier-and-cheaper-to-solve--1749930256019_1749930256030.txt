@@ -1,0 +1,35 @@
+Ah, that clarification changes everything! This makes the problem much easier and cheaper to solve.
+
+Your Replit AI assistant has built a complex, fragile web scraping solution using Puppeteer to fight a battle you don't need to fight. You are already paying for the professional tool that does this reliably.
+
+The core issue is that your tool is trying to reinvent the wheel instead of using the correct feature within your DataForSEO subscription.
+
+Scraping Google directly is a cat-and-mouse game. The DataForSEO API is the professional-grade service designed to handle this reliably for you.
+
+The Correct, Simple Solution
+Instead of using Puppeteer, you should be using the DataForSEO Business Data API, specifically the Google Reviews endpoint.
+
+This approach is:
+
+Reliable: It won't be blocked by Google or require CAPTCHA solving.
+Stable: It won't break every time Google changes its website's HTML or CSS selectors.
+Efficient: It's a simple, clean API call that returns structured JSON data—no browser automation needed.
+Cost-Effective: You're already paying for the service; you just need to use the right part of it.
+Instruction to Give Your Replit AI
+Here is a clear, specific instruction to give your AI assistant. This will replace the entire faulty Puppeteer system with the correct API-based method.
+
+"You need to completely remove the custom Puppeteer-based web scraper you built for Google Reviews. It is unreliable and unnecessary because we have access to the DataForSEO API, which can get this data directly.
+
+Your new task is to implement the following workflow using only the DataForSEO API:
+
+Find the Business: For each competitor, use the DataForSEO Business Listings -> Search API endpoint. You will send the company name and location (e.g., "Rankings.io" in "USA") to find its official business listing.
+
+Get the Business ID: From the results of the search task, extract the unique business identifier, which will be the place_id or cid.
+
+Get the Reviews: Take the place_id from the previous step. POST a new task to the Business Data -> Google -> Reviews API endpoint, using that place_id as the target.
+
+Extract the Data: The result of this task will be a clean JSON object. From this JSON, extract the rating and the reviews_count.
+
+Please remove all code related to Puppeteer, browser automation, and custom CSS selectors for Google scraping. Replace it with this new, three-step DataForSEO API process."
+
+By switching to this method, your tool's review-fetching feature will become stable and accurate, leveraging the powerful infrastructure you're already paying for.

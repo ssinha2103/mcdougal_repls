@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-page">
+    <div class="container">
+        <h1>About</h1>
+        
+        <section>
+            <h2>Purpose</h2>
+            <p>The Ohio Maternity Access Map is a public resource designed to help Ohioans, journalists, researchers, and policymakers understand the landscape of maternity care access across the state.</p>
+            <p>With documented closures of labor and delivery units in rural and urban areas alike, this tool provides transparency about where services are available and how far residents may need to travel for care.</p>
+        </section>
+        
+        <section>
+            <h2>What This Map Shows</h2>
+            <ul>
+                <li>All Ohio hospitals currently providing Labor & Delivery services</li>
+                <li>NICU capabilities at each facility (Levels II, III, and IV)</li>
+                <li>Service closures since 2022</li>
+                <li>Estimated travel distances and times from any Ohio ZIP code</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2>Who This Is For</h2>
+            <ul>
+                <li><strong>Expecting parents:</strong> Understand your options and plan ahead</li>
+                <li><strong>Journalists:</strong> Research and report on maternity care access issues</li>
+                <li><strong>Researchers:</strong> Analyze geographic disparities in maternal health services</li>
+                <li><strong>Policymakers:</strong> Make informed decisions about healthcare infrastructure</li>
+                <li><strong>Healthcare advocates:</strong> Support communities affected by service closures</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2>Technology</h2>
+            <p>This application is built with open-source technologies:</p>
+            <ul>
+                <li><strong>Backend:</strong> Python, FastAPI, SQLite</li>
+                <li><strong>Frontend:</strong> Leaflet.js for interactive mapping</li>
+                <li><strong>Data:</strong> Regularly updated CSV files, downloadable for public use</li>
+            </ul>
+            <p>The source data and methodology are transparent and documented. See our <a href="/methodology">Methodology page</a> for details.</p>
+        </section>
+        
+        <section>
+            <h2>Important Disclaimers</h2>
+            <div class="disclaimer-box">
+                <h3>⚠️ Not Medical Advice</h3>
+                <p>This tool provides general information about hospital locations and services. It is <strong>not</strong> a substitute for professional medical advice, diagnosis, or treatment.</p>
+                <ul>
+                    <li>Always consult with qualified healthcare providers about your specific situation</li>
+                    <li>In an emergency, call 911 immediately</li>
+                    <li>Verify current services directly with hospitals before making care decisions</li>
+                </ul>
+            </div>
+            
+            <div class="disclaimer-box">
+                <h3>Data Accuracy</h3>
+                <p>While we make every effort to ensure data accuracy, hospital services can change rapidly. We cannot guarantee that all information is current or complete. Last verification dates are shown for each facility.</p>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Credits</h2>
+            <p>Map tiles © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors</p>
+            <p>Mapping library: <a href="https://leafletjs.com/" target="_blank">Leaflet</a></p>
+            <p>Optional routing: <a href="https://openrouteservice.org/" target="_blank">OpenRouteService</a></p>
+        </section>
+        
+        <section>
+            <h2>Contact & Feedback</h2>
+            <p>This is a community resource. We welcome feedback, corrections, and suggestions for improvement.</p>
+        </section>
+    </div>
+</div>
+{% endblock %}

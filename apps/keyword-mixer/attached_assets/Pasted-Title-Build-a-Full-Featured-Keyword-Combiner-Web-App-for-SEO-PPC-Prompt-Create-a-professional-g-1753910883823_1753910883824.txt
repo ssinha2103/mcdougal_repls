@@ -1,0 +1,119 @@
+Title:
+Build a Full-Featured Keyword Combiner Web App for SEO & PPC
+
+Prompt:
+Create a professional-grade Keyword Combiner Tool that helps SEO experts, marketers, and advertisers generate highly optimized keyword phrases using smart combination logic and filtering techniques.
+
+This app should allow users to input multiple keyword lists (List A, B, C, etc.) and generate all possible keyword combinations, supporting both full and partial mixes. The tool must also support formatting for Google Ads match types (broad, phrase, exact, modified broad), and offer various filters and enhancements to ensure SEO and PPC impact.
+
+✅ Required Features:
+1. Keyword Input UI
+Allow users to input up to 5 lists of keywords (more if feasible), each with:
+
+Label (e.g., Actions, Products, Locations)
+
+Textarea (one keyword per line)
+
+Ability to add/remove keyword groups dynamically
+
+2. Combination Logic
+Generate Cartesian product of input lists
+
+Support partial combinations (e.g., A+B, A+C, B+C)
+
+Option to include original terms from input lists as standalones
+
+Optional reverse ordering of keyword pairs/trios
+
+Option to permute word order within combinations (toggle)
+
+Choose custom separator (space, dash, comma, none)
+
+3. Match Type Formatting
+Let user select match type:
+
+Broad (default)
+
+Phrase "keyword"
+
+Exact [keyword]
+
+Modified Broad +keyword +modifier
+
+Display output formatted accordingly
+
+4. Enhancement Options
+Optional stopword trimming
+
+Duplicate word detection and auto-removal (e.g., “cheap cheap shoes” → “cheap shoes”)
+
+Word-order correction suggestion (e.g., “shoes cheap” → “cheap shoes”)
+
+Toggle for capitalization formatting (all lowercase or preserve)
+
+5. AI-Assisted Expansion (Optional toggle)
+Suggest synonyms or related phrases using AI
+
+Predict search intent (Informational, Transactional, Navigational, etc.)
+
+Flag unnatural or awkward phrases
+
+6. Filtering & Sorting
+Remove duplicates (exact or semantically identical)
+
+Filter by:
+
+Word count (min/max)
+
+Character length
+
+Inclusion/exclusion of terms
+
+Sort combinations alphabetically, by length, or by AI/SEO score
+
+7. Output UI
+Display total combinations in real-time
+
+Show preview of first 100 results
+
+Paginated or infinite scroll result view
+
+Toggle to display match-type formatted or raw phrase
+
+8. Export Options
+Copy all to clipboard
+
+Download as:
+
+CSV (single-column or Ads-format with campaign/adgroup columns)
+
+TXT file (one keyword per line)
+
+JSON (optional)
+
+Optional: Export to Google Sheets (if auth handled)
+
+9. UX Features
+Responsive design (usable on desktop and mobile)
+
+“Generate Keywords” button with processing spinner/progress
+
+Warnings for large input sets (e.g. 1M+ combinations)
+
+Tooltips for all options (explain match types, filters, etc.)
+
+Example templates to pre-fill keyword sets (e.g., Local SEO, E-Commerce, Affiliate)
+
+10. Performance & Scalability
+Handle millions of combinations efficiently
+
+Stream output to export/download without freezing the browser
+
+Limit preview to top N results and let user export full set
+
+🔁 Optional Future Extensions (stretch goals)
+Integrate Google Keyword Planner to fetch volume/difficulty
+
+Group keywords by search intent
+
+Embed usage stats tracking (e.g. number of keywords generated)

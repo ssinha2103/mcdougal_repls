@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="map-page">
+    <aside class="sidebar">
+        <div class="search-panel">
+            <h2>Find Nearest Hospitals</h2>
+            
+            <div class="form-group">
+                <label for="zipInput">Ohio ZIP Code:</label>
+                <input type="text" id="zipInput" placeholder="44114" maxlength="5" />
+            </div>
+            
+            <div class="form-group">
+                <label for="needSelect">Service Needed:</label>
+                <select id="needSelect">
+                    <option value="ld">Labor & Delivery</option>
+                    <option value="nicu2">NICU Level II+</option>
+                    <option value="nicu3">NICU Level III+</option>
+                    <option value="nicu4">NICU Level IV</option>
+                    <option value="any">Any Hospital</option>
+                </select>
+            </div>
+            
+            <button id="searchBtn" class="btn-primary">Search</button>
+            
+            <div id="searchResults" class="search-results"></div>
+        </div>
+        
+        <div class="filters-panel">
+            <h3>Map Filters</h3>
+            
+            <label class="checkbox-label">
+                <input type="checkbox" id="filterLD" checked>
+                Show only hospitals with L&D
+            </label>
+            
+            <div class="form-group">
+                <label for="filterNICU">NICU Level:</label>
+                <select id="filterNICU">
+                    <option value="all">All Levels</option>
+                    <option value="II">Level II+</option>
+                    <option value="III">Level III+</option>
+                    <option value="IV">Level IV</option>
+                </select>
+            </div>
+            
+            <label class="checkbox-label">
+                <input type="checkbox" id="showClosures">
+                Show closures on timeline
+            </label>
+        </div>
+        
+        <div class="legend">
+            <h3>Legend</h3>
+            <div class="legend-item">
+                <span class="marker-dot" style="background: #808080;"></span>
+                <span>No NICU</span>
+            </div>
+            <div class="legend-item">
+                <span class="marker-dot" style="background: #3388ff;"></span>
+                <span>NICU Level II</span>
+            </div>
+            <div class="legend-item">
+                <span class="marker-dot" style="background: #ff8c00;"></span>
+                <span>NICU Level III</span>
+            </div>
+            <div class="legend-item">
+                <span class="marker-dot" style="background: #dc143c;"></span>
+                <span>NICU Level IV</span>
+            </div>
+            <div class="legend-item">
+                <span class="badge-icon">L&D</span>
+                <span>Has Labor & Delivery</span>
+            </div>
+        </div>
+        
+        <div class="download-panel">
+            <h3>Download Data</h3>
+            <a href="/api/download/hospitals" class="btn-secondary" download>Download Hospitals CSV</a>
+            <a href="/api/download/closures" class="btn-secondary" download>Download Closures CSV</a>
+        </div>
+    </aside>
+    
+    <div class="map-container">
+        <div id="map"></div>
+        <div id="timelineWidget" class="timeline-widget">
+            <h3>Service Closures Since 2022</h3>
+            <div id="timelineContent"></div>
+        </div>
+    </div>
+</div>
+
+<div class="methodology-box">
+    <h2>About This Map</h2>
+    <p>This interactive map shows Ohio hospitals providing <strong>Labor & Delivery (L&D)</strong> services and <strong>NICU (Neonatal Intensive Care Unit)</strong> care at various levels (II, III, IV). Use the ZIP search to find the nearest facilities and estimate travel time.</p>
+    <p><strong>Data Sources:</strong> Hospital data verified from facility websites and state registries. Closure information compiled from news reports and facility announcements.</p>
+    <p><a href="/methodology">Full methodology and how to cite this data →</a></p>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/app.js"></script>
+<script src="/static/js/timeline.js"></script>
+{% endblock %}
