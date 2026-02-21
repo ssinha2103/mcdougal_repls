@@ -51,10 +51,11 @@ Usage: scripts/run.sh <command> [options]
 
 Core commands:
   up                 Generate files + start stack attached
-  up-d               Generate files + start stack detached
+  up-d               Generate files + start stack detached (no forced rebuild)
+  up-d-build         Generate files + rebuild + start stack detached
   up-prod            Start gateway-only production-style mode
   down               Stop the stack
-  reup               Recreate stack detached
+  reup               Recreate stack detached (no forced rebuild)
   ps                 Show compose service status
   logs [services]    Tail logs (all or selected services)
 
@@ -87,10 +88,15 @@ shift || true
 case "$cmd" in
   up)
     ensure_setup_files
-    "${COMPOSE[@]}" up --build
+    "${COMPOSE[@]}" up
     reload_gateway_if_running
     ;;
   up-d)
+    ensure_setup_files
+    "${COMPOSE[@]}" up -d
+    reload_gateway_if_running
+    ;;
+  up-d-build)
     ensure_setup_files
     "${COMPOSE[@]}" up --build -d
     reload_gateway_if_running
@@ -106,7 +112,7 @@ case "$cmd" in
   reup)
     ensure_setup_files
     "${COMPOSE[@]}" down
-    "${COMPOSE[@]}" up --build -d
+    "${COMPOSE[@]}" up -d
     reload_gateway_if_running
     ;;
   ps)
