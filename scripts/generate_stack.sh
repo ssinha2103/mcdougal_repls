@@ -406,7 +406,7 @@ while IFS=$'\t' read -r slug type host_port internal_port; do
   cat >> "$NGINX_CONF" <<NGINX
 
   location = /$slug {
-    return 302 /$slug/;
+    rewrite ^ /$slug/ last;
   }
 
   location ^~ /$slug/ {
