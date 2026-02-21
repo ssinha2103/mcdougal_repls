@@ -1,6 +1,5 @@
 FROM python:3.11-slim
 
-ARG APP_DIR
 WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -11,6 +10,7 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends build-essential ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
+ARG APP_DIR
 COPY ${APP_DIR}/pyproject.toml /tmp/pyproject.toml
 
 RUN python - <<'PY'

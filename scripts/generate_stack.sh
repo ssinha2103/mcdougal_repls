@@ -27,65 +27,101 @@ titleize_slug() {
   }'
 }
 
+have_rg() {
+  command -v rg >/dev/null 2>&1
+}
+
+filter_reserved_env_keys() {
+  if have_rg; then
+    rg -v '^(NODE_ENV|PORT|REPL_ID|REPL_SLUG|REPLIT_DEPLOYMENT|REPL_DEPLOYMENT|REPLIT_DEV_DOMAIN|REPLIT_INTERNAL_APP_DOMAIN)$' || true
+  else
+    grep -Ev '^(NODE_ENV|PORT|REPL_ID|REPL_SLUG|REPLIT_DEPLOYMENT|REPL_DEPLOYMENT|REPLIT_DEV_DOMAIN|REPLIT_INTERNAL_APP_DOMAIN)$' || true
+  fi
+}
+
+find_last_key_line() {
+  local file="$1"
+  local key="$2"
+  if have_rg; then
+    rg --no-filename "^${key}=" "$file" | tail -n1 || true
+  else
+    grep -E "^${key}=" "$file" | tail -n1 || true
+  fi
+}
+
 collect_env_keys() {
   local dir="$1"
-  {
-    rg -o --no-filename \
-      -g '!**/node_modules/**' \
-      -g '!**/dist/**' \
-      -g '!**/build/**' \
-      -g '!**/attached_assets/**' \
-      -g '!**/.git/**' \
-      -g '!**/.venv/**' \
-      -g '!**/venv/**' \
-      "process\\.env\\.[A-Z0-9_]+" "$dir" 2>/dev/null | sed -E 's/.*\.//' || true
+  if have_rg; then
+    {
+      rg -o --no-filename \
+        -g '!**/node_modules/**' \
+        -g '!**/dist/**' \
+        -g '!**/build/**' \
+        -g '!**/attached_assets/**' \
+        -g '!**/.git/**' \
+        -g '!**/.venv/**' \
+        -g '!**/venv/**' \
+        "process\\.env\\.[A-Z0-9_]+" "$dir" 2>/dev/null | sed -E 's/.*\.//' || true
 
-    rg -o --no-filename \
-      -g '!**/node_modules/**' \
-      -g '!**/dist/**' \
-      -g '!**/build/**' \
-      -g '!**/attached_assets/**' \
-      -g '!**/.git/**' \
-      -g '!**/.venv/**' \
-      -g '!**/venv/**' \
-      "process\\.env\\[['\"][A-Z0-9_]+['\"]\\]" "$dir" 2>/dev/null \
-      | sed -E "s/.*['\"]([A-Z0-9_]+)['\"].*/\\1/" || true
+      rg -o --no-filename \
+        -g '!**/node_modules/**' \
+        -g '!**/dist/**' \
+        -g '!**/build/**' \
+        -g '!**/attached_assets/**' \
+        -g '!**/.git/**' \
+        -g '!**/.venv/**' \
+        -g '!**/venv/**' \
+        "process\\.env\\[['\"][A-Z0-9_]+['\"]\\]" "$dir" 2>/dev/null \
+        | sed -E "s/.*['\"]([A-Z0-9_]+)['\"].*/\\1/" || true
 
-    rg -o --no-filename \
-      -g '!**/node_modules/**' \
-      -g '!**/dist/**' \
-      -g '!**/build/**' \
-      -g '!**/attached_assets/**' \
-      -g '!**/.git/**' \
-      -g '!**/.venv/**' \
-      -g '!**/venv/**' \
-      "os\\.getenv\\(['\"][A-Z0-9_]+['\"]" "$dir" 2>/dev/null \
-      | sed -E "s/.*['\"]([A-Z0-9_]+)['\"].*/\\1/" || true
+      rg -o --no-filename \
+        -g '!**/node_modules/**' \
+        -g '!**/dist/**' \
+        -g '!**/build/**' \
+        -g '!**/attached_assets/**' \
+        -g '!**/.git/**' \
+        -g '!**/.venv/**' \
+        -g '!**/venv/**' \
+        "os\\.getenv\\(['\"][A-Z0-9_]+['\"]" "$dir" 2>/dev/null \
+        | sed -E "s/.*['\"]([A-Z0-9_]+)['\"].*/\\1/" || true
 
-    rg -o --no-filename \
-      -g '!**/node_modules/**' \
-      -g '!**/dist/**' \
-      -g '!**/build/**' \
-      -g '!**/attached_assets/**' \
-      -g '!**/.git/**' \
-      -g '!**/.venv/**' \
-      -g '!**/venv/**' \
-      "os\\.environ\\.get\\(['\"][A-Z0-9_]+['\"]" "$dir" 2>/dev/null \
-      | sed -E "s/.*['\"]([A-Z0-9_]+)['\"].*/\\1/" || true
+      rg -o --no-filename \
+        -g '!**/node_modules/**' \
+        -g '!**/dist/**' \
+        -g '!**/build/**' \
+        -g '!**/attached_assets/**' \
+        -g '!**/.git/**' \
+        -g '!**/.venv/**' \
+        -g '!**/venv/**' \
+        "os\\.environ\\.get\\(['\"][A-Z0-9_]+['\"]" "$dir" 2>/dev/null \
+        | sed -E "s/.*['\"]([A-Z0-9_]+)['\"].*/\\1/" || true
 
-    rg -o --no-filename \
-      -g '!**/node_modules/**' \
-      -g '!**/dist/**' \
-      -g '!**/build/**' \
-      -g '!**/attached_assets/**' \
-      -g '!**/.git/**' \
-      -g '!**/.venv/**' \
-      -g '!**/venv/**' \
-      "os\\.environ\\[['\"][A-Z0-9_]+['\"]\\]" "$dir" 2>/dev/null \
-      | sed -E "s/.*['\"]([A-Z0-9_]+)['\"].*/\\1/" || true
-  } \
-    | rg -v '^(NODE_ENV|PORT|REPL_ID|REPL_SLUG|REPLIT_DEPLOYMENT|REPL_DEPLOYMENT|REPLIT_DEV_DOMAIN|REPLIT_INTERNAL_APP_DOMAIN)$' \
-    | sort -u || true
+      rg -o --no-filename \
+        -g '!**/node_modules/**' \
+        -g '!**/dist/**' \
+        -g '!**/build/**' \
+        -g '!**/attached_assets/**' \
+        -g '!**/.git/**' \
+        -g '!**/.venv/**' \
+        -g '!**/venv/**' \
+        "os\\.environ\\[['\"][A-Z0-9_]+['\"]\\]" "$dir" 2>/dev/null \
+        | sed -E "s/.*['\"]([A-Z0-9_]+)['\"].*/\\1/" || true
+    } | filter_reserved_env_keys | sort -u || true
+  else
+    {
+      while IFS= read -r file; do
+        grep -aEo "process\\.env\\.[A-Z0-9_]+" "$file" 2>/dev/null | sed -E 's/.*\.//' || true
+        grep -aEo "process\\.env\\[['\"][A-Z0-9_]+['\"]\\]" "$file" 2>/dev/null | sed -E "s/.*['\"]([A-Z0-9_]+)['\"].*/\\1/" || true
+        grep -aEo "os\\.getenv\\(['\"][A-Z0-9_]+['\"]" "$file" 2>/dev/null | sed -E "s/.*['\"]([A-Z0-9_]+)['\"].*/\\1/" || true
+        grep -aEo "os\\.environ\\.get\\(['\"][A-Z0-9_]+['\"]" "$file" 2>/dev/null | sed -E "s/.*['\"]([A-Z0-9_]+)['\"].*/\\1/" || true
+        grep -aEo "os\\.environ\\[['\"][A-Z0-9_]+['\"]\\]" "$file" 2>/dev/null | sed -E "s/.*['\"]([A-Z0-9_]+)['\"].*/\\1/" || true
+      done < <(
+        find "$dir" \
+          \( -type d \( -name node_modules -o -name dist -o -name build -o -name attached_assets -o -name .git -o -name .venv -o -name venv \) -prune \) -o \
+          -type f -print
+      )
+    } | filter_reserved_env_keys | sort -u || true
+  fi
 }
 
 is_placeholder_value() {
@@ -123,7 +159,7 @@ lookup_existing_value() {
 
   if [[ -f "$GLOBAL_ENV_FILE" ]]; then
     local global_line
-    global_line="$(rg --no-filename "^${key}=" "$GLOBAL_ENV_FILE" | tail -n1 || true)"
+    global_line="$(find_last_key_line "$GLOBAL_ENV_FILE" "$key")"
     if [[ -n "$global_line" ]]; then
       global_value="${global_line#*=}"
     fi
@@ -145,7 +181,7 @@ lookup_existing_value() {
     esac
 
     local app_line
-    app_line="$(rg --no-filename "^${key}=" "$app_env" | tail -n1 || true)"
+    app_line="$(find_last_key_line "$app_env" "$key")"
     [[ -n "$app_line" ]] || continue
 
     local app_value="${app_line#*=}"
@@ -220,8 +256,6 @@ done < <(find "$APPS_DIR" -mindepth 1 -maxdepth 1 -type d | sort)
 
 # Generate docker-compose.yml
 cat > "$COMPOSE_FILE" <<'YAML'
-name: mcdougal-local-suite
-
 services:
   gateway:
     image: nginx:1.27-alpine

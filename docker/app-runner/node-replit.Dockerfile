@@ -1,12 +1,12 @@
 FROM node:20-bookworm-slim
 
-ARG APP_DIR
 WORKDIR /app
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends python3 make g++ ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
+ARG APP_DIR
 COPY ${APP_DIR}/package.json ./
 COPY ${APP_DIR}/package-lock.json* ./
 

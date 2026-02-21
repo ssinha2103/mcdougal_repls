@@ -4,6 +4,17 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+have() { command -v "$1" >/dev/null 2>&1; }
+
+if docker compose version >/dev/null 2>&1; then
+  COMPOSE=(docker compose)
+elif have docker-compose; then
+  COMPOSE=(docker-compose)
+else
+  echo "Docker Compose is required." >&2
+  exit 1
+fi
+
 if [[ ! -f apps-manifests/apps.tsv ]]; then
   ./scripts/generate_stack.sh >/dev/null
 fi
@@ -18,7 +29,7 @@ while IFS=$'\t' read -r slug type host_port internal_port; do
   http_route_code="$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:8000/${slug}/" || true)"
 
   container_status="stopped"
-  if docker compose ps --status running "$slug" 2>/dev/null | rg -q "$slug"; then
+  if "${COMPOSE[@]}" ps --status running "$slug" 2>/dev/null | grep -q "$slug"; then
     container_status="running"
   fi
 

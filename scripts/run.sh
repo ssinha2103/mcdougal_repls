@@ -21,8 +21,20 @@ ensure_stack_files() {
   fi
 }
 
+ensure_legacy_compose_compat() {
+  if [[ "${COMPOSE[0]}" == "docker-compose" ]] && [[ -f docker-compose.yml ]]; then
+    if grep -q '^name:[[:space:]]' docker-compose.yml; then
+      tmp_file="$(mktemp)"
+      grep -v '^name:[[:space:]]' docker-compose.yml > "$tmp_file"
+      mv "$tmp_file" docker-compose.yml
+      echo "Adjusted docker-compose.yml for legacy docker-compose (removed top-level name)."
+    fi
+  fi
+}
+
 ensure_setup_files() {
   ensure_stack_files
+  ensure_legacy_compose_compat
   if [[ ! -f env/global.env ]]; then
     ./scripts/generate_global_env.sh >/dev/null
     echo "Created env/global.env (fill real credentials for full functionality)."

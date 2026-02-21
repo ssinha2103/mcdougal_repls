@@ -10,6 +10,10 @@ OUT_MD_FILE="${3:-apps-manifests/credentials-request.md}"
 
 mkdir -p "$(dirname "$OUT_ENV_FILE")" "$(dirname "$OUT_MD_FILE")"
 
+have_rg() {
+  command -v rg >/dev/null 2>&1
+}
+
 if [[ ! -f "$SOURCE_ENV_FILE" ]]; then
   echo "Missing source env file: $SOURCE_ENV_FILE"
   echo "Generate it with: ./scripts/generate_global_env.sh"
@@ -58,18 +62,40 @@ apps_for_key() {
   local key="$1"
   local matches
   local pattern="process\\.env\\.${key}|process\\.env\\[['\\\"]${key}['\\\"]\\]|os\\.getenv\\(['\\\"]${key}['\\\"]|os\\.environ\\.get\\(['\\\"]${key}['\\\"]|os\\.environ\\[['\\\"]${key}['\\\"]\\]"
-  matches="$(
-    rg -l \
-      -g '!**/node_modules/**' \
-      -g '!**/dist/**' \
-      -g '!**/build/**' \
-      -g '!**/attached_assets/**' \
-      -g '!**/.git/**' \
-      -g '!**/.venv/**' \
-      -g '!**/venv/**' \
-      "$pattern" \
-      apps 2>/dev/null || true
-  )"
+  if have_rg; then
+    matches="$(
+      rg -l \
+        -g '!**/node_modules/**' \
+        -g '!**/dist/**' \
+        -g '!**/build/**' \
+        -g '!**/attached_assets/**' \
+        -g '!**/.git/**' \
+        -g '!**/.venv/**' \
+        -g '!**/venv/**' \
+        "$pattern" \
+        apps 2>/dev/null || true
+    )"
+  else
+    if [[ -f "apps-manifests/env-matrix.md" ]]; then
+      matches="$(
+        awk -F'|' -v k="$key" '
+          NR <= 4 { next }
+          NF < 3 { next }
+          {
+            app = $2
+            keys = $3
+            gsub(/^[[:space:]]+|[[:space:]]+$/, "", app)
+            gsub(/^[[:space:]]+|[[:space:]]+$/, "", keys)
+            if (keys ~ "(^|,)" k "(,|$)") {
+              print "apps/" app "/"
+            }
+          }
+        ' apps-manifests/env-matrix.md | sort -u
+      )"
+    else
+      matches=""
+    fi
+  fi
 
   if [[ -z "$matches" ]]; then
     echo "(not detected)"
