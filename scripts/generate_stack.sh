@@ -371,6 +371,23 @@ map $http_upgrade $connection_upgrade {
   '' close;
 }
 
+map $http_referer $referer_upstream {
+  default free-seo-tools-page:5000;
+NGINX
+
+while IFS=$'\t' read -r slug type host_port internal_port; do
+  if [[ "$type" == "unsupported" ]]; then
+    continue
+  fi
+
+  cat >> "$NGINX_CONF" <<NGINX
+  ~*/$slug/ $slug:$internal_port;
+NGINX
+done < "$MANIFEST_TSV"
+
+cat >> "$NGINX_CONF" <<'NGINX'
+}
+
 server {
   listen 80;
   server_name _;
@@ -426,7 +443,7 @@ cat >> "$NGINX_CONF" <<'NGINX'
   location / {
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection $connection_upgrade;
-    proxy_pass http://free-seo-tools-page:5000;
+    proxy_pass http://$referer_upstream;
   }
 }
 NGINX
