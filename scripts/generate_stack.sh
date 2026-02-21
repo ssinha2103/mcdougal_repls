@@ -406,11 +406,17 @@ while IFS=$'\t' read -r slug type host_port internal_port; do
   cat >> "$NGINX_CONF" <<NGINX
 
   location = /$slug {
-    return 302 \$scheme://\$host:$host_port/;
+    return 302 /$slug/;
   }
 
-  location ~ ^/$slug/(.*)\$ {
-    return 302 \$scheme://\$host:$host_port/\$1\$is_args\$args;
+  location ^~ /$slug/ {
+    rewrite ^/$slug/(.*)\$ /\$1 break;
+    proxy_set_header Upgrade \$http_upgrade;
+    proxy_set_header Connection \$connection_upgrade;
+    proxy_pass http://$slug:$internal_port;
+    proxy_redirect ~^(/.*)\$ /$slug\$1;
+    proxy_redirect ~^https?://[^/]+(/.*)\$ /$slug\$1;
+    proxy_cookie_path / /$slug/;
   }
 NGINX
 done < "$MANIFEST_TSV"
