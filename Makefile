@@ -1,10 +1,16 @@
-.PHONY: bootstrap up up-prod down restart status logs smoke smoke-gateway regen env audit audit-strict creds finalize reload-gateway setup-gcp
+.PHONY: bootstrap up up-core up-d-build up-prod down restart status logs smoke smoke-gateway regen env audit audit-strict creds finalize reload-gateway setup-gcp
 
 bootstrap:
 	./scripts/bootstrap.sh
 
 up:
 	docker compose up -d
+
+up-core:
+	./run.sh up-core
+
+up-d-build:
+	./run.sh up-d-build
 
 up-prod:
 	./scripts/up_prod_mode.sh

@@ -5,6 +5,21 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 have() { command -v "$1" >/dev/null 2>&1; }
+export DOCKER_BUILDKIT="${DOCKER_BUILDKIT:-1}"
+export COMPOSE_DOCKER_CLI_BUILD="${COMPOSE_DOCKER_CLI_BUILD:-1}"
+
+if [[ -z "${COMPOSE_PARALLEL_LIMIT:-}" ]] && [[ -r /proc/meminfo ]]; then
+  mem_kb="$(awk '/MemTotal:/ {print $2}' /proc/meminfo 2>/dev/null || true)"
+  if [[ "$mem_kb" =~ ^[0-9]+$ ]]; then
+    if (( mem_kb < 4000000 )); then
+      export COMPOSE_PARALLEL_LIMIT=1
+    elif (( mem_kb < 8000000 )); then
+      export COMPOSE_PARALLEL_LIMIT=2
+    else
+      export COMPOSE_PARALLEL_LIMIT=4
+    fi
+  fi
+fi
 
 if docker compose version >/dev/null 2>&1; then
   COMPOSE=(docker compose)
@@ -52,6 +67,7 @@ Usage: scripts/run.sh <command> [options]
 Core commands:
   up                 Generate files + start stack attached
   up-d               Generate files + start stack detached (no forced rebuild)
+  up-core            Start only gateway + postgres + free-seo-tools-page
   up-d-build         Generate files + rebuild + start stack detached
   up-prod            Start gateway-only production-style mode
   down               Stop the stack
@@ -94,6 +110,11 @@ case "$cmd" in
   up-d)
     ensure_setup_files
     "${COMPOSE[@]}" up -d
+    reload_gateway_if_running
+    ;;
+  up-core)
+    ensure_setup_files
+    "${COMPOSE[@]}" up -d postgres gateway free-seo-tools-page
     reload_gateway_if_running
     ;;
   up-d-build)

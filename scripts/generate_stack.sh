@@ -286,10 +286,8 @@ while IFS=$'\t' read -r slug type host_port internal_port; do
 
   $slug:
     build:
-      context: .
-      dockerfile: docker/app-runner/node-replit.Dockerfile
-      args:
-        APP_DIR: apps/$slug
+      context: ./apps/$slug
+      dockerfile: ../../docker/app-runner/node-replit.Dockerfile
     environment:
       NODE_ENV: production
       PORT: "$internal_port"
@@ -307,10 +305,8 @@ YAML
 
   $slug:
     build:
-      context: .
-      dockerfile: docker/app-runner/python-fastapi.Dockerfile
-      args:
-        APP_DIR: apps/$slug
+      context: ./apps/$slug
+      dockerfile: ../../docker/app-runner/python-fastapi.Dockerfile
     environment:
       PORT: "$internal_port"
     env_file:
@@ -327,10 +323,8 @@ YAML
 
   $slug:
     build:
-      context: .
-      dockerfile: docker/app-runner/python-node-hybrid.Dockerfile
-      args:
-        APP_DIR: apps/$slug
+      context: ./apps/$slug
+      dockerfile: ../../docker/app-runner/python-node-hybrid.Dockerfile
     environment:
       PORT: "$internal_port"
     env_file:

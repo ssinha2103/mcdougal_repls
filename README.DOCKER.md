@@ -17,6 +17,18 @@ chmod +x ./scripts/install_gcp_requirements.sh
 
 Then re-login (or run `newgrp docker`) and continue with `./run.sh up-d`.
 
+For a very fast first boot on small VMs, bring up only the home screen first:
+
+```bash
+./run.sh up-core
+```
+
+Then build everything later with:
+
+```bash
+./run.sh up-d-build
+```
+
 ## 1) Extract repos into `apps/`
 
 ```bash
