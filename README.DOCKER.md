@@ -6,6 +6,17 @@ This workspace can run all extracted tools locally with:
 - Shortcut URLs (redirect to app ports): `http://localhost:8000/<tool-slug>/`
 - Direct app URLs: `http://localhost:81xx`
 
+## 0) GCP VM bootstrap (Docker + prerequisites)
+
+On a fresh Debian/Ubuntu GCP VM, run:
+
+```bash
+chmod +x ./scripts/install_gcp_requirements.sh
+./scripts/install_gcp_requirements.sh
+```
+
+Then re-login (or run `newgrp docker`) and continue with `./run.sh up-d`.
+
 ## 1) Extract repos into `apps/`
 
 ```bash
