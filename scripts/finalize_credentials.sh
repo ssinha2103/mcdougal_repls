@@ -36,7 +36,7 @@ if [[ -n "$missing_keys" ]]; then
   exit 1
 fi
 
-echo "[1/4] Applying credentials to app env files..."
+echo "[1/4] Applying credentials to env/global.env..."
 ./scripts/apply_global_env.sh "$ENV_FILE" >/dev/null
 
 echo "[2/4] Running strict env audit..."

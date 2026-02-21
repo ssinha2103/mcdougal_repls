@@ -1,14 +1,14 @@
 # Credentials Request
 
-Generated from app env files with missing/placeholder values.
+Generated from missing/placeholder values in env/global.env.
 
 | Key | Status | Used By Apps |
 |---|---|---|
 | CHROME_PATH | missing | header-hierarchy |
 | DATAFORSEO_API_LOGIN | missing | ai-seo-pagescore |
 | DATAFORSEO_API_PASSWORD | missing | ai-seo-pagescore |
-| DATAFORSEO_LOGIN | missing | ai-seo-pagescore, intent-discover, keyword-mixer, legal-lens, sales-research-flow |
-| DATAFORSEO_PASSWORD | missing | ai-seo-pagescore, intent-discover, keyword-mixer, legal-lens, sales-research-flow |
+| DATAFORSEO_LOGIN | placeholder | ai-seo-pagescore, intent-discover, keyword-mixer, legal-lens, sales-research-flow |
+| DATAFORSEO_PASSWORD | placeholder | ai-seo-pagescore, intent-discover, keyword-mixer, legal-lens, sales-research-flow |
 | DEFAULT_OBJECT_STORAGE_BUCKET_ID | missing | semrush-scraper |
 | GCS_BUCKET_NAME | placeholder | semrush-scraper |
 | GCS_PROJECT_ID | missing | semrush-scraper |

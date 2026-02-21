@@ -32,7 +32,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/ai-seo-pagescore.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -49,7 +49,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/asbestos-atlas.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -66,7 +66,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/btucalc.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -83,7 +83,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/dog-bite-map.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -100,7 +100,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/free-seo-tools-page.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -117,7 +117,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/header-hierarchy.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -134,7 +134,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/intent-discover.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -151,7 +151,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/keyword-mixer.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -168,7 +168,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/legal-lens.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -185,7 +185,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/legal-napaudit.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -202,7 +202,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/legal-revamp.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -219,7 +219,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/legal-schema-gen.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -236,7 +236,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/link-auditor.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -252,7 +252,7 @@ services:
     environment:
       PORT: "3000"
     env_file:
-      - env/mellino-health-data.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -269,7 +269,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/meta-describer.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -285,7 +285,7 @@ services:
     environment:
       PORT: "5000"
     env_file:
-      - env/ohio-care-finder.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -302,7 +302,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/ohio-maternity-monitor.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -319,7 +319,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/replit-downloader.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -336,7 +336,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/sales-research-flow.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -353,7 +353,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/semrush-scraper.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -370,7 +370,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/seo-headline-pro.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -387,7 +387,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/serpsnippet-audit.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -404,7 +404,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/text-clarity.env
+      - env/global.env
     depends_on:
       - postgres
     ports:
@@ -421,7 +421,7 @@ services:
       NODE_ENV: production
       PORT: "5000"
     env_file:
-      - env/tube-insight.env
+      - env/global.env
     depends_on:
       - postgres
     ports:

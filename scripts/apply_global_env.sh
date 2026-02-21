@@ -4,57 +4,78 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
-GLOBAL_FILE="${1:-env/global.env}"
+SOURCE_FILE="${1:-env/global.env}"
+TARGET_FILE="env/global.env"
 
-if [[ ! -f "$GLOBAL_FILE" ]]; then
-  echo "Missing global env file: $GLOBAL_FILE"
-  echo "Create it from template: ./scripts/generate_global_env.sh"
+if [[ ! -f "$SOURCE_FILE" ]]; then
+  echo "Missing env file: $SOURCE_FILE"
+  echo "Generate base file with: ./scripts/generate_global_env.sh"
   exit 1
 fi
 
-if ! rg -q '^[A-Z0-9_]+=' "$GLOBAL_FILE"; then
-  echo "No keys found in $GLOBAL_FILE"
+if ! rg -q '^[A-Z0-9_]+=' "$SOURCE_FILE"; then
+  echo "No keys found in $SOURCE_FILE"
   exit 1
 fi
 
-updated_files=0
-for app_env in env/*.env; do
-  case "$(basename "$app_env")" in
-    global.env|global.env.example|credentials.request.env)
-      continue
-      ;;
-  esac
+if [[ "$SOURCE_FILE" == "$TARGET_FILE" ]]; then
+  echo "Using $TARGET_FILE directly (single env mode)."
+  exit 0
+fi
 
+if [[ ! -f "$TARGET_FILE" ]]; then
+  ./scripts/generate_global_env.sh "$TARGET_FILE" >/dev/null
+fi
+
+upsert_key() {
+  local file="$1"
+  local key="$2"
+  local value="$3"
+  local tmp_file
   tmp_file="$(mktemp)"
-  changed=0
 
-  while IFS= read -r line || [[ -n "$line" ]]; do
-    if [[ "$line" =~ ^([A-Z0-9_]+)= ]]; then
-      key="${BASH_REMATCH[1]}"
-      global_line="$(rg --no-filename "^${key}=" "$GLOBAL_FILE" | tail -n1 || true)"
-      global_value="${global_line#*=}"
+  awk -v key="$key" -v value="$value" '
+  BEGIN { replaced = 0 }
+  $0 ~ ("^" key "=") {
+    if (!replaced) {
+      print key "=" value
+      replaced = 1
+    }
+    next
+  }
+  { print }
+  END {
+    if (!replaced) {
+      print key "=" value
+    }
+  }
+  ' "$file" > "$tmp_file"
 
-      if [[ -n "$global_line" && -n "$global_value" ]]; then
-        new_line="$key=$global_value"
-        if [[ "$line" != "$new_line" ]]; then
-          changed=1
-        fi
-        echo "$new_line" >> "$tmp_file"
-      else
-        echo "$line" >> "$tmp_file"
-      fi
-    else
-      echo "$line" >> "$tmp_file"
-    fi
-  done < "$app_env"
+  mv "$tmp_file" "$file"
+}
 
-  if [[ "$changed" -eq 1 ]]; then
-    mv "$tmp_file" "$app_env"
-    updated_files=$((updated_files + 1))
-    echo "Updated: $app_env"
+updated=0
+added=0
+
+while IFS= read -r line || [[ -n "$line" ]]; do
+  [[ "$line" =~ ^([A-Z0-9_]+)=(.*)$ ]] || continue
+
+  key="${BASH_REMATCH[1]}"
+  value="${BASH_REMATCH[2]}"
+  [[ -n "$value" ]] || continue
+
+  existing_line="$(rg --no-filename "^${key}=" "$TARGET_FILE" | head -n1 || true)"
+  if [[ -z "$existing_line" ]]; then
+    added=$((added + 1))
+  elif [[ "${existing_line#*=}" != "$value" ]]; then
+    updated=$((updated + 1))
   else
-    rm -f "$tmp_file"
+    continue
   fi
-done
 
-echo "Done. Updated files: $updated_files"
+  upsert_key "$TARGET_FILE" "$key" "$value"
+done < "$SOURCE_FILE"
+
+echo "Applied non-empty values from $SOURCE_FILE -> $TARGET_FILE"
+echo "Added keys: $added"
+echo "Updated keys: $updated"

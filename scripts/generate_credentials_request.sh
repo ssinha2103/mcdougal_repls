@@ -4,72 +4,84 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
-OUT_ENV_FILE="${1:-env/credentials.request.env}"
-OUT_MD_FILE="${2:-apps-manifests/credentials-request.md}"
+SOURCE_ENV_FILE="${1:-env/global.env}"
+OUT_ENV_FILE="${2:-env/credentials.request.env}"
+OUT_MD_FILE="${3:-apps-manifests/credentials-request.md}"
 
 mkdir -p "$(dirname "$OUT_ENV_FILE")" "$(dirname "$OUT_MD_FILE")"
 
-ENV_FILES="$(
-  find env -maxdepth 1 -type f -name '*.env' \
-    ! -name 'global.env' \
-    ! -name 'global.env.example' \
-    ! -name 'credentials.request.env' \
-    | sort
-)"
-if [[ -z "$ENV_FILES" ]]; then
-  echo "No app env files found in env/*.env"
+if [[ ! -f "$SOURCE_ENV_FILE" ]]; then
+  echo "Missing source env file: $SOURCE_ENV_FILE"
+  echo "Generate it with: ./scripts/generate_global_env.sh"
   exit 1
 fi
 
 records_file="$(mktemp)"
-
-# shellcheck disable=SC2086
-awk '
-BEGIN { FS="=" }
-
-FNR == 1 {
-  app = FILENAME
-  sub(/^env\//, "", app)
-  sub(/\.env$/, "", app)
+cleanup() {
+  rm -f "$records_file"
 }
+trap cleanup EXIT
 
+awk -F'=' '
 /^[[:space:]]*#/ || /^[[:space:]]*$/ { next }
-
 $1 ~ /^[A-Z0-9_]+$/ {
   key = $1
   val = substr($0, index($0, "=") + 1)
   sub(/\r$/, "", val)
 
-  status = ""
   if (val == "") {
-    status = "missing"
+    printf "%s\tmissing\n", key
   } else if (val ~ /^local-dev-placeholder/ || val == "replace-with-a-long-random-secret" || val == "local-dev-bucket") {
-    status = "placeholder"
-  }
-
-  if (status != "") {
-    printf "%s\t%s\t%s\n", key, app, status
+    printf "%s\tplaceholder\n", key
   }
 }
-' $ENV_FILES | sort -u > "$records_file"
+' "$SOURCE_ENV_FILE" | sort -u > "$records_file"
 
 if [[ ! -s "$records_file" ]]; then
   {
     echo "# Credentials request"
-    echo "# No missing or placeholder values found."
+    echo "# No missing or placeholder values found in $SOURCE_ENV_FILE"
   } > "$OUT_ENV_FILE"
 
   {
     echo "# Credentials Request"
     echo ""
-    echo "All app env files already contain concrete values."
+    echo "No missing or placeholder values found in $SOURCE_ENV_FILE."
   } > "$OUT_MD_FILE"
 
-  rm -f "$records_file"
   echo "Generated: $OUT_ENV_FILE"
   echo "Generated: $OUT_MD_FILE"
   exit 0
 fi
+
+apps_for_key() {
+  local key="$1"
+  local matches
+  local pattern="process\\.env\\.${key}|process\\.env\\[['\\\"]${key}['\\\"]\\]|os\\.getenv\\(['\\\"]${key}['\\\"]|os\\.environ\\.get\\(['\\\"]${key}['\\\"]|os\\.environ\\[['\\\"]${key}['\\\"]\\]"
+  matches="$(
+    rg -l \
+      -g '!**/node_modules/**' \
+      -g '!**/dist/**' \
+      -g '!**/build/**' \
+      -g '!**/attached_assets/**' \
+      -g '!**/.git/**' \
+      -g '!**/.venv/**' \
+      -g '!**/venv/**' \
+      "$pattern" \
+      apps 2>/dev/null || true
+  )"
+
+  if [[ -z "$matches" ]]; then
+    echo "(not detected)"
+    return
+  fi
+
+  echo "$matches" \
+    | awk -F'/' '/^apps\// { print $2 }' \
+    | sort -u \
+    | paste -sd',' - \
+    | sed 's/,/, /g'
+}
 
 {
   echo "# Fill these credentials and send back the values."
@@ -77,49 +89,27 @@ fi
   echo "#   ./scripts/apply_global_env.sh $OUT_ENV_FILE"
   echo ""
   cut -f1 "$records_file" | sort -u | while IFS= read -r key; do
-    case "$key" in
-      SESSION_SECRET)
-        echo "SESSION_SECRET="
-        ;;
-      DATAFORSEO_LOGIN)
-        echo "DATAFORSEO_LOGIN="
-        ;;
-      DATAFORSEO_PASSWORD)
-        echo "DATAFORSEO_PASSWORD="
-        ;;
-      GCS_BUCKET_NAME)
-        echo "GCS_BUCKET_NAME="
-        ;;
-      *)
-        echo "$key="
-        ;;
-    esac
+    echo "$key="
   done
 } > "$OUT_ENV_FILE"
 
 {
   echo "# Credentials Request"
   echo ""
-  echo "Generated from app env files with missing/placeholder values."
+  echo "Generated from missing/placeholder values in $SOURCE_ENV_FILE."
   echo ""
   echo "| Key | Status | Used By Apps |"
   echo "|---|---|---|"
 
   cut -f1 "$records_file" | sort -u | while IFS= read -r key; do
     status="placeholder"
-    if awk -F'\t' -v k="$key" '$1 == k && $3 == "missing" { found = 1 } END { exit(found ? 0 : 1) }' "$records_file"; then
+    if awk -F'\t' -v k="$key" '$1 == k && $2 == "missing" { found = 1 } END { exit(found ? 0 : 1) }' "$records_file"; then
       status="missing"
     fi
-    apps="$(
-      awk -F'\t' -v k="$key" '$1 == k { print $2 }' "$records_file" \
-        | sort -u \
-        | awk 'BEGIN { first = 1 } { if (!first) { printf ", " } printf "%s", $0; first = 0 } END { print "" }'
-    )"
-    printf "| %s | %s | %s |\n" "$key" "$status" "$apps"
+    apps="$(apps_for_key "$key")"
+    printf "| %s | %s | %s |\\n" "$key" "$status" "$apps"
   done
 } > "$OUT_MD_FILE"
-
-rm -f "$records_file"
 
 echo "Generated: $OUT_ENV_FILE"
 echo "Generated: $OUT_MD_FILE"

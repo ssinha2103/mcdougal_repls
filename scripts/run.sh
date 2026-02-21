@@ -21,6 +21,14 @@ ensure_stack_files() {
   fi
 }
 
+ensure_setup_files() {
+  ensure_stack_files
+  if [[ ! -f env/global.env ]]; then
+    ./scripts/generate_global_env.sh >/dev/null
+    echo "Created env/global.env (fill real credentials for full functionality)."
+  fi
+}
+
 reload_gateway_if_running() {
   ./scripts/reload_gateway.sh >/dev/null 2>&1 || true
 }
@@ -47,17 +55,17 @@ Repo helpers:
   reload-gateway     Reload nginx config in gateway
 
 Env helpers:
-  env                Generate env/global.env example/template
-  apply-env [FILE]   Apply values from FILE (default: env/global.env)
-  audit [--strict]   Audit env files
-  creds              Generate credentials request files
+  env                Generate/update env/global.env(.example)
+  apply-env [FILE]   Merge non-empty values from FILE into env/global.env
+  audit [--strict]   Audit env/global.env (or a custom env file)
+  creds              Generate credentials request files from env/global.env
   finalize [FILE]    Apply creds + strict audit + restart + smoke
 
 Examples:
-  ./scripts/run.sh up-d
-  ./scripts/run.sh logs gateway free-seo-tools-page
-  ./scripts/run.sh smoke --gateway-only
-  ./scripts/run.sh finalize env/credentials.request.env
+  ./run.sh up-d
+  ./run.sh logs gateway free-seo-tools-page
+  ./run.sh smoke --gateway-only
+  ./run.sh finalize env/credentials.request.env
 USAGE
 }
 
@@ -66,17 +74,17 @@ shift || true
 
 case "$cmd" in
   up)
-    ensure_stack_files
+    ensure_setup_files
     "${COMPOSE[@]}" up --build
     reload_gateway_if_running
     ;;
   up-d)
-    ensure_stack_files
+    ensure_setup_files
     "${COMPOSE[@]}" up --build -d
     reload_gateway_if_running
     ;;
   up-prod)
-    ensure_stack_files
+    ensure_setup_files
     ./scripts/up_prod_mode.sh
     reload_gateway_if_running
     ;;
@@ -84,7 +92,7 @@ case "$cmd" in
     "${COMPOSE[@]}" down
     ;;
   reup)
-    ensure_stack_files
+    ensure_setup_files
     "${COMPOSE[@]}" down
     "${COMPOSE[@]}" up --build -d
     reload_gateway_if_running

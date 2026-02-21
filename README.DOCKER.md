@@ -28,16 +28,18 @@ This generates:
 - `docker/home/home.html`
 - `apps-manifests/apps.tsv`
 - `apps-manifests/env-matrix.md`
-- `env/<tool-slug>.env` templates
+- `env/global.env.example`
+- `env/global.env`
 
 ## 3) Fill env credentials
 
-Edit any needed files in `env/`.
+Use one file for the full stack:
+
+- `env/global.env`
 
 Reference:
 
 - `apps-manifests/env-matrix.md`
-- `apps-manifests/env-checklist.md`
 
 Notes:
 
@@ -49,16 +51,18 @@ Notes:
   - `GCS_BUCKET_NAME` (to keep `semrush-scraper` booting)
   Replace these with real credentials for full feature behavior.
 
-Centralized env workflow (recommended):
+Regenerate/update global env template from app source:
 
 ```bash
 ./scripts/generate_global_env.sh
 ```
 
-Edit `env/global.env` once, then propagate non-empty values to all app env files:
+Edit `env/global.env` once. That file is mounted into every app container.
+
+If you receive a separate credentials file, merge its non-empty values into `env/global.env`:
 
 ```bash
-./scripts/apply_global_env.sh env/global.env
+./scripts/apply_global_env.sh env/credentials.request.env
 ```
 
 Generate a focused list of still-missing credentials:

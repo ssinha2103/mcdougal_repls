@@ -35,7 +35,7 @@ reload-gateway:
 
 env:
 	./scripts/generate_global_env.sh
-	@echo "Edit env/global.env, then run: ./scripts/apply_global_env.sh env/global.env"
+	@echo "Edit env/global.env (single env file for all apps)."
 
 audit:
 	./scripts/env_audit.sh

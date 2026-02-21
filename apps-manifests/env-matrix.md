@@ -1,6 +1,6 @@
 # Environment Variable Matrix
 
-Fill each `env/<slug>.env` file with the keys below.
+Each app reads from a single file: `env/global.env`.
 
 | App | Keys |
 |---|---|

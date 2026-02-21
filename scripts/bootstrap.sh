@@ -17,12 +17,8 @@ echo "[1/5] Generating stack files..."
 echo "[2/5] Preparing centralized env file..."
 ./scripts/generate_global_env.sh >/dev/null
 
-if [[ -f "env/global.env" ]]; then
-  echo "[3/5] Applying non-empty global env values..."
-  ./scripts/apply_global_env.sh env/global.env >/dev/null
-else
-  echo "[3/5] Skipped env apply (env/global.env not found)"
-fi
+echo "[3/5] Auditing centralized env (non-strict)..."
+./scripts/env_audit.sh >/dev/null || true
 
 echo "[4/5] Starting stack..."
 if [[ -n "$LIMIT" ]]; then
