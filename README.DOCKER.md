@@ -3,8 +3,8 @@
 This workspace can run all extracted tools locally with:
 
 - Home screen (`free-seo-tools-page` UI): `http://localhost:8000`
-- Shortcut URLs (reverse-proxied by gateway): `http://localhost:8000/<tool-slug>/`
-- Direct app URLs (local debugging): `http://localhost:81xx`
+- Shortcut URLs (redirect to app ports): `http://localhost:8000/<tool-slug>/`
+- Direct app URLs: `http://localhost:81xx`
 
 ## 0) GCP VM bootstrap (Docker + prerequisites)
 
@@ -16,6 +16,10 @@ chmod +x ./scripts/install_gcp_requirements.sh
 ```
 
 Then re-login (or run `newgrp docker`) and continue with `./run.sh up-d`.
+
+If you access from outside the VM and use shortcut URLs, allow inbound TCP:
+- `8000`
+- `8101-8124`
 
 On an already-built GCP host, deploy latest changes without forced rebuild:
 

@@ -371,23 +371,6 @@ map $http_upgrade $connection_upgrade {
   '' close;
 }
 
-map $http_referer $referer_upstream {
-  default free-seo-tools-page:5000;
-NGINX
-
-while IFS=$'\t' read -r slug type host_port internal_port; do
-  if [[ "$type" == "unsupported" ]]; then
-    continue
-  fi
-
-  cat >> "$NGINX_CONF" <<NGINX
-  ~*/$slug/ $slug:$internal_port;
-NGINX
-done < "$MANIFEST_TSV"
-
-cat >> "$NGINX_CONF" <<'NGINX'
-}
-
 server {
   listen 80;
   server_name _;
@@ -423,17 +406,11 @@ while IFS=$'\t' read -r slug type host_port internal_port; do
   cat >> "$NGINX_CONF" <<NGINX
 
   location = /$slug {
-    rewrite ^ /$slug/ last;
+    return 302 \$scheme://\$host:$host_port/;
   }
 
-  location ^~ /$slug/ {
-    rewrite ^/$slug/(.*)\$ /\$1 break;
-    proxy_set_header Upgrade \$http_upgrade;
-    proxy_set_header Connection \$connection_upgrade;
-    proxy_pass http://$slug:$internal_port;
-    proxy_redirect ~^(/.*)\$ /$slug\$1;
-    proxy_redirect ~^https?://[^/]+(/.*)\$ /$slug\$1;
-    proxy_cookie_path / /$slug/;
+  location ~ ^/$slug/(.*)\$ {
+    return 302 \$scheme://\$host:$host_port/\$1\$is_args\$args;
   }
 NGINX
 done < "$MANIFEST_TSV"
@@ -443,7 +420,7 @@ cat >> "$NGINX_CONF" <<'NGINX'
   location / {
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection $connection_upgrade;
-    proxy_pass http://$referer_upstream;
+    proxy_pass http://free-seo-tools-page:5000;
   }
 }
 NGINX
