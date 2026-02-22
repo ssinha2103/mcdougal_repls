@@ -76,57 +76,69 @@ export class JsonStorage implements IStorage {
       const initialTools: InsertTool[] = [
         {
           name: "Keyword Combiner",
-          url: "/keyword-mixer/",
+          url: "https://www.mcdougallinteractive.com/free-seo-tools/keyword-combiner/",
           description: "Combine multiple keywords into powerful variations for comprehensive keyword research and content planning.",
           categories: ["Utilities", "Content"],
         },
         {
           name: "Word Counter",
-          url: "/text-clarity/",
+          url: "https://www.mcdougallinteractive.com/free-seo-tools/word-counter/",
           description: "Analyze text length, word count, and character count for optimal content optimization and SEO performance.",
           categories: ["Utilities", "Content"],
         },
         {
           name: "AI SEO Page Score",
-          url: "/ai-seo-pagescore/",
+          url: "https://www.mcdougallinteractive.com/free-seo-tools/ai-seo-page-score/",
           description: "Analyze any URL for E-E-A-T signals and get AI-powered recommendations to improve search rankings.",
           categories: ["Analysis", "On-Page"],
         },
         {
           name: "SERP Snippet Audit",
-          url: "/serpsnippet-audit/",
+          url: "https://www.mcdougallinteractive.com/free-seo-tools/serp-snippet-audit-tool/",
           description: "Preview and optimize your meta titles and descriptions to maximize click-through rates from search results.",
           categories: ["On-Page", "Analysis"],
         },
         {
           name: "Header Hierarchy",
-          url: "/header-hierarchy/",
+          url: "https://www.mcdougallinteractive.com/free-seo-tools/header-hierarchy-tool/",
           description: "Audit your page's heading structure to ensure proper SEO hierarchy and improved content accessibility.",
           categories: ["On-Page", "Technical"],
         },
         {
           name: "Link Auditor",
-          url: "/link-auditor/",
+          url: "https://www.mcdougallinteractive.com/free-seo-tools/link-auditor-tool/",
           description: "Discover broken links, analyze internal linking structure, and identify opportunities for better site architecture.",
           categories: ["Technical", "On-Page"],
         },
         {
           name: "Intent Discover",
-          url: "/intent-discover/",
+          url: "https://www.mcdougallinteractive.com/free-seo-tools/intent-discover/",
           description: "Uncover user search intent behind keywords to create content that perfectly matches audience needs.",
           categories: ["Analysis", "Content"],
         },
         {
           name: "YouTube Insight Tool",
-          url: "/tube-insight/",
+          url: "https://www.mcdougallinteractive.com/free-seo-tools/youtube-insight-tool/",
           description: "Analyze YouTube video performance, discover trending topics, and optimize your video SEO strategy.",
           categories: ["YouTube", "Content"],
         },
         {
           name: "SEO Headline Pro",
-          url: "/seo-headline-pro/",
+          url: "https://www.mcdougallinteractive.com/free-seo-tools/seo-headline-pro/",
           description: "Craft compelling, SEO-optimized headlines that drive clicks and improve search engine visibility.",
           categories: ["Content", "On-Page"],
+        },
+        {
+          name: "Meta Describer",
+          url: "https://www.mcdougallinteractive.com/free-seo-tools/meta-describer/",
+          description: "Generate compelling meta descriptions that boost click-through rates and improve your page's search engine visibility.",
+          categories: ["On-Page", "Content"],
+        },
+        {
+          name: "Text Clarity",
+          url: "https://textclarity.replit.app",
+          description: "AI-powered content analysis tool providing instant insights on keyword density, readability scores, word frequencies, and keyword suggestions for SEO optimization.",
+          categories: ["Analysis", "Content"],
         },
       ];
 
