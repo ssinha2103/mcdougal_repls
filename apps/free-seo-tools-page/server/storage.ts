@@ -35,6 +35,19 @@ export interface IStorage {
 export class JsonStorage implements IStorage {
   private dataPath: string;
   private data: StorageData = { users: [], tools: [], analytics: [] };
+  private canonicalToolUrls: Record<string, string> = {
+    "Text Clarity": "https://www.mcdougallinteractive.com/free-seo-tools/text-clarity-app/",
+    "Meta Describer": "https://www.mcdougallinteractive.com/free-seo-tools/meta-describer/",
+    "Keyword Combiner": "https://www.mcdougallinteractive.com/free-seo-tools/keyword-combiner/",
+    "Word Counter": "https://www.mcdougallinteractive.com/free-seo-tools/word-counter/",
+    "AI SEO Page Score": "https://www.mcdougallinteractive.com/free-seo-tools/ai-seo-page-score/",
+    "SERP Snippet Audit": "https://www.mcdougallinteractive.com/free-seo-tools/serp-snippet-audit-tool/",
+    "Header Hierarchy": "https://www.mcdougallinteractive.com/free-seo-tools/header-hierarchy-tool/",
+    "Link Auditor": "https://www.mcdougallinteractive.com/free-seo-tools/link-auditor-tool/",
+    "Intent Discover": "https://www.mcdougallinteractive.com/free-seo-tools/intent-discover/",
+    "YouTube Insight Tool": "https://www.mcdougallinteractive.com/free-seo-tools/youtube-insight-tool/",
+    "SEO Headline Pro": "https://www.mcdougallinteractive.com/free-seo-tools/seo-headline-pro/",
+  };
 
   constructor() {
     this.dataPath = path.join(process.cwd(), "data.json");
@@ -44,6 +57,7 @@ export class JsonStorage implements IStorage {
   private async initialize() {
     await this.loadData();
     await this.seedDataIfEmpty();
+    await this.normalizeToolUrls();
   }
 
   private async loadData() {
@@ -136,7 +150,7 @@ export class JsonStorage implements IStorage {
         },
         {
           name: "Text Clarity",
-          url: "https://textclarity.replit.app",
+          url: "https://www.mcdougallinteractive.com/free-seo-tools/text-clarity-app/",
           description: "AI-powered content analysis tool providing instant insights on keyword density, readability scores, word frequencies, and keyword suggestions for SEO optimization.",
           categories: ["Analysis", "Content"],
         },
@@ -152,6 +166,23 @@ export class JsonStorage implements IStorage {
     }
 
     await this.saveData();
+  }
+
+  private async normalizeToolUrls() {
+    let changed = false;
+
+    for (const tool of this.data.tools) {
+      const canonicalUrl = this.canonicalToolUrls[tool.name];
+      if (!canonicalUrl) continue;
+      if (tool.url === canonicalUrl) continue;
+
+      tool.url = canonicalUrl;
+      changed = true;
+    }
+
+    if (changed) {
+      await this.saveData();
+    }
   }
 
   async getUser(id: string): Promise<User | undefined> {
