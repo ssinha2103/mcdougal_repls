@@ -349,7 +349,7 @@ YAML
 cat > "$PROD_COMPOSE_FILE" <<'YAML'
 services:
   postgres:
-    ports: []
+    ports: !reset []
 YAML
 
 while IFS=$'\t' read -r slug type host_port internal_port; do
@@ -360,7 +360,7 @@ while IFS=$'\t' read -r slug type host_port internal_port; do
   cat >> "$PROD_COMPOSE_FILE" <<YAML
 
   $slug:
-    ports: []
+    ports: !reset []
 YAML
 done < "$MANIFEST_TSV"
 

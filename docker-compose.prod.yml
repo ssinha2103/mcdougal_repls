@@ -1,75 +1,75 @@
 services:
   postgres:
-    ports: []
+    ports: !reset []
 
   ai-seo-pagescore:
-    ports: []
+    ports: !reset []
 
   asbestos-atlas:
-    ports: []
+    ports: !reset []
 
   btucalc:
-    ports: []
+    ports: !reset []
 
   dog-bite-map:
-    ports: []
+    ports: !reset []
 
   free-seo-tools-page:
-    ports: []
+    ports: !reset []
 
   header-hierarchy:
-    ports: []
+    ports: !reset []
 
   intent-discover:
-    ports: []
+    ports: !reset []
 
   keyword-mixer:
-    ports: []
+    ports: !reset []
 
   legal-lens:
-    ports: []
+    ports: !reset []
 
   legal-napaudit:
-    ports: []
+    ports: !reset []
 
   legal-revamp:
-    ports: []
+    ports: !reset []
 
   legal-schema-gen:
-    ports: []
+    ports: !reset []
 
   link-auditor:
-    ports: []
+    ports: !reset []
 
   mellino-health-data:
-    ports: []
+    ports: !reset []
 
   meta-describer:
-    ports: []
+    ports: !reset []
 
   ohio-care-finder:
-    ports: []
+    ports: !reset []
 
   ohio-maternity-monitor:
-    ports: []
+    ports: !reset []
 
   replit-downloader:
-    ports: []
+    ports: !reset []
 
   sales-research-flow:
-    ports: []
+    ports: !reset []
 
   semrush-scraper:
-    ports: []
+    ports: !reset []
 
   seo-headline-pro:
-    ports: []
+    ports: !reset []
 
   serpsnippet-audit:
-    ports: []
+    ports: !reset []
 
   text-clarity:
-    ports: []
+    ports: !reset []
 
   tube-insight:
-    ports: []
+    ports: !reset []
