@@ -438,8 +438,8 @@ export async function registerRoutes(app: Express) {
     const { seedKeyword } = req.body;
 
     try {
-      const login = process.env.DATAFORSEO_LOGIN;
-      const password = process.env.DATAFORSEO_PASSWORD;
+      const login = process.env.DATAFORSEO_API_LOGIN || process.env.DATAFORSEO_LOGIN;
+      const password = process.env.DATAFORSEO_API_PASSWORD || process.env.DATAFORSEO_PASSWORD;
 
       if (!login || !password) {
         return res.status(400).json({ error: 'DataForSEO credentials not configured' });
@@ -464,24 +464,54 @@ export async function registerRoutes(app: Express) {
         }])
       });
 
+      const responseText = await dataforSeoResponse.text();
+      let data: any = null;
+      try {
+        data = responseText ? JSON.parse(responseText) : null;
+      } catch {
+        console.error('DataForSEO non-JSON response:', responseText?.slice(0, 500));
+        return res.status(502).json({ error: 'Invalid response format from DataForSEO' });
+      }
+
       if (!dataforSeoResponse.ok) {
-        const errorText = await dataforSeoResponse.text();
-        console.error('DataForSEO API error:', errorText);
-        return res.status(500).json({ error: 'Failed to fetch keyword data from DataForSEO' });
+        const message =
+          data?.status_message ||
+          data?.tasks?.[0]?.status_message ||
+          `HTTP ${dataforSeoResponse.status}`;
+        console.error('DataForSEO API error:', message);
+        return res.status(502).json({ error: `DataForSEO request failed: ${message}` });
       }
 
-      const data = await dataforSeoResponse.json();
-
-      if (!data.tasks || !data.tasks[0] || !data.tasks[0].result) {
-        return res.status(500).json({ error: 'Invalid response from DataForSEO' });
+      if (data?.status_code && data.status_code !== 20000) {
+        const message = data?.status_message || `status_code=${data.status_code}`;
+        return res.status(502).json({ error: `DataForSEO error: ${message}` });
       }
 
-      const keywords = data.tasks[0].result.map((item: any) => ({
-        keyword: item.keyword,
-        searchVolume: item.search_volume || 0,
-        competition: item.competition || 0,
-        cpc: item.cpc || 0
-      }));
+      const task = data?.tasks?.[0];
+      if (!task) {
+        return res.status(502).json({ error: 'Invalid response from DataForSEO: missing task' });
+      }
+
+      if (task?.status_code && task.status_code !== 20000) {
+        const message = task?.status_message || `status_code=${task.status_code}`;
+        return res.status(502).json({ error: `DataForSEO task error: ${message}` });
+      }
+
+      const firstResult = Array.isArray(task.result) ? task.result[0] : null;
+      const items = Array.isArray(firstResult?.items)
+        ? firstResult.items
+        : Array.isArray(task.result)
+          ? task.result
+          : [];
+
+      const keywords = items
+        .filter((item: any) => typeof item?.keyword === 'string' && item.keyword.length > 0)
+        .map((item: any) => ({
+          keyword: item.keyword,
+          searchVolume: item.search_volume || 0,
+          competition: item.competition || 0,
+          cpc: item.cpc || 0
+        }));
 
       res.json({ keywords });
 
