@@ -1,13 +1,18 @@
 import type { PAAQuestion, RelatedSearch } from "@shared/schema";
 
-const DATAFORSEO_LOGIN = process.env.DATAFORSEO_LOGIN;
-const DATAFORSEO_PASSWORD = process.env.DATAFORSEO_PASSWORD;
-
-if (!DATAFORSEO_LOGIN || !DATAFORSEO_PASSWORD) {
-  throw new Error("DataForSEO credentials not configured");
-}
-
 const API_BASE_URL = "https://api.dataforseo.com/v3";
+
+function getDataForSeoCredentials(): { login: string; password: string } {
+  // Prefer API_* keys from global env; fall back to legacy names.
+  const login = process.env.DATAFORSEO_API_LOGIN || process.env.DATAFORSEO_LOGIN;
+  const password = process.env.DATAFORSEO_API_PASSWORD || process.env.DATAFORSEO_PASSWORD;
+
+  if (!login || !password) {
+    throw new Error("DataForSEO credentials not configured");
+  }
+
+  return { login, password };
+}
 
 interface DataForSEOResponse {
   status_code: number;
@@ -34,7 +39,8 @@ export async function searchDataForSEO(keyword: string): Promise<{
   paaQuestions: PAAQuestion[];
   relatedSearches: RelatedSearch[];
 }> {
-  const auth = Buffer.from(`${DATAFORSEO_LOGIN}:${DATAFORSEO_PASSWORD}`).toString('base64');
+  const { login, password } = getDataForSeoCredentials();
+  const auth = Buffer.from(`${login}:${password}`).toString('base64');
 
   const requestBody = [
     {
@@ -56,14 +62,30 @@ export async function searchDataForSEO(keyword: string): Promise<{
       body: JSON.stringify(requestBody),
     });
 
-    if (!response.ok) {
-      throw new Error(`DataForSEO API error: ${response.status} ${response.statusText}`);
+    const responseText = await response.text();
+    let data: DataForSEOResponse;
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      throw new Error("Invalid response format from DataForSEO");
     }
 
-    const data: DataForSEOResponse = await response.json();
+    if (!response.ok) {
+      const message = data?.status_message || `HTTP ${response.status}`;
+      throw new Error(`DataForSEO request failed: ${message}`);
+    }
 
     if (data.status_code !== 20000) {
       throw new Error(`DataForSEO error: ${data.status_message}`);
+    }
+
+    const task = data.tasks?.[0];
+    if (!task) {
+      throw new Error("Invalid response from DataForSEO: missing task");
+    }
+
+    if (task.status_code !== 20000) {
+      throw new Error(`DataForSEO task error: ${task.status_message}`);
     }
 
     const paaQuestions: PAAQuestion[] = [];
@@ -106,6 +128,8 @@ export async function searchDataForSEO(keyword: string): Promise<{
     };
   } catch (error) {
     console.error('DataForSEO API error:', error);
-    throw new Error('Failed to fetch search data from DataForSEO');
+    throw new Error(
+      error instanceof Error ? error.message : 'Failed to fetch search data from DataForSEO',
+    );
   }
 }
