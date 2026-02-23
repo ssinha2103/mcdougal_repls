@@ -127,15 +127,43 @@ function applyFilters(keywords: string[], filters: any): string[] {
   });
 }
 
-function processKeywords(groups: any[], settings: any, filters: any, onProgress?: (progress: number) => void) {
-  const validGroups = groups
-    .map((group: any, index: number) => ({
-      ...group,
-      keywords: index === 0 
-        ? group.keywords.filter((k: string) => k.trim().length > 0)
-        : group.keywords.map((k: string) => k.trim())
-    }))
+function normalizeKeywordGroups(groups: any[]): any[] {
+  return groups
+    .map((group: any, index: number) => {
+      const trimmedKeywords = group.keywords.map((keyword: string) => keyword.trim());
+      const nonEmptyKeywords = trimmedKeywords.filter((keyword: string) => keyword.length > 0);
+
+      if (index === 0) {
+        return {
+          ...group,
+          keywords: nonEmptyKeywords,
+        };
+      }
+
+      // Non-primary groups are optional. Keep an explicit blank variant so
+      // users can generate output even when list B/C are left empty.
+      if (nonEmptyKeywords.length === 0) {
+        return {
+          ...group,
+          keywords: [""],
+        };
+      }
+
+      const hasBlankVariant = trimmedKeywords.some((keyword: string) => keyword.length === 0);
+      const optionalKeywords = hasBlankVariant
+        ? [...nonEmptyKeywords, ""]
+        : nonEmptyKeywords;
+
+      return {
+        ...group,
+        keywords: Array.from(new Set(optionalKeywords)),
+      };
+    })
     .filter((group: any, index: number) => index === 0 ? group.keywords.length > 0 : true);
+}
+
+function processKeywords(groups: any[], settings: any, filters: any, onProgress?: (progress: number) => void) {
+  const validGroups = normalizeKeywordGroups(groups);
   
   if (validGroups.length === 0 || validGroups[0].keywords.length === 0) {
     throw new Error('At least the first group must have keywords');
@@ -194,13 +222,19 @@ function processKeywords(groups: any[], settings: any, filters: any, onProgress?
     wordCount: keyword.split(/\s+/).length,
     charCount: keyword.length
   }));
+  const avgWordCount = results.length > 0
+    ? results.reduce((sum, r) => sum + r.wordCount, 0) / results.length
+    : 0;
+  const avgCharCount = results.length > 0
+    ? results.reduce((sum, r) => sum + r.charCount, 0) / results.length
+    : 0;
 
   return {
     keywords: results,
     totalCombinations: results.length,
     stats: {
-      avgWordCount: results.reduce((sum, r) => sum + r.wordCount, 0) / results.length,
-      avgCharCount: results.reduce((sum, r) => sum + r.charCount, 0) / results.length
+      avgWordCount,
+      avgCharCount
     }
   };
 }
@@ -214,14 +248,7 @@ function processKeywordsAsync(
 ): void {
   const startTime = Date.now();
   
-  const validGroups = groups
-    .map((group: any, index: number) => ({
-      ...group,
-      keywords: index === 0 
-        ? group.keywords.filter((k: string) => k.trim().length > 0)
-        : group.keywords.map((k: string) => k.trim())
-    }))
-    .filter((group: any, index: number) => index === 0 ? group.keywords.length > 0 : true);
+  const validGroups = normalizeKeywordGroups(groups);
   
   if (validGroups.length === 0 || validGroups[0].keywords.length === 0) {
     jobStore.set(jobId, {
@@ -271,6 +298,12 @@ function processKeywordsAsync(
           wordCount: keyword.split(/\s+/).length,
           charCount: keyword.length
         }));
+        const avgWordCount = results.length > 0
+          ? results.reduce((sum, r) => sum + r.wordCount, 0) / results.length
+          : 0;
+        const avgCharCount = results.length > 0
+          ? results.reduce((sum, r) => sum + r.charCount, 0) / results.length
+          : 0;
 
         const processingTime = (Date.now() - startTime) / 1000;
 
@@ -278,8 +311,8 @@ function processKeywordsAsync(
           keywords: results,
           totalCombinations: results.length,
           stats: {
-            avgWordCount: results.reduce((sum, r) => sum + r.wordCount, 0) / results.length,
-            avgCharCount: results.reduce((sum, r) => sum + r.charCount, 0) / results.length
+            avgWordCount,
+            avgCharCount
           },
           processingTime
         };
@@ -383,13 +416,8 @@ export async function registerRoutes(app: Express) {
 
     try {
       const jobId = generateJobId();
-      
-      const validGroups = groups
-        .map((group: any) => ({
-          ...group,
-          keywords: group.keywords.filter((k: string) => k.trim().length > 0)
-        }))
-        .filter((group: any) => group.keywords.length > 0);
+
+      const validGroups = normalizeKeywordGroups(groups);
 
       let expectedCombinations = 0;
       if (settings.pattern === 'full') {

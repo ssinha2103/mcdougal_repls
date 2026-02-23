@@ -59,7 +59,10 @@ export default function CombinationSettings({
   });
 
   const handleGenerate = () => {
-    if (keywordGroups.length === 0 || keywordGroups.every(group => group.keywords.length === 0)) {
+    const hasAnyKeyword = keywordGroups.some(group =>
+      group.keywords.some(keyword => keyword.trim().length > 0)
+    );
+    if (!hasAnyKeyword) {
       toast({
         title: "No Keywords",
         description: "Please add some keywords to generate combinations",
