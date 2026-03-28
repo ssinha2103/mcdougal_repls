@@ -17,10 +17,14 @@ templates = Jinja2Templates(directory="templates")
 @router.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     """Home page with map"""
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "title": "Ohio Maternity Care Access Map (2025) | L&D & NICU Levels"
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "request": request,
+            "title": "Ohio Maternity Care Access Map (2025) | L&D & NICU Levels",
+        },
+    )
 
 
 @router.get("/hospital/{hospital_id}", response_class=HTMLResponse)
@@ -46,29 +50,41 @@ async def hospital_detail(
     # Get nearest higher-level NICU suggestion
     higher_nicu = get_nearest_higher_nicu(session, hospital, hospital.lat, hospital.lng)
     
-    return templates.TemplateResponse("hospital.html", {
-        "request": request,
-        "hospital": hospital,
-        "closures": closures,
-        "sources": sources,
-        "higher_nicu": higher_nicu,
-        "title": f"{hospital.name} - Ohio Maternity Access Map"
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="hospital.html",
+        context={
+            "request": request,
+            "hospital": hospital,
+            "closures": closures,
+            "sources": sources,
+            "higher_nicu": higher_nicu,
+            "title": f"{hospital.name} - Ohio Maternity Access Map",
+        },
+    )
 
 
 @router.get("/methodology", response_class=HTMLResponse)
 async def methodology(request: Request):
     """Methodology and citation page"""
-    return templates.TemplateResponse("methodology.html", {
-        "request": request,
-        "title": "Methodology - Ohio Maternity Access Map"
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="methodology.html",
+        context={
+            "request": request,
+            "title": "Methodology - Ohio Maternity Access Map",
+        },
+    )
 
 
 @router.get("/about", response_class=HTMLResponse)
 async def about(request: Request):
     """About and disclaimers page"""
-    return templates.TemplateResponse("about.html", {
-        "request": request,
-        "title": "About - Ohio Maternity Access Map"
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="about.html",
+        context={
+            "request": request,
+            "title": "About - Ohio Maternity Access Map",
+        },
+    )
