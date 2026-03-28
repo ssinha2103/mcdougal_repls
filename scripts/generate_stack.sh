@@ -6,6 +6,7 @@ cd "$ROOT_DIR"
 
 APPS_DIR="apps"
 MANIFEST_TSV="apps-manifests/apps.tsv"
+TOOLS_MAP_JSON="apps-manifests/tools-map.json"
 ENV_MATRIX_MD="apps-manifests/env-matrix.md"
 COMPOSE_FILE="docker-compose.yml"
 PROD_COMPOSE_FILE="docker-compose.prod.yml"
@@ -268,6 +269,45 @@ while IFS= read -r app_dir; do
     port=$((port + 1))
   fi
 done < <(find "$APPS_DIR" -mindepth 1 -maxdepth 1 -type d | sort)
+
+# Generate JSON map for tool slug <-> URL <-> service.
+cat > "$TOOLS_MAP_JSON" <<'JSON'
+{
+  "version": 1,
+  "domainEnvKey": "DOMAIN",
+  "homeSlug": "free-seo-tools-page",
+  "tools": [
+JSON
+
+first_tool=true
+while IFS=$'\t' read -r slug type host_port internal_port; do
+  if [[ "$type" == "unsupported" ]]; then
+    continue
+  fi
+
+  if [[ "$first_tool" == "true" ]]; then
+    first_tool=false
+  else
+    echo "," >> "$TOOLS_MAP_JSON"
+  fi
+
+  cat >> "$TOOLS_MAP_JSON" <<JSON
+    {
+      "slug": "$slug",
+      "service": "$slug",
+      "path": "/$slug/",
+      "publicUrlTemplate": "https://{DOMAIN}/$slug/",
+      "localUrl": "http://localhost:$host_port/",
+      "internalPort": $internal_port,
+      "localPort": $host_port
+    }
+JSON
+done < "$MANIFEST_TSV"
+
+cat >> "$TOOLS_MAP_JSON" <<'JSON'
+  ]
+}
+JSON
 
 # Generate docker-compose.yml
 cat > "$COMPOSE_FILE" <<'YAML'
@@ -737,6 +777,7 @@ echo "Generated: $NGINX_CONF"
 echo "Generated: $CADDYFILE"
 echo "Generated: $HOME_HTML"
 echo "Generated: $MANIFEST_TSV"
+echo "Generated: $TOOLS_MAP_JSON"
 echo "Generated: $ENV_MATRIX_MD"
 echo "Generated: $GLOBAL_ENV_EXAMPLE_FILE"
 echo "Ready to edit: $GLOBAL_ENV_FILE"

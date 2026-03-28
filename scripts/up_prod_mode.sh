@@ -8,8 +8,7 @@ if [[ ! -f "docker-compose.yml" || ! -f "docker-compose.prod.yml" || ! -f "env/g
   ./scripts/generate_stack.sh >/dev/null
 fi
 
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
-./scripts/reload_gateway.sh >/dev/null || true
+./scripts/deploy_prod_sequential.sh
 
 domain=""
 if [[ -f env/global.env ]]; then

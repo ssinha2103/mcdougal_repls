@@ -7,19 +7,7 @@ cd "$ROOT_DIR"
 have() { command -v "$1" >/dev/null 2>&1; }
 export DOCKER_BUILDKIT="${DOCKER_BUILDKIT:-1}"
 export COMPOSE_DOCKER_CLI_BUILD="${COMPOSE_DOCKER_CLI_BUILD:-1}"
-
-if [[ -z "${COMPOSE_PARALLEL_LIMIT:-}" ]] && [[ -r /proc/meminfo ]]; then
-  mem_kb="$(awk '/MemTotal:/ {print $2}' /proc/meminfo 2>/dev/null || true)"
-  if [[ "$mem_kb" =~ ^[0-9]+$ ]]; then
-    if (( mem_kb < 4000000 )); then
-      export COMPOSE_PARALLEL_LIMIT=1
-    elif (( mem_kb < 8000000 )); then
-      export COMPOSE_PARALLEL_LIMIT=2
-    else
-      export COMPOSE_PARALLEL_LIMIT=4
-    fi
-  fi
-fi
+export COMPOSE_PARALLEL_LIMIT="${COMPOSE_PARALLEL_LIMIT:-1}"
 
 if docker compose version >/dev/null 2>&1; then
   COMPOSE=(docker compose)
@@ -70,6 +58,7 @@ Core commands:
   up-core            Start only gateway + postgres + free-seo-tools-page
   up-d-build         Generate files + rebuild + start stack detached
   up-prod            Start production mode (Caddy TLS on 80/443 + gateway-only app exposure)
+  deploy-prod        Sequential production deploy (build/recreate one service at a time)
   down               Stop the stack
   reup               Recreate stack detached (no forced rebuild)
   ps                 Show compose service status
@@ -119,13 +108,17 @@ case "$cmd" in
     ;;
   up-d-build)
     ensure_setup_files
-    "${COMPOSE[@]}" up --build -d
+    ./scripts/start_stack.sh
     reload_gateway_if_running
     ;;
   up-prod)
     ensure_setup_files
     ./scripts/up_prod_mode.sh
     reload_gateway_if_running
+    ;;
+  deploy-prod)
+    ensure_setup_files
+    ./scripts/deploy_prod_sequential.sh
     ;;
   down)
     "${COMPOSE[@]}" down

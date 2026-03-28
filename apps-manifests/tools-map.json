@@ -1,0 +1,246 @@
+{
+  "version": 1,
+  "domainEnvKey": "DOMAIN",
+  "homeSlug": "free-seo-tools-page",
+  "tools": [
+    {
+      "slug": "ai-seo-pagescore",
+      "service": "ai-seo-pagescore",
+      "path": "/ai-seo-pagescore/",
+      "publicUrlTemplate": "https://{DOMAIN}/ai-seo-pagescore/",
+      "localUrl": "http://localhost:8101/",
+      "internalPort": 5000,
+      "localPort": 8101
+    }
+,
+    {
+      "slug": "asbestos-atlas",
+      "service": "asbestos-atlas",
+      "path": "/asbestos-atlas/",
+      "publicUrlTemplate": "https://{DOMAIN}/asbestos-atlas/",
+      "localUrl": "http://localhost:8102/",
+      "internalPort": 5000,
+      "localPort": 8102
+    }
+,
+    {
+      "slug": "btucalc",
+      "service": "btucalc",
+      "path": "/btucalc/",
+      "publicUrlTemplate": "https://{DOMAIN}/btucalc/",
+      "localUrl": "http://localhost:8103/",
+      "internalPort": 5000,
+      "localPort": 8103
+    }
+,
+    {
+      "slug": "dog-bite-map",
+      "service": "dog-bite-map",
+      "path": "/dog-bite-map/",
+      "publicUrlTemplate": "https://{DOMAIN}/dog-bite-map/",
+      "localUrl": "http://localhost:8104/",
+      "internalPort": 5000,
+      "localPort": 8104
+    }
+,
+    {
+      "slug": "free-seo-tools-page",
+      "service": "free-seo-tools-page",
+      "path": "/free-seo-tools-page/",
+      "publicUrlTemplate": "https://{DOMAIN}/free-seo-tools-page/",
+      "localUrl": "http://localhost:8105/",
+      "internalPort": 5000,
+      "localPort": 8105
+    }
+,
+    {
+      "slug": "header-hierarchy",
+      "service": "header-hierarchy",
+      "path": "/header-hierarchy/",
+      "publicUrlTemplate": "https://{DOMAIN}/header-hierarchy/",
+      "localUrl": "http://localhost:8106/",
+      "internalPort": 5000,
+      "localPort": 8106
+    }
+,
+    {
+      "slug": "intent-discover",
+      "service": "intent-discover",
+      "path": "/intent-discover/",
+      "publicUrlTemplate": "https://{DOMAIN}/intent-discover/",
+      "localUrl": "http://localhost:8107/",
+      "internalPort": 5000,
+      "localPort": 8107
+    }
+,
+    {
+      "slug": "keyword-mixer",
+      "service": "keyword-mixer",
+      "path": "/keyword-mixer/",
+      "publicUrlTemplate": "https://{DOMAIN}/keyword-mixer/",
+      "localUrl": "http://localhost:8108/",
+      "internalPort": 5000,
+      "localPort": 8108
+    }
+,
+    {
+      "slug": "legal-lens",
+      "service": "legal-lens",
+      "path": "/legal-lens/",
+      "publicUrlTemplate": "https://{DOMAIN}/legal-lens/",
+      "localUrl": "http://localhost:8109/",
+      "internalPort": 5000,
+      "localPort": 8109
+    }
+,
+    {
+      "slug": "legal-napaudit",
+      "service": "legal-napaudit",
+      "path": "/legal-napaudit/",
+      "publicUrlTemplate": "https://{DOMAIN}/legal-napaudit/",
+      "localUrl": "http://localhost:8110/",
+      "internalPort": 5000,
+      "localPort": 8110
+    }
+,
+    {
+      "slug": "legal-revamp",
+      "service": "legal-revamp",
+      "path": "/legal-revamp/",
+      "publicUrlTemplate": "https://{DOMAIN}/legal-revamp/",
+      "localUrl": "http://localhost:8111/",
+      "internalPort": 5000,
+      "localPort": 8111
+    }
+,
+    {
+      "slug": "legal-schema-gen",
+      "service": "legal-schema-gen",
+      "path": "/legal-schema-gen/",
+      "publicUrlTemplate": "https://{DOMAIN}/legal-schema-gen/",
+      "localUrl": "http://localhost:8112/",
+      "internalPort": 5000,
+      "localPort": 8112
+    }
+,
+    {
+      "slug": "link-auditor",
+      "service": "link-auditor",
+      "path": "/link-auditor/",
+      "publicUrlTemplate": "https://{DOMAIN}/link-auditor/",
+      "localUrl": "http://localhost:8113/",
+      "internalPort": 5000,
+      "localPort": 8113
+    }
+,
+    {
+      "slug": "mellino-health-data",
+      "service": "mellino-health-data",
+      "path": "/mellino-health-data/",
+      "publicUrlTemplate": "https://{DOMAIN}/mellino-health-data/",
+      "localUrl": "http://localhost:8114/",
+      "internalPort": 3000,
+      "localPort": 8114
+    }
+,
+    {
+      "slug": "meta-describer",
+      "service": "meta-describer",
+      "path": "/meta-describer/",
+      "publicUrlTemplate": "https://{DOMAIN}/meta-describer/",
+      "localUrl": "http://localhost:8115/",
+      "internalPort": 5000,
+      "localPort": 8115
+    }
+,
+    {
+      "slug": "ohio-care-finder",
+      "service": "ohio-care-finder",
+      "path": "/ohio-care-finder/",
+      "publicUrlTemplate": "https://{DOMAIN}/ohio-care-finder/",
+      "localUrl": "http://localhost:8116/",
+      "internalPort": 5000,
+      "localPort": 8116
+    }
+,
+    {
+      "slug": "ohio-maternity-monitor",
+      "service": "ohio-maternity-monitor",
+      "path": "/ohio-maternity-monitor/",
+      "publicUrlTemplate": "https://{DOMAIN}/ohio-maternity-monitor/",
+      "localUrl": "http://localhost:8117/",
+      "internalPort": 5000,
+      "localPort": 8117
+    }
+,
+    {
+      "slug": "replit-downloader",
+      "service": "replit-downloader",
+      "path": "/replit-downloader/",
+      "publicUrlTemplate": "https://{DOMAIN}/replit-downloader/",
+      "localUrl": "http://localhost:8118/",
+      "internalPort": 5000,
+      "localPort": 8118
+    }
+,
+    {
+      "slug": "sales-research-flow",
+      "service": "sales-research-flow",
+      "path": "/sales-research-flow/",
+      "publicUrlTemplate": "https://{DOMAIN}/sales-research-flow/",
+      "localUrl": "http://localhost:8119/",
+      "internalPort": 5000,
+      "localPort": 8119
+    }
+,
+    {
+      "slug": "semrush-scraper",
+      "service": "semrush-scraper",
+      "path": "/semrush-scraper/",
+      "publicUrlTemplate": "https://{DOMAIN}/semrush-scraper/",
+      "localUrl": "http://localhost:8120/",
+      "internalPort": 5000,
+      "localPort": 8120
+    }
+,
+    {
+      "slug": "seo-headline-pro",
+      "service": "seo-headline-pro",
+      "path": "/seo-headline-pro/",
+      "publicUrlTemplate": "https://{DOMAIN}/seo-headline-pro/",
+      "localUrl": "http://localhost:8121/",
+      "internalPort": 5000,
+      "localPort": 8121
+    }
+,
+    {
+      "slug": "serpsnippet-audit",
+      "service": "serpsnippet-audit",
+      "path": "/serpsnippet-audit/",
+      "publicUrlTemplate": "https://{DOMAIN}/serpsnippet-audit/",
+      "localUrl": "http://localhost:8122/",
+      "internalPort": 5000,
+      "localPort": 8122
+    }
+,
+    {
+      "slug": "text-clarity",
+      "service": "text-clarity",
+      "path": "/text-clarity/",
+      "publicUrlTemplate": "https://{DOMAIN}/text-clarity/",
+      "localUrl": "http://localhost:8123/",
+      "internalPort": 5000,
+      "localPort": 8123
+    }
+,
+    {
+      "slug": "tube-insight",
+      "service": "tube-insight",
+      "path": "/tube-insight/",
+      "publicUrlTemplate": "https://{DOMAIN}/tube-insight/",
+      "localUrl": "http://localhost:8124/",
+      "internalPort": 5000,
+      "localPort": 8124
+    }
+  ]
+}
