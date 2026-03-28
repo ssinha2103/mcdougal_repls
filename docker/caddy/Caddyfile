@@ -1,0 +1,20 @@
+{
+  email {$ACME_EMAIL}
+}
+
+{$DOMAIN} {
+  encode gzip zstd
+  reverse_proxy gateway:80 {
+    header_up X-Forwarded-Proto https
+    header_up X-Forwarded-Port 443
+    header_down -X-Frame-Options
+    header_down -Content-Security-Policy
+  }
+  header {
+    Content-Security-Policy "frame-ancestors {$FRAME_ANCESTORS}"
+  }
+}
+
+www.{$DOMAIN} {
+  redir https://{$DOMAIN}{uri} 308
+}

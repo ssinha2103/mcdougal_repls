@@ -5,6 +5,7 @@ This workspace can run all extracted tools locally with:
 - Home screen (`free-seo-tools-page` UI): `http://localhost:8000`
 - Shortcut URLs (redirect to app ports): `http://localhost:8000/<tool-slug>/`
 - Direct app URLs: `http://localhost:81xx`
+- Production domain mode (TLS via Caddy): `https://<your-domain>/<tool-slug>/`
 
 ## 0) GCP VM bootstrap (Docker + prerequisites)
 
@@ -20,6 +21,10 @@ Then re-login (or run `newgrp docker`) and continue with `./run.sh up-d`.
 If you access from outside the VM and use shortcut URLs, allow inbound TCP:
 - `8000`
 - `8101-8124`
+
+For production domain mode, allow inbound TCP:
+- `80`
+- `443`
 
 On an already-built GCP host, deploy latest changes without forced rebuild:
 
@@ -60,6 +65,7 @@ This generates:
 - `docker-compose.yml`
 - `docker-compose.prod.yml`
 - `docker/home/default.conf`
+- `docker/caddy/Caddyfile`
 - `docker/home/home.html`
 - `apps-manifests/apps.tsv`
 - `apps-manifests/env-matrix.md`
@@ -118,10 +124,43 @@ After filling that file, apply and verify everything in one go:
 docker compose up --build -d
 ```
 
-Gateway-only production-style mode (single public entrypoint):
+Gateway-only production mode (single public HTTPS entrypoint):
+
+1) Set your domain in `env/global.env`:
+
+```env
+DOMAIN=leadshub.live
+ACME_EMAIL=admin@leadshub.live
+FRAME_ANCESTORS=*
+```
+
+`FRAME_ANCESTORS=*` allows embedding on any WordPress site. Restrict it later by listing specific origins.
+
+2) Point DNS `A` record for the `DOMAIN` value (from `env/global.env`) to your VM public IP.
+
+3) Start production mode:
 
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+```
+
+or
+
+```bash
+./run.sh up-prod
+```
+
+4) Embed any tool in WordPress using:
+
+```html
+<iframe
+  src="https://<your-domain>/ai-seo-pagescore/"
+  width="100%"
+  height="900"
+  style="border:0"
+  loading="lazy"
+  referrerpolicy="strict-origin-when-cross-origin"
+></iframe>
 ```
 
 Recommended for first run (sequential, easier to debug):

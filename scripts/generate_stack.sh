@@ -10,11 +10,12 @@ ENV_MATRIX_MD="apps-manifests/env-matrix.md"
 COMPOSE_FILE="docker-compose.yml"
 PROD_COMPOSE_FILE="docker-compose.prod.yml"
 NGINX_CONF="docker/home/default.conf"
+CADDYFILE="docker/caddy/Caddyfile"
 HOME_HTML="docker/home/home.html"
 GLOBAL_ENV_FILE="env/global.env"
 GLOBAL_ENV_EXAMPLE_FILE="env/global.env.example"
 
-mkdir -p apps-manifests docker/home env
+mkdir -p apps-manifests docker/home docker/caddy env
 
 # POSIX-compatible uppercase title conversion for simple slug labels.
 titleize_slug() {
@@ -147,6 +148,15 @@ default_env_value() {
     GCS_BUCKET_NAME)
       echo "local-dev-bucket"
       ;;
+    DOMAIN)
+      echo "leadshub.live"
+      ;;
+    ACME_EMAIL)
+      echo "admin@leadshub.live"
+      ;;
+    FRAME_ANCESTORS)
+      echo "*"
+      ;;
     *)
       echo ""
       ;;
@@ -208,6 +218,7 @@ lookup_existing_value() {
 write_global_env_file() {
   local out_file="$1"
   local sorted_keys_file="$2"
+  local include_existing_values="${3:-true}"
 
   {
     echo "# Central credentials file for all apps"
@@ -218,7 +229,11 @@ write_global_env_file() {
       while IFS= read -r key; do
         [[ -n "$key" ]] || continue
         local value
-        value="$(lookup_existing_value "$key")"
+        if [[ "$include_existing_values" == "true" ]]; then
+          value="$(lookup_existing_value "$key")"
+        else
+          value="$(default_env_value "$key")"
+        fi
         echo "$key=$value"
       done < "$sorted_keys_file"
     fi
@@ -348,8 +363,26 @@ YAML
 # Generate production override compose (gateway-only exposure).
 cat > "$PROD_COMPOSE_FILE" <<'YAML'
 services:
+  gateway:
+    ports: !reset []
+
   postgres:
     ports: !reset []
+
+  caddy:
+    image: caddy:2.8-alpine
+    env_file:
+      - env/global.env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - gateway
+    restart: unless-stopped
 YAML
 
 while IFS=$'\t' read -r slug type host_port internal_port; do
@@ -364,11 +397,28 @@ while IFS=$'\t' read -r slug type host_port internal_port; do
 YAML
 done < "$MANIFEST_TSV"
 
+cat >> "$PROD_COMPOSE_FILE" <<'YAML'
+
+volumes:
+  caddy_data:
+  caddy_config:
+YAML
+
 # Generate nginx gateway config.
 cat > "$NGINX_CONF" <<'NGINX'
 map $http_upgrade $connection_upgrade {
   default upgrade;
   '' close;
+}
+
+map $http_x_forwarded_proto $proxy_forwarded_proto {
+  default $http_x_forwarded_proto;
+  '' $scheme;
+}
+
+map $http_x_forwarded_port $proxy_forwarded_port {
+  default $http_x_forwarded_port;
+  '' $server_port;
 }
 
 server {
@@ -380,10 +430,13 @@ server {
   proxy_set_header Host $host;
   proxy_set_header X-Real-IP $remote_addr;
   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  proxy_set_header X-Forwarded-Proto $scheme;
+  proxy_set_header X-Forwarded-Proto $proxy_forwarded_proto;
   proxy_set_header X-Forwarded-Host $host;
-  proxy_set_header X-Forwarded-Port $server_port;
+  proxy_set_header X-Forwarded-Port $proxy_forwarded_port;
   proxy_read_timeout 120s;
+  proxy_hide_header X-Frame-Options;
+  proxy_hide_header Content-Security-Policy;
+  add_header Content-Security-Policy "frame-ancestors *" always;
 
   location = /healthz {
     default_type text/plain;
@@ -427,6 +480,30 @@ cat >> "$NGINX_CONF" <<'NGINX'
   }
 }
 NGINX
+
+# Generate Caddy config for public domain TLS + reverse proxy.
+cat > "$CADDYFILE" <<'CADDY'
+{
+  email {$ACME_EMAIL}
+}
+
+{$DOMAIN} {
+  encode gzip zstd
+  reverse_proxy gateway:80 {
+    header_up X-Forwarded-Proto https
+    header_up X-Forwarded-Port 443
+    header_down -X-Frame-Options
+    header_down -Content-Security-Policy
+  }
+  header {
+    Content-Security-Policy "frame-ancestors {$FRAME_ANCESTORS}"
+  }
+}
+
+www.{$DOMAIN} {
+  redir https://{$DOMAIN}{uri} 308
+}
+CADDY
 
 # Generate home page.
 cat > "$HOME_HTML" <<'HTML'
@@ -613,9 +690,14 @@ else
   : > "$all_keys_sorted_file"
 fi
 
-write_global_env_file "$GLOBAL_ENV_EXAMPLE_FILE" "$all_keys_sorted_file"
+for required_key in DOMAIN ACME_EMAIL FRAME_ANCESTORS; do
+  echo "$required_key" >> "$all_keys_sorted_file"
+done
+sort -u "$all_keys_sorted_file" -o "$all_keys_sorted_file"
+
+write_global_env_file "$GLOBAL_ENV_EXAMPLE_FILE" "$all_keys_sorted_file" "false"
 if [[ -f "$GLOBAL_ENV_FILE" ]]; then
-  write_global_env_file "$GLOBAL_ENV_FILE" "$all_keys_sorted_file"
+  write_global_env_file "$GLOBAL_ENV_FILE" "$all_keys_sorted_file" "true"
 else
   cp "$GLOBAL_ENV_EXAMPLE_FILE" "$GLOBAL_ENV_FILE"
 fi
@@ -623,6 +705,7 @@ fi
 echo "Generated: $COMPOSE_FILE"
 echo "Generated: $PROD_COMPOSE_FILE"
 echo "Generated: $NGINX_CONF"
+echo "Generated: $CADDYFILE"
 echo "Generated: $HOME_HTML"
 echo "Generated: $MANIFEST_TSV"
 echo "Generated: $ENV_MATRIX_MD"

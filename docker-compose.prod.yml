@@ -1,6 +1,24 @@
 services:
+  gateway:
+    ports: !reset []
+
   postgres:
     ports: !reset []
+
+  caddy:
+    image: caddy:2.8-alpine
+    env_file:
+      - env/global.env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - gateway
+    restart: unless-stopped
 
   ai-seo-pagescore:
     ports: !reset []
@@ -73,3 +91,7 @@ services:
 
   tube-insight:
     ports: !reset []
+
+volumes:
+  caddy_data:
+  caddy_config:

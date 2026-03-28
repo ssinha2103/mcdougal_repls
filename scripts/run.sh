@@ -69,7 +69,7 @@ Core commands:
   up-d               Generate files + start stack detached (no forced rebuild)
   up-core            Start only gateway + postgres + free-seo-tools-page
   up-d-build         Generate files + rebuild + start stack detached
-  up-prod            Start gateway-only production-style mode
+  up-prod            Start production mode (Caddy TLS on 80/443 + gateway-only app exposure)
   down               Stop the stack
   reup               Recreate stack detached (no forced rebuild)
   ps                 Show compose service status
