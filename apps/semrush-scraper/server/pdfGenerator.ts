@@ -6,6 +6,38 @@ import type { Metrics, Insight } from "@shared/schema";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
+function getGeminiModelCandidates(): string[] {
+  const configuredModel = process.env.GEMINI_MODEL?.trim();
+  const candidates = [
+    configuredModel,
+    "gemini-2.5-flash",
+    "gemini-2.0-flash-exp",
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+  ].filter((model): model is string => Boolean(model));
+
+  return Array.from(new Set(candidates));
+}
+
+async function generateContentWithFallback(
+  buildRequest: (model: string) => any
+) {
+  let lastError: unknown = null;
+
+  for (const model of getGeminiModelCandidates()) {
+    try {
+      return await ai.models.generateContent(buildRequest(model));
+    } catch (error: any) {
+      lastError = error;
+      console.warn(`[PDF] Gemini model ${model} failed:`, error?.message || error);
+    }
+  }
+
+  throw lastError instanceof Error
+    ? lastError
+    : new Error(String(lastError ?? "All Gemini model attempts failed"));
+}
+
 interface PDFData {
   domain: string;
   prospectScore: number;
@@ -108,10 +140,10 @@ ${insights.slice(0, 3).map((i) => `- ${i.summary}`).join("\n")}
 
 Write a professional, compelling summary that highlights the opportunity.`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash-exp",
+    const response = await generateContentWithFallback((model) => ({
+      model,
       contents: prompt,
-    });
+    }));
 
     const summary = response.text?.trim() || "";
     if (summary) {
@@ -184,13 +216,13 @@ Convert technical SEO insights into compelling sales talking points. Focus on:
 
 Return only the talking points as a JSON array of strings.`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash-exp",
+    const response = await generateContentWithFallback((model) => ({
+      model,
       config: {
         responseMimeType: "application/json",
       },
       contents: prompt,
-    });
+    }));
 
     const rawJson = response.text;
     if (rawJson) {

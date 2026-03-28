@@ -41,6 +41,38 @@ const rateLimiter: RateLimiter = {
 const MIN_DELAY_MS = 500;
 const MAX_RETRIES = 2;
 
+function getGeminiModelCandidates(): string[] {
+  const configuredModel = process.env.GEMINI_MODEL?.trim();
+  const candidates = [
+    configuredModel,
+    "gemini-2.5-flash",
+    "gemini-2.0-flash-exp",
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+  ].filter((model): model is string => Boolean(model));
+
+  return Array.from(new Set(candidates));
+}
+
+async function generateContentWithFallback(
+  buildRequest: (model: string) => any
+) {
+  let lastError: unknown = null;
+
+  for (const model of getGeminiModelCandidates()) {
+    try {
+      return await ai.models.generateContent(buildRequest(model));
+    } catch (error: any) {
+      lastError = error;
+      console.error(`[GEMINI] Model ${model} failed:`, error?.message || error);
+    }
+  }
+
+  throw lastError instanceof Error
+    ? lastError
+    : new Error(String(lastError ?? "All Gemini model attempts failed"));
+}
+
 async function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -196,8 +228,8 @@ export async function analyzeScreenshot(
 
       const imageBytes = fs.readFileSync(screenshotPath);
 
-      const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash-exp",
+      const response = await generateContentWithFallback((model) => ({
+        model,
         config: {
           responseMimeType: "application/json",
         },
@@ -210,7 +242,7 @@ export async function analyzeScreenshot(
           },
           prompt,
         ],
-      });
+      }));
 
       const rawJson = response.text;
 
@@ -434,14 +466,14 @@ Generate 3-5 most important insights. Be specific and actionable.`;
       2
     );
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash-exp",
+    const response = await generateContentWithFallback((model) => ({
+      model,
       config: {
         systemInstruction: systemPrompt,
         responseMimeType: "application/json",
       },
       contents: `Analyze this SEO data for prospecting opportunities:\n\n${dataPayload}`,
-    });
+    }));
 
     const rawJson = response.text;
 
@@ -477,14 +509,14 @@ Consider factors:
 
 Return JSON: {"prospectScore": number, "declineScore": number, "opportunityScore": number}`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash-exp",
+    const response = await generateContentWithFallback((model) => ({
+      model,
       config: {
         systemInstruction: systemPrompt,
         responseMimeType: "application/json",
       },
       contents: JSON.stringify(metrics, null, 2),
-    });
+    }));
 
     const rawJson = response.text;
 
