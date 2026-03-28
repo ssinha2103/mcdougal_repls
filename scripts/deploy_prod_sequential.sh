@@ -30,8 +30,8 @@ if [[ ! -f env/global.env ]]; then
   echo "Created env/global.env from detected keys. Fill real credentials if needed."
 fi
 
-mapfile -t SERVICES < <(awk -F '\t' '$2 != "unsupported" { print $1 }' apps-manifests/apps.tsv)
-total="${#SERVICES[@]}"
+mapfile -t SERVICE_ROWS < <(awk -F '\t' '$2 != "unsupported" { print $1 "\t" $2 }' apps-manifests/apps.tsv)
+total="${#SERVICE_ROWS[@]}"
 
 echo "Deploying production stack sequentially (parallel disabled)."
 echo "Services to deploy: $total"
@@ -42,12 +42,24 @@ echo "Starting core services..."
 "${COMPOSE[@]}" "${COMPOSE_ARGS[@]}" up -d caddy
 
 idx=0
-for slug in "${SERVICES[@]}"; do
+for row in "${SERVICE_ROWS[@]}"; do
+  slug="${row%%$'\t'*}"
+  type="${row#*$'\t'}"
   idx=$((idx + 1))
   echo "[$idx/$total] Building $slug ..."
   "${COMPOSE[@]}" "${COMPOSE_ARGS[@]}" build "$slug"
   echo "[$idx/$total] Recreating $slug ..."
   "${COMPOSE[@]}" "${COMPOSE_ARGS[@]}" up -d --no-deps --force-recreate "$slug"
+
+  # If a Node app defines a db:push script, apply schema changes automatically.
+  if [[ "$type" == "node_replit" ]] && [[ -f "apps/$slug/package.json" ]] && grep -q '"db:push"' "apps/$slug/package.json"; then
+    echo "[$idx/$total] Running db:push for $slug ..."
+    if "${COMPOSE[@]}" "${COMPOSE_ARGS[@]}" exec -T "$slug" npm run db:push >/tmp/dbpush_"$slug".log 2>&1; then
+      echo "[$idx/$total] db:push complete for $slug"
+    else
+      echo "[$idx/$total] WARN: db:push failed for $slug (see /tmp/dbpush_$slug.log)"
+    fi
+  fi
 done
 
 echo "Reloading gateway config..."
