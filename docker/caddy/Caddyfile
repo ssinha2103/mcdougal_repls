@@ -1,5 +1,9 @@
 {
   email {$ACME_EMAIL}
+  # Keep HTTP/3 (QUIC) disabled to avoid client-side QUIC protocol errors.
+  servers {
+    protocols h1 h2
+  }
 }
 
 {$DOMAIN} {

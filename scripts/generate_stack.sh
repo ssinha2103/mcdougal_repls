@@ -421,6 +421,23 @@ map $http_x_forwarded_port $proxy_forwarded_port {
   '' $server_port;
 }
 
+map $http_referer $referer_tool_upstream {
+  default free-seo-tools-page:5000;
+NGINX
+
+while IFS=$'\t' read -r slug type host_port internal_port; do
+  if [[ "$type" == "unsupported" ]]; then
+    continue
+  fi
+
+  cat >> "$NGINX_CONF" <<NGINX
+  ~*^https?://[^/]+/$slug(?:/|$) $slug:$internal_port;
+NGINX
+done < "$MANIFEST_TSV"
+
+cat >> "$NGINX_CONF" <<'NGINX'
+}
+
 server {
   listen 80;
   server_name _;
@@ -448,6 +465,14 @@ server {
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection $connection_upgrade;
     proxy_pass http://free-seo-tools-page:5000/;
+  }
+
+  # Tools are mounted under /<slug>/, but many emit root-relative /assets/* and /api/*.
+  # Route those root requests to the tool indicated by Referer.
+  location ~* ^/(assets/|api(?:/|$)|socket\.io/|@vite/|vite\.svg$|favicon\.ico$|manifest\.json$|robots\.txt$|[^/]+\.(?:js|css|map|png|jpg|jpeg|gif|svg|ico|webp|woff2?|ttf)$) {
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+    proxy_pass http://$referer_tool_upstream;
   }
 NGINX
 
@@ -485,6 +510,10 @@ NGINX
 cat > "$CADDYFILE" <<'CADDY'
 {
   email {$ACME_EMAIL}
+  # Keep HTTP/3 (QUIC) disabled to avoid client-side QUIC protocol errors.
+  servers {
+    protocols h1 h2
+  }
 }
 
 {$DOMAIN} {
