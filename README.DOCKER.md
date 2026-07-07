@@ -18,6 +18,8 @@ The production stack has been migrated from GCP to OVH and is live on:
 
 Verified after DNS cutover: `https://leadshub.live/`, `https://leadshub.live/free-seo-tools-page/`, and `https://leadshub.live/ai-seo-pagescore/` return HTTP 200. `www.leadshub.live` redirects to the apex domain.
 
+The old GCP deployment has been decommissioned. The `metal-hope-480717-q5` project no longer has billing enabled, and its former `mcd` Compute Engine VM and attached `mcd` persistent disk have been deleted.
+
 ## 0) GCP VM bootstrap (Docker + prerequisites)
 
 On a fresh Debian/Ubuntu GCP VM, run:
