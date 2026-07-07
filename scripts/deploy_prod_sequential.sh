@@ -38,8 +38,6 @@ echo "Services to deploy: $total"
 
 echo "Starting core services..."
 "${COMPOSE[@]}" "${COMPOSE_ARGS[@]}" up -d postgres
-"${COMPOSE[@]}" "${COMPOSE_ARGS[@]}" up -d gateway
-"${COMPOSE[@]}" "${COMPOSE_ARGS[@]}" up -d caddy
 
 idx=0
 for row in "${SERVICE_ROWS[@]}"; do
@@ -61,6 +59,9 @@ for row in "${SERVICE_ROWS[@]}"; do
     fi
   fi
 done
+
+echo "Starting gateway and TLS proxy..."
+"${COMPOSE[@]}" "${COMPOSE_ARGS[@]}" up -d gateway caddy
 
 echo "Reloading gateway config..."
 "${COMPOSE[@]}" "${COMPOSE_ARGS[@]}" exec -T gateway nginx -t >/dev/null
