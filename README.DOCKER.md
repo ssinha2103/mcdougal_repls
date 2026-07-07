@@ -7,6 +7,17 @@ This workspace can run all extracted tools locally with:
 - Direct app URLs: `http://localhost:81xx`
 - Production domain mode (TLS via Caddy): `https://<your-domain>/<tool-slug>/`
 
+## Production status
+
+The production stack has been migrated from GCP to OVH and is live on:
+
+- Domain: `leadshub.live`
+- OVH public IP: `149.56.131.161`
+- Runtime path: `/opt/mcdougal_repls` on the OVH host
+- HTTPS: Caddy-managed Let's Encrypt certificates for `leadshub.live` and `www.leadshub.live`
+
+Verified after DNS cutover: `https://leadshub.live/`, `https://leadshub.live/free-seo-tools-page/`, and `https://leadshub.live/ai-seo-pagescore/` return HTTP 200. `www.leadshub.live` redirects to the apex domain.
+
 ## 0) GCP VM bootstrap (Docker + prerequisites)
 
 On a fresh Debian/Ubuntu GCP VM, run:
