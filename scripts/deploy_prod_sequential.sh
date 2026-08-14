@@ -20,6 +20,7 @@ export COMPOSE_DOCKER_CLI_BUILD="${COMPOSE_DOCKER_CLI_BUILD:-1}"
 export COMPOSE_PARALLEL_LIMIT="${COMPOSE_PARALLEL_LIMIT:-1}"
 
 COMPOSE_ARGS=(-f docker-compose.yml -f docker-compose.prod.yml)
+NOTIFIER_INGRESS_NETWORK="algo-trader-notifier-ingress"
 
 if [[ ! -f docker-compose.yml || ! -f docker-compose.prod.yml || ! -f apps-manifests/apps.tsv ]]; then
   ./scripts/generate_stack.sh >/dev/null
@@ -35,6 +36,10 @@ total="${#SERVICE_ROWS[@]}"
 
 echo "Deploying production stack sequentially (parallel disabled)."
 echo "Services to deploy: $total"
+
+if ! docker network inspect "$NOTIFIER_INGRESS_NETWORK" >/dev/null 2>&1; then
+  docker network create --driver bridge --attachable "$NOTIFIER_INGRESS_NETWORK" >/dev/null
+fi
 
 echo "Starting core services..."
 "${COMPOSE[@]}" "${COMPOSE_ARGS[@]}" up -d postgres
