@@ -422,6 +422,9 @@ services:
       - caddy_config:/config
     depends_on:
       - gateway
+    networks:
+      - default
+      - algo-trader-notifier-ingress
     restart: unless-stopped
 YAML
 
@@ -442,6 +445,11 @@ cat >> "$PROD_COMPOSE_FILE" <<'YAML'
 volumes:
   caddy_data:
   caddy_config:
+
+networks:
+  algo-trader-notifier-ingress:
+    name: algo-trader-notifier-ingress
+    external: true
 YAML
 
 # Generate nginx gateway config.

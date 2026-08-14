@@ -18,6 +18,9 @@ services:
       - caddy_config:/config
     depends_on:
       - gateway
+    networks:
+      - default
+      - algo-trader-notifier-ingress
     restart: unless-stopped
 
   ai-seo-pagescore:
@@ -95,3 +98,8 @@ services:
 volumes:
   caddy_data:
   caddy_config:
+
+networks:
+  algo-trader-notifier-ingress:
+    name: algo-trader-notifier-ingress
+    external: true
